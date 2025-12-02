@@ -104,7 +104,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<tw-storydata name="Dentrainement_beta" startnode="121" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="0981FC2D-D35B-4648-B502-5E96F427D51E" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
+	<tw-storydata name="Dentrainement_beta" startnode="121" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="0981FC2D-D35B-4648-B502-5E96F427D51E" options="" tags="" zoom="0.3" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
   #story {
     margin-top: 0;
     margin-left: 300;
@@ -1894,12 +1894,14 @@ Avant que Martine ne raccroche que pouvez-vous conseiller au père concernant la
         &lt;&lt;set $answer to $answer.trim().toLowerCase().replace(/\s+/g, &#39;&#39;)&gt;&gt;
         &lt;&lt;if [
 	&quot;duserumphy&quot;,
+    &quot;dunacl&quot;,
     &quot;danssabouche&quot;,
     &quot;danslabouche&quot;
     &quot;duserumphysiologique&quot;,
     &quot;dulait&quot;,
     &quot;lait&quot;,
     &quot;serumphy&quot;,
+    &quot;nacl&quot;
      &quot;serumphysiologique&quot;,
 ].includes($answer)&gt;&gt;
                 &lt;&lt;silently&gt;&gt;
@@ -3711,7 +3713,7 @@ Mieux vaudrait mettre le fragment dans _ _ _ _? (//indiquez votre réponse sans 
 &lt;&lt;textbox &#39;$answer&#39; &#39;&#39; autofocus&gt;&gt; &lt;span id=&#39;textbox-reply&#39;&gt;&lt;/span&gt; &lt;span id=&#39;textbox-submit&#39;&gt;
 &lt;&lt;button &#39;Soumettre ma réponse&#39;&gt;&gt; 
 &lt;&lt;set $answer to $answer.trim().toLowerCase().replace(/\s+/g, &#39;&#39;)&gt;&gt; 
-&lt;&lt;if [ &quot;duserumphy&quot;, &quot;duserumphysiologique&quot;, &quot;dulait&quot;, &quot;lait&quot;, &quot;danssabouche&quot;, &quot;danslabouche&quot;, &quot;serumphy&quot;, &quot;serumphysiologique&quot;, ].includes($answer)&gt;&gt; 
+&lt;&lt;if [ &quot;duserumphy&quot;, &quot;nacl&quot;, &quot;duserumphysiologique&quot;, &quot;dulait&quot;, &quot;lait&quot;, &quot;danssabouche&quot;, &quot;danslabouche&quot;, &quot;serumphy&quot;, &quot;serumphysiologique&quot;, ].includes($answer)&gt;&gt; 
 /&lt;&lt;set $Score to $Score+10&gt;&gt; 
 &lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;
 //Correct! Le lait ou le sérum physiologique sont les mieux indiqués.//&lt;&lt;/replace&gt;&gt; 
