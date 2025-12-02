@@ -627,9 +627,9 @@ Voici la rétro alvéolaire de 11
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Epaississement du desmodonte de 11&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Fracture alvéolaire au niveau de 21&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; Fracture radiculaire de 11&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;three&quot;&gt;&lt;&lt;checkbox &quot;$desc.three&quot; false true&gt;&gt; Intrusion de 22&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;three&quot;&gt;&lt;&lt;checkbox &quot;$desc.three&quot; false true&gt;&gt; Intrusion de 12&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Subluxation probable de 21&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;five&quot;&gt;&lt;&lt;checkbox &quot;$desc.five&quot; false true&gt;&gt; Subluxation probable de 22&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;five&quot;&gt;&lt;&lt;checkbox &quot;$desc.five&quot; false true&gt;&gt; Subluxation probable de 12&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;six&quot;&gt;&lt;&lt;checkbox &quot;$desc.six&quot; false true&gt;&gt; Extrusion de 11&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;seven&quot;&gt;&lt;&lt;checkbox &quot;$desc.seven&quot; false true&gt;&gt; La 23 n&#39;est pas impactée&lt;/span&gt;
 
@@ -762,7 +762,7 @@ Une mère et un enfant se sont présentés pour un trauma. C&#39;est le médecin
 &lt;/audio&gt;
 Vous entendez la sonnette de l&#39;entrée et vous comprenez qu&#39;il s&#39;agit de votre patient.
 Vous accueillez un enfant et son père. Le garçon a 11 ans et se plaint de douleur dans la lèvre inférieure. Il n&#39;y a pas d&#39;antécédents médicaux et chirugicaux particuliers.
-Il vous est précisé qu&#39;il a aussi fait une chute à l&#39;école il y a 2 mois qui a blessé une dent de devant et lacéré sa lèvre inférieure. Bien entendu, il n&#39;a pas avec lui le morceau de dent de toute façon, 2 mois après, ça ne servirait peut être à rien.
+Il vous est précisé qu&#39;il a aussi fait une chute à l&#39;école il y a 2 mois qui a blessé une dent de devant et lacéré sa lèvre inférieure. Il n&#39;a pas ramassé de morceau de dent sur place.
 Il n&#39;y a pas de traumatisme crânien mentionné et sa vaccination est à jour.
 
 &#39;&#39;[[J&#39;examine l&#39;enfant|cst1_cas3]]&#39;&#39;
@@ -839,7 +839,7 @@ Vous dîtes à Martine :
 &lt;&lt;set $Scenario to &quot;Scénario6_avancé&quot;&gt;&gt;
 &lt;&lt;set $Timer to 60&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-&#39;&#39;$Nom&#39;&#39;, il est 10h et le téléphone sonne pendant votre collage d&#39;onlay.
+&#39;&#39;$Nom&#39;&#39;, il est 14h et le téléphone sonne pendant votre collage d&#39;onlay.
 Martine vous indique qu&#39;un certain Mr Durand, un patient du cabinet, est au téléphone au sujet de son fils de 12 ans qui a cassé sa dent de devant en haut.
 
 &quot;Une partie de la dent bouge&quot; d&#39;après le père et &quot;l&#39;intérieur de la dent saigne&quot;. Le bout de dent a été ramassé et a été mis dans un verre d&#39;eau en attendant. Il ne sait pas quoi faire. Vous avez un créneau de 20 min pour les urgences à 15h.
@@ -1101,7 +1101,7 @@ Que constatez vous en tout premier lieu ?
           &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="19" name="Cas4 retro ok" tags="Choix-multiple-a-cocher Media-image-son" position="3125,700" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
-&lt;&lt;set $Timer to 40&gt;&gt;
+&lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;two&quot;,&quot;four&quot;,&quot;five&quot;,&quot;six&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -1172,7 +1172,7 @@ Comme solution, je propose :
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Une reconstruction indirecte avec un onlay composite, ce sera le plus solide&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; De recoller le morceau manquant s&#39;il est disponible et s&#39;adapte bien&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;three&quot;&gt;&lt;&lt;checkbox &quot;$desc.three&quot; false true&gt;&gt; Une reconstruction directe au CVI pour temporiser si le fragment manquant n&#39;est pas disponible ou s&#39;il ne correspond pas&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Un coiffage pulpaire indirect ou direct puis un CVI de temporisation&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Un coiffage pulpaire direct puis un CVI de temporisation&lt;/span&gt;
 
 \&lt;div id=&quot;checkbox-feedback&quot; style=&quot;opacity:0; transition: opacity 0.5s; margin-top: 1em;&quot;&gt;&lt;/div&gt;
 \&lt;div id=&quot;checkbox-submit&quot;&gt;\
@@ -1894,6 +1894,8 @@ Avant que Martine ne raccroche que pouvez-vous conseiller au père concernant la
         &lt;&lt;set $answer to $answer.trim().toLowerCase().replace(/\s+/g, &#39;&#39;)&gt;&gt;
         &lt;&lt;if [
 	&quot;duserumphy&quot;,
+    &quot;danssabouche&quot;,
+    &quot;danslabouche&quot;
     &quot;duserumphysiologique&quot;,
     &quot;dulait&quot;,
     &quot;lait&quot;,
@@ -1941,7 +1943,7 @@ Voici une photo extra orale de face de la situation [2]
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; La gencive est érythémateuse au niveau de 21&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; La 21 est fracturée au niveau de l&#39;émail et de la dentine et la pulpe est probablement exposée&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Une fracture verticale centrée sur 21 est visible sur la photo&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;five&quot;&gt;&lt;&lt;checkbox &quot;$desc.five&quot; false true&gt;&gt; Une fracture oblique atteignant le cément en mésial de 21 est visible sur la photo&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;five&quot;&gt;&lt;&lt;checkbox &quot;$desc.five&quot; false true&gt;&gt; Une fracture oblique atteignant peut-être le cément en mésial de 21 est visible sur la photo&lt;/span&gt;
 
 Que faîtes vous comme test(s) ?
 &lt;span class=&quot;checkligne&quot; data-id=&quot;seven&quot;&gt;&lt;&lt;checkbox &quot;$desc.seven&quot; false true&gt;&gt; Je teste la mobilité de 12,11,21,22&lt;/span&gt;
@@ -2055,14 +2057,14 @@ Quel serait LE meilleur traitement à envisager tout de suite selon vous (l&#39;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="43" name="D_PEC aprem 6" tags="Question-ouverte Media-image-son" position="7650,925" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $Timer to 110&gt;&gt;
+&lt;&lt;set $Timer to 150&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Illustration du traitement de 21 [2]
 &lt;img src=&quot;./Cas_clinique3/Vignesh_treatment1.jpg&quot; width=&quot;600vw&quot;&gt;
 \Remettez les étapes du traitement dans le bon ordre (ex : 1/2/3/4/5/6/7 ou 5/3/4/1/2/6/7)
 \&lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;
 1- Je donne les conseils post-opératoires et un rendez vous de suivi pour la contention et je remets un CMI au responsable légal
-2- J&#39;extraie la dent 21 de manière la plus atraumatique possible et je la conserve dans du sérum physiologique en touchant le moins possible la racine
+2- J&#39;extraie la dent 21 de manière la plus atraumatique possible, je la nettoie au sérum physiologique en touchant le moins possible la racine dans mes futures manipulations
 3- Je réimplante la dent puis je mets en place une contention passive
 4- Je désinfecte le site à l&#39;aide d&#39;une compresse et de la bétadine buccal puis j&#39;anesthésie localement la dent à traiter
 5- Je réalise le traitement endodontique puis une désobturation pour laisser environ 4 mm de gutta a l&#39;apex. Je mets en place un tenon fibré avec un composite dual
@@ -2148,14 +2150,14 @@ Quelle médication mettez vous en place ?
 &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;if $Timer lte 0&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="45" name="D_PEC aprem 8" tags="Choix-multiple-a-cocher" position="7675,1175" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="45" name="D_PEC aprem 8" tags="Choix-multiple-a-cocher Media-image-son" position="7675,1175" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $bonnesReponses = [&quot;one&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Voici une vue de suivi à un an du patient :
-&lt;img src=&quot;./Cas_clinique3/Vignesh_followup.jpg&quot; width=&quot;500vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique6/Vignesh_followup.jpg&quot; width=&quot;500vw&quot;&gt;
 \A quel intervalle de temps revoyez vous le patient pour déposer la contention ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; 1 semaines&lt;/span&gt;
@@ -3372,6 +3374,7 @@ Citez l&#39;oubli le plus flagrant :
         &lt;&lt;set $answer to $answer.trim().toLowerCase().replace(/\s+/g, &#39;&#39;)&gt;&gt;
         &lt;&lt;if [
 	&quot;digue&quot;,
+    &quot;ladigue&quot;,
     &quot;posedeladigue&quot;,
     &quot;champoperatoire&quot;,
     &quot;poseduchampoperatoire&quot;,
@@ -3479,7 +3482,7 @@ Cela ne sert à rien de s&#39;ennerver. Soufflez un bon coup et ré-évaluer vot
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 
-Une restauration direct en urgence serait plutôt un plan B. Cherchons d&#39;abord à vérifier si une solution plus favorable n&#39;est pas atteignable. En l&#39;occurence pour une dent fracturée sans exposition de la pulpe, la restauration la plus favorable serait avec le fragment de dent détaché, sous certaines conditions.
+Une restauration directe en urgence serait plutôt un plan B. Cherchons d&#39;abord à vérifier si une solution plus favorable n&#39;est pas atteignable. En l&#39;occurence pour une dent fracturée sans exposition de la pulpe, la restauration la plus favorable serait avec le fragment de dent détaché, sous certaines conditions.
 
 Où va-t-on pouvoir trouver un bout de dent naturelle pour réaliser une restauration?
 (Indiquez votre ou vos mots clés sans accent. Ex : Procedure iatrogene)
@@ -3708,7 +3711,7 @@ Mieux vaudrait mettre le fragment dans _ _ _ _? (//indiquez votre réponse sans 
 &lt;&lt;textbox &#39;$answer&#39; &#39;&#39; autofocus&gt;&gt; &lt;span id=&#39;textbox-reply&#39;&gt;&lt;/span&gt; &lt;span id=&#39;textbox-submit&#39;&gt;
 &lt;&lt;button &#39;Soumettre ma réponse&#39;&gt;&gt; 
 &lt;&lt;set $answer to $answer.trim().toLowerCase().replace(/\s+/g, &#39;&#39;)&gt;&gt; 
-&lt;&lt;if [ &quot;duserumphy&quot;, &quot;duserumphysiologique&quot;, &quot;dulait&quot;, &quot;lait&quot;, &quot;serumphy&quot;, &quot;serumphysiologique&quot;, ].includes($answer)&gt;&gt; 
+&lt;&lt;if [ &quot;duserumphy&quot;, &quot;duserumphysiologique&quot;, &quot;dulait&quot;, &quot;lait&quot;, &quot;danssabouche&quot;, &quot;danslabouche&quot;, &quot;serumphy&quot;, &quot;serumphysiologique&quot;, ].includes($answer)&gt;&gt; 
 /&lt;&lt;set $Score to $Score+10&gt;&gt; 
 &lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;
 //Correct! Le lait ou le sérum physiologique sont les mieux indiqués.//&lt;&lt;/replace&gt;&gt; 
@@ -3771,7 +3774,7 @@ Que constatez-vous sur la photo ?
 &lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; La 21 est fracturée au niveau de l&#39;émail et de la dentine et la pulpe est probablement exposée&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;three&quot;&gt;&lt;&lt;checkbox &quot;$desc.three&quot; false true&gt;&gt; La dent 11 est fracturée au niveau de l&#39;émail&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Une fracture verticale centrée sur 21 est visible sur la photo&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;five&quot;&gt;&lt;&lt;checkbox &quot;$desc.five&quot; false true&gt;&gt; Une fracture oblique atteignant le cément en mésial de 21 est visible sur la photo&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;five&quot;&gt;&lt;&lt;checkbox &quot;$desc.five&quot; false true&gt;&gt; Une fracture oblique atteignant peut-être le cément en mésial de 21 est visible sur la photo&lt;/span&gt;
 
 Que faîtes-vous comme test(s) ?
 &lt;span class=&quot;checkligne&quot; data-id=&quot;six&quot;&gt;&lt;&lt;checkbox &quot;$desc.six&quot; false true&gt;&gt; Je teste la mobilité de 21 en me concentrant sur la dent accidentée&lt;/span&gt;
@@ -3949,13 +3952,13 @@ Vous commencez à avoir en tête ce qui doit être fait tout de suite et ce qui 
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="107" name="PEC aprem 6" tags="Question-ouverte Media-image-son" position="4650,1100" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $Timer to 90&gt;&gt;
+&lt;&lt;set $Timer to 120&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Illustration du traitement de 21 [2]
 &lt;img src=&quot;./Cas_clinique6/Vignesh_treatment1.jpg&quot; width=&quot;600vw&quot;&gt;
 Remettez les étapes du traitement dans le bon ordre (ex : 1/2/3/4/5/6/7 ou 5/3/4/1/2/6/7)
 \&lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;
-1- J&#39;extraie la dent 21 de manière la plus atraumatique possible et je la conserve dans du sérum physiologique en touchant le moins possible la racine&lt;br&gt;
+1- J&#39;extraie la dent 21 de manière la plus atraumatique possible, je la nettoie au sérum physiologique en touchant le moins possible la racine dans mes futures manipulations&lt;br&gt;
 \2- Je réimplante la dent&lt;br&gt;
 \3- Je donne un rendez-vous de suivi pour la contention et je remets un CMI au responsable légal&lt;br&gt;
 \4- Je désinfecte le site à l&#39;aide d&#39;une compresse et de la bétadine buccale&lt;br&gt;
@@ -4053,14 +4056,14 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
         &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;elseif $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="109" name="PEC aprem 8" tags="Choix-multiple-a-cocher" position="4600,1375" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="109" name="PEC aprem 8" tags="Choix-multiple-a-cocher Media-image-son" position="4600,1375" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;one&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Voici une vue de suivi à un an du patient :
-&lt;img src=&quot;./Cas_clinique3/Vignesh_followup.jpg&quot; width=&quot;500vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique6/Vignesh_followup.jpg&quot; width=&quot;500vw&quot;&gt;
 A quel intervalle de temps revoyez-vous le patient pour déposer la contention ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; 1 semaine&lt;/span&gt;
@@ -4116,8 +4119,8 @@ Voici une photo extra orale de face et la panoramique [5] :
 Quelles sont vos conclusions en observant cette photo et cette radio et en prenant en compte les données cliniques précédentes ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Les dent 51 et 61 sont fracturées avec exposition pulpaire&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; La 11 est fracturée au niveau au niveau de l&#39;émail et de la dentine mais la pulpe n&#39;est exposée&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; La 21 est fracturée au niveau au niveau de l&#39;émail et de la dentine et la pulpe est peut être exposée&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; La 11 est fracturée au niveau de l&#39;émail et de la dentine mais la pulpe n&#39;est exposée&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; La 21 est fracturée au niveau de l&#39;émail et de la dentine et la pulpe est peut être exposée&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;three&quot;&gt;&lt;&lt;checkbox &quot;$desc.three&quot; false true&gt;&gt; La 11 est fracturée au niveau au niveau de l&#39;émail et de la dentine et la pulpe est peut être exposée&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; La mandibule est fracturée au niveau de l&#39;angle goniaque gauche&lt;/span&gt;
 
@@ -4170,7 +4173,7 @@ Que prévoyez-vous de faire ensuite pour cette séance ?
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Je fais une pulpotomie partielle de 21&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; Je fais un coiffage pulpaire direct sur 11 et 21&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;three&quot;&gt;&lt;&lt;checkbox &quot;$desc.three&quot; false true&gt;&gt; Je fais une pulpotomie de 11&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Je mets un IRM de protection&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Je ne mets pas un matériau de coiffage&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;five&quot;&gt;&lt;&lt;checkbox &quot;$desc.five&quot; false true&gt;&gt; Je mets en place une reconstruction directe au composite&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;six&quot;&gt;&lt;&lt;checkbox &quot;$desc.six&quot; false true&gt;&gt; Je mets en place une reconstruction directe au CVI&lt;/span&gt;
 
@@ -4448,7 +4451,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Le patient n&#39;a pas ramené le bout de dent manquant. Il semble coopérant pour les soins. Que prévoyez vous de faire ensuite pour cette séance ?
+Le patient n&#39;a pas ramené les bouts de dent manquants. Il semble coopérant pour les soins. Que prévoyez vous de faire ensuite pour cette séance ?
 
 &#39;&#39;[[Une ordonnance, un IRM pour protéger la dent et je reprogramme pendant la prochaine plage horaire dédiée aux longs soins dans 3 jours|Ordo seule]]&#39;&#39;
 
@@ -4893,7 +4896,7 @@ Votre score final de rapidité est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt
 &lt;&lt;/silently&gt;&gt;
 Votre &#39;&#39;score global&#39;&#39; (Score clinique + Score de rapidité/4) est de &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt;
 
-&lt;&lt;if $Rapidite - $Total$ gt 200&gt;&gt;
+&lt;&lt;if $Rapidite - $Total$ gt 150&gt;&gt;
 &#39;&#39;Vous avez un score de rapidité très élevé mais un score clinique faible.&#39;&#39;
 Vous voulez peut-être trop brûler les étapes. Il ne sert à rien d&#39;aller trop vite si les décisions cliniques ne sont pas bonnes.
 Vous êtes pris en flagrant délit d&#39;excès de vitesse !&#39;&#39;
@@ -4904,14 +4907,14 @@ Vous avez fait de votre mieux, bravo!
 Vous obtenez le &#39;&#39;badge de bronze&#39;&#39;. 
 &lt;img src=&quot;./Images/Badge_bronze.jpg&quot; width=&quot;50vw&quot;&gt;
 Il faut persévérer et vous entraîner encore pour vous perfectionner.
-\&lt;&lt;elseif $Total gt 200&gt;&gt;
-&#39;&#39;Vous avez plus de 200 points.&#39;&#39;
+\&lt;&lt;elseif $Total gt 150&gt;&gt;
+&#39;&#39;Vous avez plus de 150 points.&#39;&#39;
 C&#39;est une très belle performance, bravo $Nom!
 Vous obtenez le &#39;&#39;badge d&#39;or&#39;&#39;. 
 &lt;img src=&quot;./Images/Badge_or.jpg&quot; width=&quot;50vw&quot;&gt;
 N&#39;hésitez pas à recommencer un entraînement pour devenir encore meilleur...et vérifier que ce n&#39;était pas un coup de chance !
-&lt;&lt;elseif $Total &gt;= 50 and $Total&lt;=200 &gt;&gt;
-\&#39;&#39;Vous avez entre 50 et 200 points.&#39;&#39;
+&lt;&lt;elseif $Total &gt;= 50 and $Total&lt;=150 &gt;&gt;
+\&#39;&#39;Vous avez entre 50 et 150 points.&#39;&#39;
 Vous atteignez un bon score, félicitations! Le niveau d&#39;élite n&#39;est pas loin, au bout du chemin.
 Vous obtenez le &#39;&#39;badge argent&#39;&#39;. 
 &lt;img src=&quot;./Images/Badge_argent.jpg&quot; width=&quot;50vw&quot;&gt;
@@ -5219,7 +5222,7 @@ Quelle est votre prescription de Paracétamol ? (sachets ou comprimés de 200mg,
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;one&quot;]&gt;&gt; &lt;!-- LIGNE MISE À JOUR --&gt;
 \&lt;&lt;/silently&gt;&gt;
-L&#39;enfant a les cheveux roux, mesure 110 cm, pèse 21 kg.
+L&#39;enfant a les cheveux bruns, mesure 110 cm, pèse 21 kg.
 Quelle est votre prescription de Paracétamol ? (sachets ou comprimés de 200mg, 300mg, 500mg, 1gr)
 \/*bonnes réponses 1*/
 \&lt;&lt;set $desc = {}&gt;&gt;
@@ -5550,7 +5553,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
     &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="150" name="Vue extra orale Cas 4" tags="Choix-multiple-a-cocher Media-image-son" position="3125,450" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
-&lt;&lt;set $Timer to 40&gt;&gt;
+&lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;two&quot;,&quot;three&quot;,&quot;four&quot;,&quot;five&quot;,&quot;seven&quot;,&quot;eight&quot;,&quot;nine&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -5667,7 +5670,7 @@ Je peux faire une rainure interne dans la face du morceau qui sera collée à la
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 
-Oui ce serait idéal de trouver le bout de dent mquant. Mais où va-t-on pouvoir trouver un bout de dent naturelle pour réaliser une restauration?
+Oui ce serait idéal de trouver le bout de dent manquant. L&#39;enfant n&#39;en a pas ramassé mais avez-vous une idée sur l&#39;endroit où vous pourriez le trouver ?
 (Indiquez votre ou vos mots clés sans accent. Ex : Procedure iatrogene)
 &lt;&lt;set $answer to &#39;&#39;&gt;&gt;
 &lt;&lt;textbox &#39;$answer&#39; &#39;&#39; id=&quot;textbox-answer&quot; autofocus&gt;&gt;
@@ -5744,7 +5747,7 @@ La 21 est asymptomatique.
 Elle a un test de vitalité positif mais retardé.
 
 Vous vous dîtes :
-&#39;&#39;[[Si la pulpe n&#39;est pas exposée je lui fait une restauration directe. C&#39;est un cas intéressant avec 2 angles|Erreur cas3 restau directe]]&#39;&#39;
+&#39;&#39;[[Si la pulpe n&#39;est pas exposée je lui fais une restauration directe. C&#39;est un cas intéressant avec 2 angles|Erreur cas3 restau directe]]&#39;&#39;
 
 &#39;&#39;[[En découpant un moule ion adroitement on peut lui faire une restauration indirecte collée au fauteuil|moule ion]]&#39;&#39;
 
@@ -5914,7 +5917,7 @@ L&#39;enfant et les parents n&#39;ont pas pensé à ramasser le bout de dent.
           &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="162" name="enfant2_morceau trouvé" tags="Media-image-son Question-ouverte" position="2000,975" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
-&lt;&lt;set $Timer to 60&gt;&gt;
+&lt;&lt;set $Timer to 90&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 
@@ -6308,21 +6311,21 @@ C&#39;est donc une mauvaise réponse.
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $Timer to 60&gt;&gt;
+&lt;&lt;set $Timer to 80&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Oui c&#39;est une bonne idée (si bien exécutée, bien entendu).
 La rainure peut créer un réservoir pour le matériau d’assemblage, évitant alors une surépaisseur de joint. En plus d’un rôle rétentif, elle laisse apparaître une plus large plage d’émail sur ses bords qui potentialiseront l’adhésion.
 Voici un exemple de création de rainure [4]:
 &lt;img src=&quot;./Cas_clinique4/Cas4_rainure.jpg&quot; width=&quot;300vw&quot;&gt;
 Quelle sera votre protocole de collage ?
-//Classez les étapes pertinente dans le ordre et excluez les étapes incorrectes ( ex1 : 1/2/3/4/5 ou 8/5/9).//
+//Classez les étapes pertinentes dans le bon ordre et excluez les étapes incorrectes ( ex1 : 1/2/3/4/5 ou 8/5/9).//
 \&lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;
-1- Sur la dent et le fragment :etching à l&#39;acide fluorhidrique, rinçage abondant, séchage doux
+1- Sur la dent et le fragment: etching à l&#39;acide fluorhidrique, rinçage abondant, séchage doux
 2- Application d&#39;un composite d&#39;assemblage sur le fragment
 3- Rinçage abondant sur la dent et le fragment
 4- Sur la dent et le fragment : etching à l&#39;acide orthophosphorique
 5-Application d&#39;adhésif sur le fragment et la dent, séchage, polymérisation 10 sec
-6 -Séchage doux sur la dent et le fragment
+6 -Séchage sans dessécher sur la dent et le fragment
 7- Polissage du joint à la fraise bague rouge.
 8-Mise en place du fragment, photopolymérisation des 2 faces, retrait des excés de matériau d&#39;assemblage à la sonde 6
 9-Mise en place du fragment, retrait des excès de matériau d&#39;assemblage,photopolymérisation des 2 faces
@@ -6505,21 +6508,21 @@ Vous reprogrammez ensuite de voir l&#39;enfant pour le suivi et pour réaliser u
 &lt;&lt;set $Score to $Score+15&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $Timer to 60&gt;&gt;
+&lt;&lt;set $Timer to 80&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Oui c&#39;est une bonne idée (si bien exécutée, bien entendu).
 La rainure peut créer un réservoir pour le matériau d’assemblage, évitant alors une surépaisseur de joint. En plus d’un rôle rétentif, elle laisse apparaître une plus large plage d’émail sur ses bords qui potentialiseront l’adhésion.
 Voici un exemple de création de rainure [4]:
 &lt;img src=&quot;./Cas_clinique4/Cas4_rainure.jpg&quot; width=&quot;300vw&quot;&gt;
 \Quelle sera votre protocole de collage ?
-//Classez les étapes pertinente dans le ordre et excluez les étapes incorrectes ( ex1 : 1/2/3/4/5 ou 8/5/9).//
+//Classez les étapes pertinentes dans le bon ordre et excluez les étapes incorrectes ( ex1 : 1/2/3/4/5 ou 8/5/9).//
 \&lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;
-1- Sur la dent et le fragment :etching à l&#39;acide fluorhidrique, rinçage abondant, séchage doux
+1- Sur la dent et le fragment: etching à l&#39;acide fluorhidrique, rinçage abondant, séchage doux
 2- Application d&#39;un composite d&#39;assemblage sur le fragment
 3- Rinçage abondant sur la dent et le fragment
 4- Sur la dent et le fragment : etching à l&#39;acide orthophosphorique
 5-Application d&#39;adhésif sur le fragment et la dent, séchage, polymérisation 10 sec
-6 -Séchage doux sur la dent et le fragment
+6 -Séchage sans dessécher sur la dent et le fragment
 7- Polissage du joint à la fraise bague rouge.
 8-Mise en place du fragment, photopolymérisation des 2 faces, retrait des excés de matériau d&#39;assemblage à la sonde 6
 9-Mise en place du fragment, retrait des excès de matériau d&#39;assemblage,photopolymérisation des 2 faces
@@ -6744,7 +6747,7 @@ Classez dans l&#39;ordre de la solution la mieux isolante (que vous devez essaye
 &lt;&lt;set $Score to $Score+10&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 &lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;\           
-//Correct! De la meilleure à la pire des solutions : isolation avec la digue, isolation avec la digue simplifiée, aspiration avec cotons salivaires, aspiration seule, digue liguide seule.//
+//Correct! De la meilleure à la pire des solutions : isolation avec la digue, isolation avec la digue simplifiée, aspiration avec cotons salivaires, aspiration seule, digue liquide seule.//
 .//&lt;&lt;/replace&gt;&gt;
 &lt;&lt;else&gt;&gt;
 &lt;&lt;silently&gt;&gt;
@@ -6806,6 +6809,7 @@ Quel examen complémentaire mettez-vous en place ?
         &lt;&lt;set $answer to $answer.trim().toLowerCase().replace(/\s+/g, &#39;&#39;)&gt;&gt;
         &lt;&lt;if [
 	&quot;radio&quot;,
+    &quot;radiographie&quot;,
     &quot;uneradio&quot;,
     &quot;radiodelalevre&quot;,
     &quot;uneradiodelalevre&quot;,
@@ -6922,7 +6926,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
     &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="201" name="Code sauvegarde resultat a la main" tags="" position="2725,2975" size="100,100"> &lt;&lt;script&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="201" name="Code sauvegarde resultat a la main" tags="" position="2700,2975" size="100,100"> &lt;&lt;script&gt;&gt;
 (function () {
 
 /* ----------------------
