@@ -104,7 +104,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<tw-storydata name="Dentrainement_beta" startnode="121" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="0981FC2D-D35B-4648-B502-5E96F427D51E" options="" tags="" zoom="0.3" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
+	<tw-storydata name="Dentrainement_beta" startnode="121" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="0981FC2D-D35B-4648-B502-5E96F427D51E" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
   #story {
     margin-top: 0;
     margin-left: 300;
@@ -958,7 +958,7 @@ Une mère et un enfant se présentent pour un trauma à l&#39;accueil. L&#39;enf
 &lt;&lt;/silently&gt;&gt;
 Très bien &#39;&#39;$Nom&#39;&#39; vous recevez sur votre créneau d&#39;urgence une maman qui habite dans la rue. L&#39;école l&#39;a appelé car son fils de 8 ans a fait une chute dans la cour de l’école. Martine a demandé s&#39;il avait perdu connaissance ou s&#39;il avait vomi juste après et la réponse a été négative. 
 
-&lt;img src=&quot;./images/interrogatoire2.jpg&quot; width=&quot;200vw&quot;&gt;
+&lt;img src=&quot;./Images/interrogatoire2.jpg&quot; width=&quot;200vw&quot;&gt;
 Vous commencez la consultation. 
 Par quoi commencez vous avant toute chose ?
 (Indiquez votre ou vos mots clés sans accent. Ex : Procedure iatrogene)
@@ -1552,14 +1552,14 @@ reimplantation with 2 years review. Contemp Clin Dent 2019;10:397-401, used unde
 
 Vue cabinet dentaire by Dr Shohmelian on Pixabay
 Dentiste assis sur canapé gris by Jothanan Borba on Unsplash
-Interrogatoire médical, on Pixabay</tw-passagedata><tw-passagedata pid="28" name="D_Accueil enfant" tags="Chrono-simple" position="5725,400" size="100,100">&lt;&lt;silently&gt;&gt;
+Interrogatoire médical, on Pixabay</tw-passagedata><tw-passagedata pid="28" name="D_Accueil enfant" tags="Chrono-simple Media-image-son" position="5725,400" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score+5&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 
 Vous accueillez l&#39;enfant. La maman commence à vous expliquer comment l&#39;accident a eu lieu sur la voirie.
-&lt;img src=&quot;./images/mere_explication.jpg&quot; width=&quot;400vw&quot;&gt;
+&lt;img src=&quot;./Images/mere_explication.jpg&quot; width=&quot;400vw&quot;&gt;
 &#39;&#39;[[Vous l&#39;écoutez quelques minutes pour la laisser se calmer et pouvoir procéder à votre consultation ensuite.|D_Ecoute]]&#39;&#39;
 
 &#39;&#39;[[Vous l&#39;interrompez poliment mais fermement pour lui dire qu&#39;il y a des points à vérifier d&#39;urgence et que c&#39;est à vous de conduire la consultation pour cela, dans le bien de l&#39;enfant.|D_Conduite cst]]&#39;&#39;
@@ -1632,7 +1632,7 @@ Comme solution, je propose :
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;four&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-&lt;img src=&quot;./images/interrogatoire2.jpg&quot; width=&quot;200vw&quot;&gt;
+&lt;img src=&quot;./Images/interrogatoire2.jpg&quot; width=&quot;200vw&quot;&gt;
 Vous commencez la consultation.  
 L&#39;enfant n&#39;a pas d&#39;allergie, de pathologie chronique ni de traitement connu. Il n&#39;a pas d&#39;antécédent de chirurgie.  
 Concernant le risque infectieux, que vérifiez-vous ?
@@ -1938,7 +1938,7 @@ Incorrect ! Le lait ou le sérum physiologique sont les mieux indiqués &lt;&lt;
 &lt;&lt;/silently&gt;&gt;
 L&#39;enfant arrive au créneau d&#39;urgences de l&#39;après midi. ll n&#39;y a pas d&#39;antécédents médicaux particuliers.
 Voici une photo extra orale de face de la situation [2]
-&lt;img src=&quot;./Cas_clinique3/Vignesh_extra_oral1.jpg&quot; width=&quot;500vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique6/Vignesh_extra_oral1.jpg&quot; width=&quot;500vw&quot;&gt;
 \Que constatez vous sur la photo ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; La dent 21 est fracturée. La fracture n&#39;intéresse pas la pulpe.&lt;/span&gt;
@@ -1987,7 +1987,7 @@ Que faîtes vous comme test(s) ?
 &lt;&lt;set $bonnesReponses = [&quot;two&quot;,&quot;three&quot;,&quot;four&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Voici le cliché rétro-alvéolaire de la 21 [2]
-&lt;img src=&quot;./Cas_clinique3/Vignesh_retro1.jpg&quot; width=&quot;300vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique6/Vignesh_retro1.jpg&quot; width=&quot;300vw&quot;&gt;
 \Quelles autres informations ce cliché vous apporte-t-il ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; 21 est immature, il va falloir adapter le traitement en fonction&lt;/span&gt;
@@ -2062,7 +2062,7 @@ Quel serait LE meilleur traitement à envisager tout de suite selon vous (l&#39;
 &lt;&lt;set $Timer to 150&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Illustration du traitement de 21 [2]
-&lt;img src=&quot;./Cas_clinique3/Vignesh_treatment1.jpg&quot; width=&quot;600vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique6/Vignesh_treatment1.jpg&quot; width=&quot;600vw&quot;&gt;
 \Remettez les étapes du traitement dans le bon ordre (ex : 1/2/3/4/5/6/7 ou 5/3/4/1/2/6/7)
 \&lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;
 1- Je donne les conseils post-opératoires et un rendez vous de suivi pour la contention et je remets un CMI au responsable légal
@@ -3042,7 +3042,7 @@ Votre score de rapidité final est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt
 La maman est repartie furieuse promettant de ne pas vous louper dans les avis en ligne.
 
 Quelques jours après vous apprenez que c&#39;était la présidente de l&#39;association des parents d&#39;élèves de l&#39;école du village. La réputation du cabinet en a pris un sacré coup.
-&lt;img src=&quot;./images/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
+&lt;img src=&quot;./Images/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
 
 &#39;&#39;[[Je vais consulter mon score final|D_Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="71" name="D_mauvaise pub2" tags="Media-image-son" position="7475,450" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
@@ -3053,7 +3053,7 @@ Votre score de rapidité final est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt
 Vous n&#39;entendez plus parler de ce cas clinique pendant un moment...jusqu&#39;au jour où votre dossier d&#39;extension de cabinet dentaire est réfusé par la mairie. 
 En consultant le dossier vous vous apercevez que le père du patient est le conseiller municipal en charge de l&#39;urbanisme...sans doute a-t-il gardé quelque rancune à votre égard...
 
-&lt;img src=&quot;./images/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
+&lt;img src=&quot;./Images/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
 
 &#39;&#39;[[Je vais consulter mon score final|D_Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="72" name="D_no new patient" tags="Chrono-simple" position="6800,350" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
@@ -5931,15 +5931,15 @@ Ecrivez la séquence de collage dans le bon ordre. Si des étapes ne sont pas pe
 \&lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;
 1 - Etching à l&#39;acide orthophosphorique, séchage doux, adhésif MR2, séchage, photopolymérisation sur la dent et sur le fragment
 2- Retrait de l&#39;exces de composite à la microbrush puis photopolymérisation des 2 faces
-3 - Nettoyage à la chlorhexidine et rinçage au sérum physiologique, on ne sait pas où le morceau a été
-4 - Vérification de l&#39;adaptation marginale, du manque ou non de morceau, de hiatus, et de la reproductibilité du repositionnement
+3 - Nettoyage complet à la chlorhexidine et rinçage au sérum physiologique du fragment et de la dent
+4 - Nettoyage simple du fragment et vérification de l&#39;adaptation marginale, du manque ou non de morceau, de hiatus, et de la reproductibilité du repositionnement
 5 - Je ne fais rien de tout cela. Le temps extra oral de 10h a été trop long
 6 -Vérification de la bonne adéquation de la couleur du morceau avec la dent
 7 - Polissage du joint à la fraise bague rouge
 8- Isolation de la dent
 9 - Application de composite d&#39;assemblage sur le fragment puis mise en place du fragment 
 &lt;/span&gt;
-\/*reponse :  3/4/8/1/9/2/7*/
+\/*reponse :  4/8/3/1/9/2/7*/
 \&lt;&lt;set $answer to &#39;&#39;&gt;&gt;
 \&lt;&lt;textbox &#39;$answer&#39; &#39;&#39; id=&quot;textbox-answer&quot; autofocus&gt;&gt;
 \&lt;div id=&quot;textbox-reply&quot; style=&quot;opacity:0; transition: opacity 0.5s;&quot;&gt;&lt;/div&gt;
@@ -5947,14 +5947,14 @@ Ecrivez la séquence de collage dans le bon ordre. Si des étapes ne sont pas pe
     &lt;&lt;button &#39;Soumettre ma séquence de protocole&#39;&gt;&gt;
         &lt;&lt;set $answer to $answer.trim().toLowerCase().replace(/\s+/g, &#39;&#39;)&gt;&gt;
         &lt;&lt;if [
-	&quot;3/4/8/1/9/2/7&quot;,
-    &quot;3481927&quot;,
+	&quot;4/8/3/1/9/2/7&quot;,
+    &quot;4831927&quot;,
     ].includes($answer)&gt;&gt;
                 &lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score+20&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 &lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;           
-//Correct! On vérifie l&#39;adaptation marginale du fragment, (si ok) on isole la dent, on nettoie, on fait le traitement des surfaces, on ajoute du composite d&#39;assemblage et on repositionne le fragment. On retire les excès puis on photopolymérise. On polit les joints.
+//Correct! On nettoie une 1ere fois le fragment, on vérifie l&#39;adaptation marginale du fragment, (si ok) on isole la dent, on nettoie de façon approfondie, on fait le traitement des surfaces, on ajoute du composite d&#39;assemblage et on repositionne le fragment. On retire les excès puis on photopolymérise. On polit les joints.
 La teinte sera sans doute différente en raison de la déshydratation. Le temps extra oral a été long mais dans ce cas de fracture sans exposition pulpaire, la littérature montre que le pronostic est bon en bas de collage du fragment.//&lt;&lt;/replace&gt;&gt;
             &lt;&lt;else&gt;&gt;
             &lt;&lt;silently&gt;&gt;
@@ -6139,7 +6139,7 @@ Votre score de rapidité final est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt
 La maman est repartie furieuse promettant de ne pas vous louper dans les avis en ligne.
 
 Quelques jours après vous apprenez que c&#39;était la présidente de l&#39;association des parents d&#39;élèves de l&#39;école du village. La réputation du cabinet en a pris un sacré coup.
-&lt;img src=&quot;./images/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
+&lt;img src=&quot;./Images/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
 
 &#39;&#39;[[Je vais consulter mon score final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="173" name="mauvaise pub2" tags="Media-image-son" position="4250,475" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
@@ -6150,7 +6150,7 @@ Votre score de rapidité final est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt
 Vous n&#39;entendez plus parler de ce cas clinique pendant un moment...jusqu&#39;au jour où votre dossier d&#39;extension de cabinet dentaire est réfusé par la mairie. 
 En consultant le dossier vous vous apercevez que le père du patient est le conseiller municipal en charge de l&#39;urbanisme...sans doute a-t-il gardé quelque rancune à votre égard...
 
-&lt;img src=&quot;./images/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
+&lt;img src=&quot;./Images/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
 
 &#39;&#39;[[Je vais consulter mon score final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="174" name="morceau no ok cas2 et cas4" tags="Chrono-simple" position="2225,1100" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
@@ -6264,7 +6264,7 @@ Vous avez quelques minutes de libre devant vous pour analyser la situation. Il p
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="180" name="no soins aprem" tags="" position="4275,1125" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="180" name="no soins aprem" tags="Media-image-son" position="4275,1125" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -6276,7 +6276,7 @@ Mr Tartrax avait un rendez-vous important en suivant donc il a préféré partir
 
 D&#39;après Martine il était un peu &quot;ennervé&quot;, encore un qui ne vas pas vous louper sur les réseaux sociaux...
 
-&lt;img src=&quot;./images/Dentrainement3/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
+&lt;img src=&quot;./Images/Dentrainement3/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
 
 &#39;&#39;[[Je passe à la suite|decalage secondaire]]&#39;&#39;</tw-passagedata><tw-passagedata pid="181" name="noVerif violence" tags="Chrono-simple Fonction-random" position="775,800" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
