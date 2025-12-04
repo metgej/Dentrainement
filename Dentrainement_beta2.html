@@ -942,9 +942,9 @@ Vous dîtes à Martine :
 &lt;&lt;set $Score to 0&gt;&gt;
 &lt;&lt;set $Rapidite to 0&gt;&gt;
 &lt;&lt;set $Scenario to &quot;Scénario6_débutant&quot;&gt;&gt;
-&lt;&lt;set $Timer to 70&gt;&gt;
+&lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-&#39;&#39;$Nom&#39;&#39;, il est 10h et le téléphone sonne pendant votre collage d&#39;onlay.
+\&#39;&#39;$Nom&#39;&#39;, il est 10h et le téléphone sonne pendant votre collage d&#39;onlay.
 Martine vous indique qu&#39;un certain Mr Durand, un patient du cabinet, est au téléphone au sujet de son fils de 12 ans qui a cassé sa dent de devant en haut.
 
 &quot;Une partie de la dent bouge&quot; d&#39;après le père et &quot;l&#39;intérieur de la dent saigne&quot;. Le bout de dent a été ramassé et a été mis dans un verre d&#39;eau en attendant. Il ne sait pas quoi faire. Vous avez un créneau de 30 min pour les urgences à 15h.
@@ -2208,7 +2208,7 @@ Quel serait LE meilleur traitement à envisager tout de suite selon vous (l&#39;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Extraction de 21 (puis à court terme plan de traitement avec bridge cantilever) car l&#39;atteinte est radiculaire et la dent non conservable&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;three&quot;&gt;&lt;&lt;checkbox &quot;$desc.three&quot; false true&gt;&gt; Extraction atraumatique de 21 pour de bonnes conditions d&#39;aseptie, traitement endodontique extra oral, collage des fragments, et réimplantation de 21&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Pulpotomie de 21 et reconstruction directe&lt;/span&gt;
-\&lt;div id=&quot;checkbox-feedback&quot; style=&quot;opacity:0; transition: opacity 0.5s; margin-top:1em;&quot;&gt;&lt;/div&gt;
+\&lt;div id=&quot;textbox-feedback&quot; style=&quot;opacity:0; transition: opacity 0.5s; margin-top:1em;&quot;&gt;&lt;/div&gt;
 \&lt;div id=&quot;checkbox-submit&quot;&gt;
 \&lt;&lt;button &#39;Soumettre ma ou mes réponses&#39;&gt;&gt;
 &lt;&lt;set $tempScore = 0&gt;&gt;
@@ -2219,10 +2219,10 @@ Quel serait LE meilleur traitement à envisager tout de suite selon vous (l&#39;
 &lt;&lt;set $Score += $tempScore&gt;&gt;
 &lt;&lt;run Array.from(document.querySelectorAll(&#39;input[type=&quot;checkbox&quot;]&#39;)).forEach(cb =&gt; cb.disabled = true)&gt;&gt;
 &lt;&lt;run $bonnesReponses.forEach(id =&gt; {const l=document.querySelector(&#39;[data-id=&quot;&#39;+id+&#39;&quot;]&#39;); if(l) l.classList.add(&quot;good-answer&quot;);})&gt;&gt;
-&lt;&lt;replace &quot;#checkbox-feedback&quot;&gt;&gt;Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt;
+&lt;&lt;replace &quot;#textbox-feedback&quot;&gt;&gt;Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt;
 //La dent est mature donc le traitement endodontique immédiat ou différé est recommandé. Etant donné les positions apicales des fractures, un traitement endodontique et une reconstruction avec collage en intra-oral dans des bonnes conditions d&#39;aseptie semblent très compliqués. Il peut être envisagé de ne pas conserver la dent en raison de l&#39;atteinte radiculaire mais la littérature scientifique montre que le pronostic peut être bon si on suit les protocoles de conservation recommandées par l&#39;IADT.//&lt;&lt;/replace&gt;&gt;
 &lt;&lt;run $(&#39;#textbox-feedback&#39;).css(&#39;opacity&#39;,1)&gt;&gt;
-&lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;&#39;&#39;[[Je passe à la suite|D_PEC aprem 6]]&#39;&#39;&lt;&lt;/replace&gt;&gt;
+&lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;\&#39;&#39;[[Je passe à la suite|D_PEC aprem 6]]&#39;&#39;&lt;&lt;/replace&gt;&gt;
 &lt;&lt;set $button = 1&gt;&gt;
 &lt;&lt;/button&gt;&gt;\
 &lt;/div&gt;
@@ -2293,7 +2293,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 50&gt;&gt;
-&lt;&lt;set $bonnesReponses = [&quot;one&quot;,&quot;two&quot;]&gt;&gt;
+&lt;&lt;set $bonnesReponses = [&quot;one&quot;,&quot;two&quot;,&quot;four&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Quelle médication mettez vous en place ?
 \&lt;&lt;set $desc = {}&gt;&gt;
@@ -2309,7 +2309,7 @@ Quelle médication mettez vous en place ?
 &lt;&lt;if $desc.zero&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;if $desc.one&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;if $desc.two&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
-&lt;&lt;if $desc.three&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
+&lt;&lt;if $desc.three&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;if $desc.four&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;set $Score += $tempScore&gt;&gt;
 &lt;&lt;run Array.from(document.querySelectorAll(&#39;input[type=&quot;checkbox&quot;]&#39;)).forEach(cb =&gt; cb.disabled = true)&gt;&gt;
