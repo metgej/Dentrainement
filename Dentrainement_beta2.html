@@ -626,10 +626,12 @@ Par quoi commencez vous avant toute chose (le trauma crânien a été exclu pré
       $(&#39;#textbox-answer&#39;).attr(&#39;readonly&#39;,&#39;true&#39;);
     })();
   &lt;&lt;/script&gt;&gt;
-  &lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;//On commence par réaliser l&#39;interrogatoire médical ou l&#39;anamnèse du patient.//
+  &lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;
+Votre score clinique pour ce passage est : &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt;
+//On commence par réaliser l&#39;interrogatoire médical ou l&#39;anamnèse du patient.//
 Ici, l&#39;enfant est un garçon de 8 ans, asthmatique (traitement type Ventoline), opéré de l&#39;apendicite 2 ans plus tôt, sans allergie mais intolérant au gluten.
 La vaccination est à jour. Le traumatisme dentaire remonte à 2 heures. Vous ne détectez pas de signe de violence familiale.
-Votre score clinique pour ce passage est : &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt;&lt;br&gt;
+
 &#39;&#39;[[La suite|Vue extra orale Cas 4]]&#39;&#39;&lt;&lt;/replace&gt;&gt;
 &lt;&lt;set $button to 1&gt;&gt;
 &lt;&lt;/button&gt;&gt;\
@@ -759,12 +761,10 @@ Dans notre cas clinique, vous vous apercevez qu&#39;ils sont bien asymptomatique
 &#39;&#39;[[Je passe à la suite|Conduite cst3]]&#39;&#39;</tw-passagedata><tw-passagedata pid="6" name="C&#39;est normal" tags="Media-image-son" position="3075,1725" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score+10&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
-
 Oui, le fragment s&#39;est très probablement déshydraté et il s&#39;est éclairci. Une réhydratation sur plusieurs heures/jours va changer à nouveau sa teinte.
 
 Pour votre information, voici la situation à 1 an de votre patient[4]:
-&lt;img src=&quot;./Cas_clinique4/cas4_suivi_1an.jpg&quot; width=&quot;300vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique4/cas4_suivi_1an.jpg&quot; width=&quot;400vw&quot;&gt;
 Le joint de collage est à peine discernable et la réhydratation du fragment offre un résultat esthétique plus que satisfaisant 
 
 Le patient est libéré avec une prise de rendez-vous pour le suivi.
@@ -846,10 +846,10 @@ setTimeout(function() {
 Martine arrive enfin pour décrocher... 
 \&lt;&lt;/timed&gt;&gt;
 &lt;&lt;timed 11s&gt;&gt;
-C&#39;est une maman qui habite dans la rue. L&#39;école l&#39;a appelé car son fils de 8 ans a fait une chute dans la cour de l’école. Martine demande s&#39;il a perdu connaissance ou s&#39;il a vomi juste après et la réponse est négative. La maman indique a Martine que son cousin est dentiste à Nice et qu&#39;il a mentionné une dévitalisation à faire rapidement chez le dentiste le plus proche. Elle est paniquée et veux venir tout de suite.
-&lt;&lt;set $Timer to 25&gt;&gt;
-Vous demandez à votre assitante dentaire de dire à la maman :
-&#39;&#39;[[De passer tout de suite pour que vous puissiez analyser la situation et qu&#39;il sera alors décidé de la conduite à tenir. Des soins ne seront peut-être pas fait au 1er rendez-vous|Accueil cas 4]]&#39;&#39;
+C&#39;est une maman qui habite dans la rue. L&#39;école l&#39;a appelé car son fils de 8 ans a fait une chute dans la cour de l’école. Martine demande s&#39;il a perdu connaissance ou s&#39;il a vomi juste après et la réponse est négative. La maman indique a Martine que son cousin est dentiste à Nice et qu&#39;il a mentionné une dévitalisation à faire rapidement chez le dentiste le plus proche. Elle est paniquée et veut venir tout de suite.
+&lt;&lt;set $Timer to 40&gt;&gt;
+Vous demandez à votre assistante dentaire de dire à la maman :
+&#39;&#39;[[De passer tout de suite pour que vous puissiez analyser la situation et qu&#39;il sera alors décidé de la conduite à tenir. Des soins ne seront peut-être pas faits au 1er rendez-vous|Accueil cas 4]]&#39;&#39;
 &#39;&#39;[[Que vous ne pouvez pas recevoir son fils pour une dévitalisation en urgence|Refus cas4 et bascule cas 3]]&#39;&#39;
 
 &lt;&lt;silently&gt;&gt;
@@ -866,7 +866,7 @@ Vous demandez à votre assitante dentaire de dire à la maman :
 &lt;&lt;set $Score to 0&gt;&gt;
 &lt;&lt;set $Rapidite to 0&gt;&gt;
 &lt;&lt;set $Scenario to &quot;Scénario5_avancé&quot;&gt;&gt;
-&lt;&lt;set $Timer to 30&gt;&gt;
+&lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Très bien &#39;&#39;$Nom&#39;&#39;, il est 11h et vous avez eu une matinée déjà bien chargée. Vous allez vous faire couler un café dans la salle de repos avant d&#39;enchaîner sur le prochain patient dans 20 minutes.
 \&lt;&lt;timed 7s&gt;&gt;
@@ -919,15 +919,8 @@ Martine vous indique qu&#39;un certain Mr Durand, un patient du cabinet, est au 
 &lt;&lt;set $Scenario to &quot;Scénario5_débutant&quot;&gt;&gt;
 &lt;&lt;set $Timer to 45&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-\
-&lt;span id=&quot;countdownA&quot;&gt;&lt;/span&gt;
-\&lt;span id=&quot;countdown&quot;&gt;&lt;span style=&quot;color:green&quot;&gt;&lt;/span&gt;&lt;/span&gt;
-\&lt;span id=&quot;countdownB&quot;&gt;&lt;/span&gt;
-
 Très bien &#39;&#39;$Nom&#39;&#39;, il est 11h et vous avez eu une matinée déjà bien chargée. Vous allez vous faire couler un café dans la salle de repos avant d&#39;enchaîner sur le prochain patient dans 30 minutes.
 \&lt;&lt;timed 7s&gt;&gt;
-\&lt;&lt;replace &quot;#countdownA&quot;&gt;&gt;Vous disposez de &lt;&lt;/replace&gt;&gt;
-\&lt;&lt;replace &quot;#countdownB&quot;&gt;&gt;pour marquer des points de rapidité !&lt;&lt;/replace&gt;&gt;
 Martine entre précipitamment et vous explique qu&#39;une mère désemparée, qui n&#39;est pas patiente du cabinet, s&#39;est présentée à l&#39;accueil avec son fils de 8 ans qui s&#39;est cassé une dent de devant il y a trois jours. Elle n&#39;a pas sa carte vitale avec elle.
 
 Vous dîtes à Martine :
@@ -939,7 +932,6 @@ Vous dîtes à Martine :
     &lt;&lt;repeat 1s&gt;&gt;
         &lt;&lt;set $Timer to $Timer-1&gt;&gt;
         &lt;&lt;if $Timer gt 0&gt;&gt;
-
         &lt;&lt;else&gt;&gt;
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
@@ -952,7 +944,6 @@ Vous dîtes à Martine :
 &lt;&lt;set $Scenario to &quot;Scénario6_débutant&quot;&gt;&gt;
 &lt;&lt;set $Timer to 70&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
 &#39;&#39;$Nom&#39;&#39;, il est 10h et le téléphone sonne pendant votre collage d&#39;onlay.
 Martine vous indique qu&#39;un certain Mr Durand, un patient du cabinet, est au téléphone au sujet de son fils de 12 ans qui a cassé sa dent de devant en haut.
 
@@ -1112,7 +1103,7 @@ La pulpe n&#39;est pas exposée. Comme solution je propose :
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous faîtes une rétro alvéolaire du bloc antérieur maxillaire
-&lt;img src=&quot;./Cas_clinique4/Cas4_retro_init_invert.jpg&quot; width=&quot;300vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique4/Cas4_retro_init_invert.jpg&quot; width=&quot;250vw&quot;&gt;
 \Qu&#39;est ce qui vous saute au yeux ?
 (Indiquez votre ou vos mots clés. Ex : Procedure iatrogene)
 &lt;&lt;set $answer to &#39;&#39;&gt;&gt;
@@ -1190,12 +1181,12 @@ Votre score clinique pour ce passage est : &lt;span style=&quot;color:purple;&qu
           &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="19" name="Cas4 retro ok" tags="Choix-multiple-a-cocher Media-image-son" position="3125,700" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
-&lt;&lt;set $Timer to 50&gt;&gt;
+&lt;&lt;set $Timer to 70&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;two&quot;,&quot;four&quot;,&quot;five&quot;,&quot;six&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Voici la rétro alvéolaire après inversion
-&lt;img src=&quot;./Cas_clinique4/Cas4_retro_init.jpg&quot; width=&quot;300vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique4/Cas4_retro_init.jpg&quot; width=&quot;250vw&quot;&gt;
 Quelles sont vos conclusions en observant cette radio et en prenant en compte les données cliniques précédentes ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; La dent 11 est fracturée au niveau de l&#39;émail et de la dentine sans atteinte de la pulpe&lt;/span&gt;
@@ -1581,7 +1572,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 Les tests de vitalité sont recommandés pour le suivi même s&#39;ils peuvent être peu concluants juste après un trauma.
 Les dents adjacentes 12 et 21 peuvent avoir aussi subi le choc. 
 Dans notre cas clinique, la mobilité horizontale de 12 et 21 est physiologique.
-La dent 11 qui a changé de position avec l&#39;impact, a une mobilité horizontale de 1 mm. Elle apparaît plus longue que les autres, l&#39;extrusion est donc une hypothèse probable.
+La dent 11 qui a changé de position avec l&#39;impact, a une mobilité verticale de 1 mm. Elle apparaît plus longue que les autres, l&#39;extrusion est donc une hypothèse probable.
 L&#39;accident a eu lieu il y a moins de 2h, des signes locaux ou régionaux d&#39;infection sont peu probables.
 Ce n&#39;est pas le moment de vérifier les retards éventuels d&#39;éruption car la dent impactée est une dent permanente.//
 &lt;&lt;/replace&gt;&gt;
@@ -1727,8 +1718,13 @@ Vous accueillez l&#39;enfant. La maman commence à vous expliquer comment l&#39;
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="29" name="D_Cas4 retro" tags="Choix-multiple-a-cocher Media-image-son" position="6275,525" size="100,100">&lt;&lt;silently&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;&lt;&lt;set $Timer to 50&gt;&gt;&lt;&lt;set $button to 0&gt;&gt;&lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;four&quot;,&quot;five&quot;,&quot;six&quot;]&gt;&gt;&lt;&lt;/silently&gt;&gt;
-Voici la rétro alvéolaire : &lt;img src=&quot;./Cas clinique 4/Cas4_retro_init.jpg&quot; width=&quot;300vw&quot;&gt; Quelles sont vos conclusions en observant cette radio et en prenant en compte les données cliniques précédentes ?
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="29" name="D_Cas4 retro" tags="Choix-multiple-a-cocher Media-image-son" position="6275,525" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
+&lt;&lt;set $Timer to 50&gt;&gt;
+&lt;&lt;set $button to 0&gt;&gt;
+&lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;four&quot;,&quot;five&quot;,&quot;six&quot;]&gt;&gt;
+&lt;&lt;/silently&gt;&gt;
+Voici la rétro alvéolaire : &lt;img src=&quot;./Cas_clinique 4/Cas4_retro_init.jpg&quot; width=&quot;300vw&quot;&gt; Quelles sont vos conclusions en observant cette radio et en prenant en compte les données cliniques précédentes ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; La dent 11 est fracturée au niveau de l&#39;émail et de la dentine sans atteinte de la pulpe&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Une fracture alvéolaire entre 11 et 21 due au trauma est mise en évidence&lt;/span&gt;
@@ -1755,7 +1751,12 @@ Voici la rétro alvéolaire : &lt;img src=&quot;./Cas clinique 4/Cas4_retro_init
 &lt;&lt;set $button = 1&gt;&gt;
 &lt;&lt;/button&gt;&gt;\
 &lt;/div&gt;
-&lt;&lt;silently&gt;&gt;&lt;&lt;repeat 1s&gt;&gt;&lt;&lt;set $Timer to $Timer-1&gt;&gt;&lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;elseif $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;&lt;&lt;/repeat&gt;&gt;&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="30" name="D_Choix recons cas4" tags="Choix-multiple-a-cocher" position="6275,650" size="100,100">&lt;&lt;silently&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;&lt;&lt;set $Timer to 50&gt;&gt;&lt;&lt;set $button to 0&gt;&gt;&lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;three&quot;]&gt;&gt;&lt;&lt;/silently&gt;&gt;
+&lt;&lt;silently&gt;&gt;&lt;&lt;repeat 1s&gt;&gt;&lt;&lt;set $Timer to $Timer-1&gt;&gt;&lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;elseif $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;&lt;&lt;/repeat&gt;&gt;&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="30" name="D_Choix recons cas4" tags="Choix-multiple-a-cocher" position="6275,650" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
+&lt;&lt;set $Timer to 50&gt;&gt;
+&lt;&lt;set $button to 0&gt;&gt;
+&lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;three&quot;]&gt;&gt;
+&lt;&lt;/silently&gt;&gt;
 Comme solution, je propose :
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Une reconstruction directe au composite, c&#39;est le plus conservateur&lt;/span&gt;
@@ -1967,7 +1968,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 //L&#39;enfant a certainement mal à la lèvre vu son aspect, mais l&#39;information ne sera pas spécialement pertinente. Les tests de vitalité sont recommandés pour le suivi même s&#39;ils peuvent être peu concluants juste après un trauma.  
 Les dents adjacentes 12 et 21 peuvent avoir aussi subi le choc.  
 Dans notre cas clinique, la mobilité horizontale de 12 est physiologique.  
-La dent 11 qui a changé de position avec l&#39;impact a une mobilité horizontale de 1 mm. Elle apparaît plus longue que les autres, l&#39;extrusion est donc une hypothèse probable.  
+La dent 11 qui a changé de position avec l&#39;impact a une mobilité verticale de 1 mm. Elle apparaît plus longue que les autres, l&#39;extrusion est donc une hypothèse probable.  
 Ce n&#39;est pas le moment de vérifier les retards éventuels d&#39;éruption car la dent impactée est une dent permanente.//
 &lt;&lt;/replace&gt;&gt;
 
@@ -2032,7 +2033,6 @@ Si vous ne pensez pas pouvoir bien faire immédiatement sous la pression, revoye
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $tempScore = 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
 Avant que Martine ne raccroche que pouvez-vous conseiller au père concernant la conservation du fragment ? Mieux vaudrait mettre le fragment dans _ _ _ _? 
 &lt;&lt;set $answer to &#39;&#39;&gt;&gt;
 &lt;&lt;textbox &#39;$answer&#39; &#39;&#39; id=&#39;textbox-answer&#39; autofocus&gt;&gt;
@@ -2093,7 +2093,7 @@ Avant que Martine ne raccroche que pouvez-vous conseiller au père concernant la
   &lt;&lt;/script&gt;&gt;
   &lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;&lt;i&gt;Le lait ou le sérum physiologique sont les mieux indiqués. A défaut, si le temps n&#39;est pas trop long pour éviter de l&#39;avaler, dans la bouche du patient (après avoir rincé un minimum). Cette dernière solution, quoique surprenante fait partie des recommandations.&lt;/i&gt;
 Votre score clinique pour ce passage est : &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt;
-&#39;&#39;[[Je passe à la suite|PEC aprem 2]]&#39;&#39;
+&#39;&#39;[[Je passe à la suite|D_PEC aprem 3]]&#39;&#39;
 &lt;&lt;/replace&gt;&gt;
 &lt;&lt;set $button to 1&gt;&gt;
 &lt;&lt;/button&gt;&gt;
@@ -2370,7 +2370,7 @@ Voici une vue de suivi à un an du patient :
 &lt;&lt;set $Timer = 70&gt;&gt;
 &lt;&lt;set $bonnesReponses = [&quot;two&quot;,&quot;three&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-L&#39;enfant n&#39;a pas d&#39;antécédents médicaux particulier. La vaccination est à jour. Il a reçu un coup pendant un match de foot il y a 3 jours. Il n&#39;y a pas eu de signes de trauma crânien. L&#39;enfant déclare ne pas avoir mal spontanément. Voici une photo extra-orale de face et la panoramique [1] &lt;img src=&quot;./Cas_clinique3/isabelle_gomes_3b.jpg&quot; width=&quot;700vw&quot;&gt; Quelles sont vos conclusions en observant cette photo et cette radio, en tenant compte des données cliniques précédentes ?
+L&#39;enfant n&#39;a pas d&#39;antécédents médicaux particulier. La vaccination est à jour. Il a reçu un coup pendant un match de foot il y a 3 jours. Il n&#39;y a pas eu de signes de trauma crânien. L&#39;enfant déclare ne pas avoir mal spontanément. Voici une photo extra-orale de face et la panoramique [1] &lt;img src=&quot;./Cas_clinique5/isabelle_gomes_3b.jpg&quot; width=&quot;700vw&quot;&gt; Quelles sont vos conclusions en observant cette photo et cette radio, en tenant compte des données cliniques précédentes ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; La 11 est fracturée au niveau de l’émail et de la dentine mais la pulpe n’est pas exposée&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; La 21 est fracturée au niveau de l’émail et de la dentine et la pulpe est peut-être exposée&lt;/span&gt;
@@ -2556,7 +2556,7 @@ Que pourriez vous faire lors de ces rdvs ? \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;&lt;set $Timer = 80&gt;&gt;
 &lt;&lt;set $bonnesReponses = [&quot;zero&quot;,&quot;one&quot;,&quot;three&quot;,&quot;four&quot;,&quot;five&quot;,&quot;six&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Vous décidez de l&#39;examiner d&#39;un peu plus près et de faire le ou les tests s&#39;avérant pertinents. Voici 2 vues intra orales [1] : &lt;img src=&quot;./Cas_clinique3/isabelle_gomes_1b.jpg&quot; width=&quot;700vw&quot;&gt;\Quels sont vos observations, vos tests, vos questionnements ?
+Vous décidez de l&#39;examiner d&#39;un peu plus près et de faire le ou les tests s&#39;avérant pertinents. Voici 2 vues intra orales [1] : &lt;img src=&quot;./Cas_clinique5/isabelle_gomes_1b.jpg&quot; width=&quot;700vw&quot;&gt;\Quels sont vos observations, vos tests, vos questionnements ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Je fais un test de percussion sur 12 11 21 22&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Je fais un test de vitalité pulpaire sur 12 11 21 22&lt;/span&gt;
@@ -2575,7 +2575,6 @@ Vous décidez de l&#39;examiner d&#39;un peu plus près et de faire le ou les te
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 60&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
 Le patient n&#39;a pas ramené le bout de dent manquant. Il semble coopérant pour les soins. Que prévoyez vous de faire ensuite pour cette séance ?
 
 &#39;&#39;[[Une ordonnance, un IRM pour protéger la dent et je reprogramme pendant la prochaine plage horaire dédiée aux longs soins dans 3 jours|D_Ordo seule]]&#39;&#39;
@@ -2632,8 +2631,6 @@ Quel est matériau allez-vous de préférence mettre en place en fond de cavité
 &lt;&lt;set $Score to $Score+5&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-\
-
 La litérature scientifique n&#39;indique pas que décaler de quelques heures le traitement recommandé pour une pulpe déjà exposée change significativement le pronostic. 
 Si la procédure peut être faite dans de bonnes et meilleures conditions l&#39;après-midi et que vous vous sentez plus à l&#39;aise dans ce cas, il est acceptable de procéder ainsi.
 
@@ -2660,116 +2657,88 @@ Il vous est précisé que l&#39;enfant a 9 ans. Il a vraiment mal et se plaint b
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="57" name="D_Resultat" tags="Media-image-son" position="6950,1875" size="100,100">&#39;&#39;RESULTAT FINAL&#39;&#39;
-Vous avez obtenu la note de clinique de &lt;span id=&quot;score&quot;&gt;&lt;span style=&quot;color: purple;&quot;&gt;&#39;&#39;$Score&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
-Votre score final de rapidité est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt;span style=&quot;color: green;&quot;&gt;&#39;&#39;$Rapidite&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="57" name="D_Resultat" tags="Media-image-son" position="6950,1875" size="100,100">&lt;div class=&quot;pulseTitle&quot;&gt;RÉSULTAT FINAL&lt;/div&gt;
+Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span style=&quot;color: purple;&quot;&gt;&#39;&#39;$Score&#39;&#39;&lt;/span&gt;&lt;/span&gt; et un score de rapidité de &lt;span id=&quot;Score_rapid&quot;&gt;&lt;span style=&quot;color: green;&quot;&gt;&#39;&#39;$Rapidite&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
 &lt;&lt;silently&gt;&gt;
-&lt;&lt;set $Total to Math.round($Score + $Rapidite/4)&gt;&gt;
+&lt;&lt;set $Total = Math.round($Score + $Rapidite/4)&gt;&gt;
+/* Définition des seuils selon le scénario */
+&lt;&lt;switch $Scenario&gt;&gt;
+  &lt;&lt;case &quot;Scénario1_débutant&quot;&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 100&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 200&gt;&gt;
+   &lt;&lt;case &quot;Scénario4_débutant&quot;&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 80&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 145&gt;&gt;
+         &lt;&lt;case &quot;Scénario5_débutant&quot;&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 90&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 180&gt;&gt;
+         &lt;&lt;case &quot;Scénario6_débutant&quot;&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 90&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 160&gt;&gt;
+  &lt;&lt;default&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 50&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 150&gt;&gt;
+&lt;&lt;/switch&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Votre &#39;&#39;score global&#39;&#39; (Score clinique + Score de rapidité/4) est de &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt;
-
-&lt;&lt;if $Rapidite - $Total$ gt 100&gt;&gt;
+&#39;&#39;Votre score global est de&#39;&#39; &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt;(Score clinique + Score de rapidité/4) 
+\&lt;&lt;if ($Rapidite - $Total) &gt; 200&gt;&gt;
 &#39;&#39;Vous avez un score de rapidité très élevé mais un score clinique faible.&#39;&#39;
-Vous voulez peut-être trop brûler les étapes. Il ne sert à rien d&#39;aller trop vite si les décisions cliniques ne sont pas bonnes.
-Vous êtes pris en flagrant délit d&#39;excès de vitesse !&#39;&#39;
-&lt;img src=&quot;./Images/exces_vitesse.jpg&quot; width=&quot;50vw&quot;&gt;. 
-\&lt;&lt;elseif $Total lt 50&gt;&gt;
-&#39;&#39;Vous avez moins de 50 points.&#39;&#39;
-Vous avez fait de votre mieux, bravo!
-Vous obtenez le &#39;&#39;badge de bronze&#39;&#39;. 
-&lt;img src=&quot;./Images/Badge_bronze.jpg&quot; width=&quot;50vw&quot;&gt;
-Il faut persévérer et vous entraîner encore pour vous perfectionner.
-\&lt;&lt;elseif $Total gt 100&gt;&gt;
-&#39;&#39;Vous avez plus de 100 points.&#39;&#39;
-C&#39;est une très belle performance, bravo $Nom!
-Vous obtenez le &#39;&#39;badge d&#39;or&#39;&#39;. 
-&lt;img src=&quot;./Images/Badge_or.jpg&quot; width=&quot;50vw&quot;&gt;
-N&#39;hésitez pas à recommencer un entraînement pour devenir encore meilleur...et vérifier que ce n&#39;était pas un coup de chance !
-&lt;&lt;elseif $Total &gt;= 50 and $Total&lt;=100 &gt;&gt;
-\&#39;&#39;Vous avez entre 50 et 100 points.&#39;&#39;
-Vous atteignez un bon score, félicitations! Le niveau d&#39;élite n&#39;est pas loin, au bout du chemin.
-Vous obtenez le &#39;&#39;badge argent&#39;&#39;. 
-&lt;img src=&quot;./Images/Badge_argent.jpg&quot; width=&quot;50vw&quot;&gt;
-Vous gagnez le droit à un nouvel entraînement pour obtenir le badge d&#39;or !
+  Vous voulez peut-être trop brûler les étapes. Il ne sert à rien d&#39;aller trop vite si les décisions cliniques ne sont pas bonnes.
+  Vous êtes pris en flagrant délit d&#39;excès de vitesse ! 
+  &lt;br&gt;&lt;img src=&quot;./Images/exces_vitesse.jpg&quot; width=&quot;200vw&quot;&gt; 
 &lt;&lt;else&gt;&gt;
-Votre score n&#39;est pas défini. Vous êtes inclassable. 
-Appelez l&#39;assistance pour avoir du support.
-&lt;&lt;/if&gt;&gt;
+  &lt;&lt;if $Total &lt; $SeuilBronze&gt;&gt;
+    &#39;&#39;Votre score global est en dessous de $SeuilBronze points.&#39;&#39;
+    Vous avez fait de votre mieux, bravo !
+    Vous obtenez le &#39;&#39;badge de bronze&#39;&#39; 
+    &lt;div style=&quot;text-align:center;&quot;&gt;
+  &lt;span style=&quot;
+    font-size:5em;
+    text-shadow: 0 0 10px rgba(160, 100, 255, 0.8);
+    display:inline-block;
+  &quot;&gt;
+    🥉
+  &lt;/span&gt;
+&lt;/div&gt;
+\Recommencez un ou plusieurs entraînement pour progresser et viser plus haut !
+  &lt;&lt;elseif $Total &gt;= $SeuilBronze and $Total &lt; $SeuilArgent&gt;&gt;
+    &#39;&#39;Votre score global est entre $SeuilBronze points et $SeuilArgent points.&#39;&#39;
+    Très bien — vous avez franchi un premier palier !
+    Vous obtenez le &#39;&#39;badge d&#39;argent&#39;&#39;
+    &lt;div style=&quot;text-align:center;&quot;&gt;
+  &lt;span style=&quot;
+    font-size:5em;
+    text-shadow: 0 0 10px rgba(160, 100, 255, 0.8);
+    display:inline-block;
+  &quot;&gt;
+    🥈
+  &lt;/span&gt;
+&lt;/div&gt;
+\Recommencez un ou plusieurs entraînement pour viser l&#39;excellence !
+&lt;&lt;else&gt;&gt;  /* $Total &gt;= $SeuilArgent */
+    &#39;&#39;Votre score global est au dessus de $SeuilArgent points.&#39;&#39;
+    Bravo $Nom — excellente performance !
+    Vous obtenez le &#39;&#39;badge d&#39;or&#39;&#39;.
+    Vous rentrez au panthéon 🏦des chirurgiens dentistes ! Avant vous, Brånemark, Black, Magne, Tanaka, De Sanctis et seulement quelques autres ont réussi cet exploit!
+        \&lt;div style=&quot;text-align:center;&quot;&gt;
+  \&lt;span style=&quot;
+    font-size:5em;
+    text-shadow: 0 0 10px rgba(160, 100, 255, 0.8);
+    display:inline-block;
+  &quot;&gt;
+   \🥇
+  &lt;/span&gt;
+&lt;/div&gt;
+\Recommencez un ou plusieurs entraînement pour vérifier que ce n&#39;est pas un coup de chance 😉ou bien testez-vous sur d&#39;autres cas cliniques ou encore passez en niveau avancé !
+\&lt;&lt;/if&gt;&gt;
+\&lt;&lt;/if&gt;&gt;
 
-&#39;&#39;[[Je recommence un entraînement|Passage 1]]&#39;&#39;
+&#39;&#39;Objectifs de votre votre cas clinique :&#39;&#39;
+🥉 Bronze &lt; $SeuilBronze points
+🥈 Argent ≥ $SeuilBronze et &lt; $SeuilArgent points
+🥇 Or ≥ $SeuilArgent points
 
-&lt;&lt;script&gt;&gt;
-(function () {
-
-    /* ----------------------
-       1. Récupération / ajout
-       ---------------------- */
-
-    let parties = JSON.parse(localStorage.getItem(&quot;partiesTwine&quot;) || &quot;[]&quot;);
-
-    const nom = State.getVar(&quot;$Nom&quot;) ?? &quot;&quot;;
-    const niveau = (State.getVar(&quot;$niveau&quot;)?.type) ?? &quot;&quot;;
-    const promo = (State.getVar(&quot;$promo&quot;)?.type) ?? &quot;&quot;;
-    const score = Number(State.getVar(&quot;$Score&quot;) ?? 0);
-    const rapidite = Number(State.getVar(&quot;$Rapidite&quot;) ?? 0);
-    const total = Number(State.getVar(&quot;$Total&quot;) ?? 0);
-    
-    const entree = {
-        nom: String(nom),
-        niveau: String(niveau),
-        promo: String(promo),
-        score: score,
-        rapidite: rapidite,
-        total: total,
-        timestamp: new Date().toISOString()
-    };
-
-    parties.push(entree);
-
-    localStorage.setItem(&quot;partiesTwine&quot;, JSON.stringify(parties));
-
-    /* ----------------------
-       2. Construction du CSV
-       ---------------------- */
-
-    function csvEscape(field) {
-        const s = String(field).replace(/&quot;/g, &#39;&quot;&quot;&#39;);
-        return `&quot;${s}&quot;`;
-    }
-
-    let csv = &quot;Nom;Niveau;Promo;Score;Rapidite;Total;Timestamp\n&quot;;
-    parties.forEach(p =&gt; {
-        csv += 
-  			`${csvEscape(p.nom)};` +
-            `${csvEscape(p.niveau)};` +
-            `${csvEscape(p.promo)};` +
-            `${csvEscape(p.score)};` +
-            `${csvEscape(p.rapidite)};` +
-            `${csvEscape(p.total)};` +
-            `${csvEscape(p.timestamp)}\n`;
-    });
-
-    /* ----------------------
-       3. Nom dynamique du fichier
-       ---------------------- */
-
-    const nomFichierHTML = location.pathname.split(&#39;/&#39;).pop().replace(&#39;.html&#39;,&#39;&#39;);
-    const nomFichierCSV = `score_${nomFichierHTML}.csv`;
-
-    const blob = new Blob([csv], { type: &quot;text/csv;charset=utf-8;&quot; });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement(&quot;a&quot;);
-    a.href = url;
-    a.download = nomFichierCSV;
-
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-})();
-&lt;&lt;/script&gt;&gt;</tw-passagedata><tw-passagedata pid="58" name="D_Surbooké" tags="" position="5575,400" size="100,100">&lt;&lt;silently&gt;&gt;
+[[Je recommence un entraînement|Passage 1]]</tw-passagedata><tw-passagedata pid="58" name="D_Surbooké" tags="" position="5575,400" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score-5&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Refuser une urgence traumatique chez l&#39;enfant sans évaluer la situation n&#39;est pas professionel.
@@ -2789,7 +2758,6 @@ Refuser une urgence traumatique chez l&#39;enfant sans évaluer la situation n&#
 &lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Une parapicale en distal de 11&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;five&quot;&gt;&lt;&lt;checkbox &quot;$desc.five&quot; false true&gt;&gt; Une intraligamentaire sur 11&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;six&quot;&gt;&lt;&lt;checkbox &quot;$desc.six&quot; false true&gt;&gt; Une intrapulpaire sur 11&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;seven&quot;&gt;&lt;&lt;checkbox &quot;$desc.seven&quot; false true&gt;&gt; Je choisis une carpule avec un vasoconstricteur car je veux diminuer le saignement pour mieux voir où je repositionne la dent&lt;/span&gt;
 \&lt;div id=&quot;checkbox-feedback&quot; style=&quot;opacity:0; transition: opacity 0.5s; margin-top: 1em;&quot;&gt;&lt;/div&gt;
 \&lt;div id=&quot;checkbox-submit&quot;&gt;\
  \   &lt;&lt;button &#39;Soumettre ma ou mes réponses&#39;&gt;&gt;
@@ -2888,11 +2856,11 @@ Que prescrivez-vous sur votre ordonnance ?
 \/*bonnes réponses 3,6*/
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Codoliprane (Codéine/Paracétamol)&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Bain de bouche (Eludril Perio®)&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Bain de bouche standard&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; Azythromycine (allergie aux pénicillines)&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;three&quot;&gt;&lt;&lt;checkbox &quot;$desc.three&quot; false true&gt;&gt; Paracétamol&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Prednisolone&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;six&quot;&gt;&lt;&lt;checkbox &quot;$desc.six&quot; false true&gt;&gt; Bain de bouche sans alcool (Paroex®)&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;six&quot;&gt;&lt;&lt;checkbox &quot;$desc.six&quot; false true&gt;&gt; Bain de bouche sans alcool&lt;/span&gt;
 
 \&lt;div id=&quot;checkbox-feedback&quot; style=&quot;opacity:0; transition: opacity 0.5s; margin-top: 1em;&quot;&gt;&lt;/div&gt;
 \&lt;div id=&quot;checkbox-submit&quot;&gt;\
@@ -2940,7 +2908,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $bonnesReponses to [&quot;four&quot;]&gt;&gt;
+&lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;four&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 L&#39;enfant a les cheveux bruns, mesure 135 cm, pèse 32 kg.
 Quelle est votre prescription de Paracétamol ? (sachets ou comprimés de 200mg, 300mg, 500mg, 1gr)
@@ -2957,7 +2925,7 @@ Quelle est votre prescription de Paracétamol ? (sachets ou comprimés de 200mg,
 \&lt;div id=&quot;checkbox-submit&quot;&gt;\
  \   &lt;&lt;button &#39;Soumettre ma ou mes réponses&#39;&gt;&gt;
         &lt;&lt;set $tempScore = 0&gt;&gt;
-        &lt;&lt;if $desc.zero&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.zero&gt;&gt;&lt;&lt;set $tempScore += 10&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.one&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.two&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.three&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
@@ -2973,8 +2941,10 @@ Quelle est votre prescription de Paracétamol ? (sachets ou comprimés de 200mg,
 
         &lt;&lt;replace &quot;#checkbox-feedback&quot;&gt;&gt;
 Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt;
-//La posologie recommandée est de 15mg/kg toutes les 6h.  
-32 kg x 15 mg = 480 mg, donc 1 sachet de 500 mg toutes les 6h.//
+//La posologie recommandée est de 15mg/kg/6h ou 10mg/kg/4h (Source HAS)
+32 x 15 = 480 mg soit 1 sachet de 500 mg toutes les 6h 
+ou 
+32 x 10 = 320 mg toutes les 4h//.
 &lt;&lt;/replace&gt;&gt;
 
         &lt;&lt;run $(&#39;#checkbox-feedback&#39;).css(&#39;opacity&#39;,1)&gt;&gt;
@@ -2996,7 +2966,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $bonnesReponses to [&quot;one&quot;]&gt;&gt;
+&lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;four&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 L&#39;enfant a les cheveux roux, mesure 110 cm, pèse 21 kg.
 Quelle est votre prescription de Paracétamol ? (sachets ou comprimés de 200mg, 300mg, 500mg, 1gr)
@@ -3006,7 +2976,7 @@ Quelle est votre prescription de Paracétamol ? (sachets ou comprimés de 200mg,
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; 1 sachet de 300 mg toutes les 6h&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; 2 sachets de 300 mg toutes les 6h&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;three&quot;&gt;&lt;&lt;checkbox &quot;$desc.three&quot; false true&gt;&gt; 1 comprimé de 1gr toutes les 12h&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; 1 sachet de 500 mg toutes les 6h&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; 1 sachet de 200 mg toutes les 4h&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;five&quot;&gt;&lt;&lt;checkbox &quot;$desc.five&quot; false true&gt;&gt; 2 sachets de 200 mg toutes les 6h&lt;/span&gt;
 
 \&lt;div id=&quot;checkbox-feedback&quot; style=&quot;opacity:0; transition: opacity 0.5s; margin-top: 1em;&quot;&gt;&lt;/div&gt;
@@ -3017,7 +2987,7 @@ Quelle est votre prescription de Paracétamol ? (sachets ou comprimés de 200mg,
         &lt;&lt;if $desc.one&gt;&gt;&lt;&lt;set $tempScore += 10&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.two&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.three&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.four&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.four&gt;&gt;&lt;&lt;set $tempScore += 10&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.five&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;set $Score += $tempScore&gt;&gt;
 
@@ -3029,8 +2999,10 @@ Quelle est votre prescription de Paracétamol ? (sachets ou comprimés de 200mg,
 
         &lt;&lt;replace &quot;#checkbox-feedback&quot;&gt;&gt;
 Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt;
-//La posologie recommandée est de 15mg/kg toutes les 6h.  
-21 kg x 15 mg = 315 mg, donc 1 sachet de 300 mg toutes les 6h.//
+//La posologie recommandée est de 15mg/kg/6h ou 10mg/kg/4h (Source HAS)
+21 x 15 = 315 mg soit 1 sachet de 300 mg toutes les 6h
+ou
+21 x 10 = 210 mg soit 1 sachet de 200 mg toutes les 4h.//
 &lt;&lt;/replace&gt;&gt;
 
         &lt;&lt;run $(&#39;#checkbox-feedback&#39;).css(&#39;opacity&#39;,1)&gt;&gt;
@@ -3108,7 +3080,6 @@ Je remets également un CMI et prévois de retirer la contention à 2 semaines s
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
 Vous ne pouvez pas vous débiner à la première occasion venue.
 Vos patients comptent sur vous.
 
@@ -3123,7 +3094,6 @@ Martine est d&#39;accord avec nous. Elle vous précise qu&#39;avec son praticien
  &lt;&lt;repeat 1s&gt;&gt;
         &lt;&lt;set $Timer to $Timer-1&gt;&gt;
         &lt;&lt;if $Timer gt 0&gt;&gt;
-
         &lt;&lt;else&gt;&gt;
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
@@ -3136,8 +3106,13 @@ Martine est d&#39;accord avec nous. Elle vous précise qu&#39;avec son praticien
 
 Le dépistage de la violence enfantile est un des points à vérifier lors d&#39;un trauma chez l&#39;enfant. L&#39;adulte accompagnant peut parler d&#39;une chute, d&#39;un accident, mais l&#39;enfant peut avoir subi des coups.
 
-&#39;&#39;[[Vous vérifiez si des marques de coups visibles sont présentes et vous faîtes reformuler à l&#39;enfant ce qui s&#39;est passé pour sa dent de façon simple.|D_echymoses ok]]&#39;&#39;</tw-passagedata><tw-passagedata pid="67" name="D_Vue extra orale Cas 4" tags="Choix-multiple-a-cocher Media-image-son" position="6275,400" size="100,100">&lt;&lt;silently&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;&lt;&lt;set $button to 0&gt;&gt;&lt;&lt;set $Timer to 50&gt;&gt;&lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;two&quot;,&quot;five&quot;,&quot;eight&quot;,&quot;nine&quot;]&gt;&gt;&lt;&lt;/silently&gt;&gt;
-Vous commencez à l&#39;examiner. La palpation ne révèle pas de problème particulier. Voici une vue intra orale [4] : &lt;img src=&quot;./Cas_clinique4/Cas4_vue_init_extra.jpg&quot; width=&quot;300vw&quot;&gt; Cocher les affirmations justes :
+&#39;&#39;[[Vous vérifiez si des marques de coups visibles sont présentes et vous faîtes reformuler à l&#39;enfant ce qui s&#39;est passé pour sa dent de façon simple.|D_echymoses ok]]&#39;&#39;</tw-passagedata><tw-passagedata pid="67" name="D_Vue extra orale Cas 4" tags="Choix-multiple-a-cocher Media-image-son" position="6275,400" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
+&lt;&lt;set $button to 0&gt;&gt;
+&lt;&lt;set $Timer to 50&gt;&gt;
+&lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;two&quot;,&quot;five&quot;,&quot;eight&quot;,&quot;nine&quot;]&gt;&gt;
+&lt;&lt;/silently&gt;&gt;
+Vous commencez à l&#39;examiner. La palpation ne révèle pas de problème particulier. Voici une vue intra orale [4] : &lt;img src=&quot;./Cas_clinique4/Cas4_vue_init_extra.jpg&quot; width=&quot;400vw&quot;&gt; Cocher les affirmations justes :
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; La dent 11 est fracturée au niveau de l&#39;émail et de la dentine&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; La dent 11 est fracturée au niveau de l&#39;émail&lt;/span&gt;
@@ -3170,15 +3145,14 @@ Vous commencez à l&#39;examiner. La palpation ne révèle pas de problème part
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
 Le morceau est disponible et s&#39;adapte parfaitement bien et il n&#39;y a pas de hiatus.
 Vous décidez de remettre le morceau sur la dent de façon pérenne et en attendant vous immergez le morceau dans du sérum physiologique.
 
 Je peux faire une rainure interne dans la face du morceau qui sera collée à la dent.
 
-&#39;&#39;[[Vraie bonne idée|D_oui rainure]]&#39;&#39; ?
+&#39;&#39;[[Vraie bonne idée?|D_oui rainure]]&#39;&#39;
 
-&#39;&#39;[[Fausse bonne idée|D_non rainure]]&#39;&#39;? 
+&#39;&#39;[[Fausse bonne idée?|D_non rainure]]&#39;&#39; 
 
 &lt;&lt;silently&gt;&gt;
  &lt;&lt;repeat 1s&gt;&gt;
@@ -3202,8 +3176,6 @@ Il n&#39;a pas d&#39;autres traces de chocs ou de coups ailleurs.
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Votre score clinique final est de &lt;span id=&quot;score&quot;&gt;&lt;span style=&quot;color: red;&quot;&gt;&#39;&#39;$Score&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
-Votre score de rapidité final est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt;span style=&quot;color: green;&quot;&gt;&#39;&#39;$Rapidite&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
 La maman est repartie furieuse promettant de ne pas vous louper dans les avis en ligne.
 
 Quelques jours après vous apprenez que c&#39;était la présidente de l&#39;association des parents d&#39;élèves de l&#39;école du village. La réputation du cabinet en a pris un sacré coup.
@@ -3213,8 +3185,6 @@ Quelques jours après vous apprenez que c&#39;était la présidente de l&#39;ass
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Votre score clinique final est de &lt;span id=&quot;score&quot;&gt;&lt;span style=&quot;color: red;&quot;&gt;&#39;&#39;$Score&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
-Votre score de rapidité final est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt;span style=&quot;color: green;&quot;&gt;&#39;&#39;$Rapidite&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
 Vous n&#39;entendez plus parler de ce cas clinique pendant un moment...jusqu&#39;au jour où votre dossier d&#39;extension de cabinet dentaire est réfusé par la mairie. 
 En consultant le dossier vous vous apercevez que le père du patient est le conseiller municipal en charge de l&#39;urbanisme...sans doute a-t-il gardé quelque rancune à votre égard...
 
@@ -3223,7 +3193,7 @@ En consultant le dossier vous vous apercevez que le père du patient est le cons
 &#39;&#39;[[Je vais consulter mon score final|D_Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="72" name="D_no new patient" tags="Chrono-simple" position="6800,350" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
-&lt;&lt;set $Timer to 60&gt;&gt;
+&lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous avez quelques minutes de libre devant vous pour analyser la situation. Il peut s&#39;agir d&#39;une vraie urgence dentaire. Martine l&#39;assistante marmonne qu&#39;avec le dentiste précédent, l&#39;enfant aurait été accueilli.
 
@@ -3234,7 +3204,6 @@ Vous avez quelques minutes de libre devant vous pour analyser la situation. Il p
  &lt;&lt;repeat 1s&gt;&gt;
         &lt;&lt;set $Timer to $Timer-1&gt;&gt;
         &lt;&lt;if $Timer gt 0&gt;&gt;
-
         &lt;&lt;else&gt;&gt;
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
@@ -3384,7 +3353,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $tempScore = 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-&lt;img src=&quot;./Cas_clinique4/digue_wedget.jpg&quot; width=&quot;300vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique4/Cas4_digue_wedget.jpg&quot; width=&quot;300vw&quot;&gt;
 L&#39;isolation idéale peut être délicate dans certains contextes, surtout en pédiatrie.
 
 Classez dans l&#39;ordre de la solution la mieux isolante à la moins isolante ( ex1 : 1/2/3/4/5 ou ex2 : 25341)//
@@ -3432,13 +3401,12 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="77" name="D_question teinte" tags="Choix-multiple-a-cocher Media-image-son" position="6325,1175" size="100,100">&lt;&lt;silently&gt;&gt;
-&lt;&lt;set $Score to $Score+15&gt;&gt;
-&lt;&lt;set $Rapidite to $Rapidite+$Timer
-set $button to 0&gt;&gt;
-&lt;&lt;set $Timer to 60
-set $bonnesReponses to [&quot;three&quot;]&gt;&gt;
+&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
+&lt;&lt;set $button to 0&gt;&gt;
+&lt;&lt;set $Timer to 60&gt;&gt;
+&lt;&lt;set $bonnesReponses to [&quot;three&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Après collage voici le résultat : &lt;img src=&quot;./Cas_clinique4/deshydratation.jpg&quot; width=&quot;300vw&quot;&gt; Vous observez une nette différence de teinte entre votre fragment et le reste de la dent. Quelle peut en être la raison ?
+Après collage voici le résultat : &lt;img src=&quot;./Cas_clinique4/Cas4_deshydratation.jpg&quot; width=&quot;300vw&quot;&gt; Vous observez une nette différence de teinte entre votre fragment et le reste de la dent. Quelle peut en être la raison ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Une coloration alimentaire de la dent depuis le trauma&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; Un éclaircissement du fragment dû à l&#39;etching réalisé juste avant&lt;/span&gt;
@@ -3850,7 +3818,7 @@ Je peux faire une rainure interne dans la face du morceau qui sera collée à la
 
 &#39;&#39;[[Vraie bonne idée|oui rainure]]&#39;&#39; ?
 
-&#39;&#39;[[Vrai mauvaise idée|non rainure]]&#39;&#39; ?
+&#39;&#39;[[Vraie mauvaise idée|non rainure]]&#39;&#39; ?
 
 &lt;&lt;silently&gt;&gt;
  &lt;&lt;repeat 1s&gt;&gt;
@@ -3883,7 +3851,7 @@ Je peux faire une rainure interne dans la face du morceau qui sera collée à la
 
 &#39;&#39;[[Vraie bonne idée|oui rainure]]&#39;&#39; ?
 
-&#39;&#39;[[Vrai mauvaise idée|non rainure]]&#39;&#39; ?
+&#39;&#39;[[Vraie mauvaise idée|non rainure]]&#39;&#39; ?
 
 &lt;&lt;silently&gt;&gt;
  &lt;&lt;repeat 1s&gt;&gt;
@@ -3900,7 +3868,7 @@ Non il n&#39;y a pas eu d&#39;étape oubliée pouvant expliquer la différence d
 Le fragment s&#39;est déshydraté et il s&#39;est éclairci. Une réhydratation sur plusieurs heures/jours va changer à nouveau sa teinte
 
 Pour votre information, voici la situation à 1 an de votre patient[4]:
-&lt;img src=&quot;./Cas_clinique4/hydratation.jpg&quot; width=&quot;300vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique4/hydratation.jpg&quot; width=&quot;400vw&quot;&gt;
 Le joint de collage est à peine discernable et la réhydratation du fragment offre un résultat esthétique plus que satisfaisant 
 
 Le patient est libéré avec une prise de rendez-vous pour le suivi.
@@ -4010,7 +3978,7 @@ Le patient d&#39;après, Mr Tartrax vient pour son contôle annuel et un détart
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="102" name="PEC aprem 3" tags="Choix-multiple-a-cocher Media-image-son" position="4275,650" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $Timer to 40&gt;&gt;
+&lt;&lt;set $Timer to 60&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;five&quot;,&quot;seven&quot;,&quot;eight&quot;,&quot;ten&quot;,&quot;eleven&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 
@@ -4082,11 +4050,11 @@ Je vérifie également si le fragment mésial de 21 est mobile. Il faut toujours
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="103" name="PEC aprem 4" tags="Media-image-son Choix-multiple-a-cocher" position="4375,800" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $Timer to 40&gt;&gt;
+&lt;&lt;set $Timer to 60&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;three&quot;,&quot;four&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Voici le cliché rétro-alvéolaire de la 21 [2]
-&lt;img src=&quot;./Cas_clinique6/Vignesh_retro1.jpg&quot; width=&quot;300vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique6/Vignesh_retro1.jpg&quot; width=&quot;250vw&quot;&gt;
 Quelles autres informations ce cliché vous apporte-t-il ?  
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Deux images apicales au niveau de 11 et 21 signent une infection de ces 2 dents.&lt;/span&gt;
@@ -4203,7 +4171,7 @@ Vous commencez à avoir en tête ce qui doit être fait tout de suite et ce qui 
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="106" name="PEC aprem 6" tags="Question-ouverte Media-image-son" position="4650,1100" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $Timer to 120&gt;&gt;
+&lt;&lt;set $Timer to 140&gt;&gt;
 &lt;&lt;set $tempScore = 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Illustration du traitement de 21 [2]
@@ -4424,7 +4392,7 @@ Que prévoyez-vous de faire ensuite pour cette séance ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Je fais une pulpectomie sur 11 qui est la plus atteinte&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Je fais une pulpotomie partielle de 21&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; Je fais un coiffage pulpaire direct sur 11 et 21&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; Je fais un coiffage pulpaire indirect sur 11 et 21&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;three&quot;&gt;&lt;&lt;checkbox &quot;$desc.three&quot; false true&gt;&gt; Je fais une pulpotomie de 11&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Je ne mets pas un matériau de coiffage&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;five&quot;&gt;&lt;&lt;checkbox &quot;$desc.five&quot; false true&gt;&gt; Je mets en place une reconstruction directe au composite&lt;/span&gt;
@@ -4506,9 +4474,9 @@ Illustration du traitement de 21 [5]
 \&lt;&lt;set $Score += $tempScore&gt;&gt;
 &lt;&lt;run $(&#39;#textbox-answer&#39;).attr(&#39;readonly&#39;, &#39;true&#39;).css(&#39;transition&#39;, &#39;background-color 0.5s&#39;).css(&#39;background-color&#39;,&#39;#eee&#39;);&gt;&gt;
 &lt;&lt;run $(&#39;#textbox-reply&#39;).css(&#39;opacity&#39;,1);&gt;&gt;
- &lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;//Pour cette procédure on anesthésie, on isole, on fait une exérèse de la pulpe puis on cherche l&#39;hémostase. On met en place le matériau de coiffage et après sa prise on protège avec le CVI.//
- Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt;
- &#39;&#39;[[Je passe à la suite|PEC immediate 6]]&#39;&#39;\&lt;&lt;/replace&gt;&gt;
+ &lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt;
+//Pour cette procédure on anesthésie, on isole, on fait une exérèse de la pulpe puis on cherche l&#39;hémostase. On met en place le matériau de coiffage et après sa prise on protège avec le CVI.//
+&#39;[[Je passe à la suite|PEC immediate 6]]&#39;&#39;\&lt;&lt;/replace&gt;&gt;
    &lt;&lt;set $button to 1&gt;&gt;
         &lt;&lt;/button&gt;&gt;\
 &lt;/div&gt;
@@ -4929,11 +4897,11 @@ Et en bonus la rétro alvéolaire de la 21
 &lt;img src=&quot;./Cas_clinique3/retro_dent_levre.jpg&quot; width=&quot;300vw&quot;&gt;
 
 Que fait-on ensuite ?
-&#39;&#39;[[J&#39;extraie le morceau de dent qui gêne le patient dans la séance. Et je recolle le morceau|extract_morceau1]]&#39;&#39;
+&#39;&#39;[[J&#39;extraie dans la séance le morceau de dent qui gêne le patient. Et je recolle le morceau|extract_morceau1]]&#39;&#39;
 
-&#39;&#39;[[J&#39;extraie le morceau de dent qui gêne le patient dans la séance. Je ne recolle pas le morceau car passées 48h, la recommendation est de ne pas recoller le morceau.|extract_morceau2]]&#39;&#39;
+&#39;&#39;[[J&#39;extraie dans la séance le morceau de dent qui gêne le patient. Je ne recolle pas le morceau car passées 48h, la recommendation est de ne pas recoller le morceau.|extract_morceau2]]&#39;&#39;
 
-&#39;&#39;[[Je fais programmer l&#39;extraction du morceau avec moi si je me sens, ou avec un confrère expérimenté en chirurgie des tissus mous, et je prévois la restauration juste en suivant|extract_morceau_prog]]&#39;&#39;
+&#39;&#39;[[Je fais programmer l&#39;extraction du morceau avec moi si je me sens, ou avec un confrère expérimenté en chirurgie des tissus mous, et je prévois la restauration en suivant|extract_morceau_prog]]&#39;&#39;
 
 &lt;&lt;silently&gt;&gt;
  &lt;&lt;repeat 1s&gt;&gt;
@@ -4958,7 +4926,6 @@ Vous revoyez donc l&#39;enfant l&#39;après-midi dans l&#39;intention de faire l
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;two&quot;,&quot;four&quot;,&quot;six&quot;,&quot;seven&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
 Qu&#39;est ce qui peut faire partie du protocole pour recoller le morceau ?
 Pour le positionnement et la fin de la procédure :
 \&lt;&lt;set $desc = {}&gt;&gt;
@@ -5037,7 +5004,6 @@ Il vous est précisé que l&#39;enfant a 9 ans. Il a vraiment mal et se plaint b
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;three&quot;]&gt;&gt; &lt;!-- LIGNE MISE À JOUR --&gt;
 &lt;&lt;/silently&gt;&gt;
-
 Si la dent avait été fracturée au niveau radiculaire comme sur la photo ci-dessous, faudrait-il changer quelque chose sur le timing de dépose de la contention ?
 &lt;img src=&quot;./Cas_clinique1/retro_fracture.jpg&quot; width=&quot;300vw&quot;&gt;
 \&lt;&lt;set $desc = {}&gt;&gt;
@@ -5177,8 +5143,8 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
     &lt;&lt;set $SeuilBronze = 60&gt;&gt;
     &lt;&lt;set $SeuilArgent = 110&gt;&gt;
   &lt;&lt;case &quot;Scénario3_avancé&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 60&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 140&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 70&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 150&gt;&gt;
      &lt;&lt;case &quot;Scénario4_avancé&quot;&gt;&gt;
     &lt;&lt;set $SeuilBronze = 60&gt;&gt;
     &lt;&lt;set $SeuilArgent = 140&gt;&gt;
@@ -5186,8 +5152,8 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
     &lt;&lt;set $SeuilBronze = 60&gt;&gt;
     &lt;&lt;set $SeuilArgent = 140&gt;&gt;
          &lt;&lt;case &quot;Scénario6_avancé&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 60&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 140&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 90&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 160&gt;&gt;
   &lt;&lt;default&gt;&gt;
     &lt;&lt;set $SeuilBronze = 50&gt;&gt;
     &lt;&lt;set $SeuilArgent = 150&gt;&gt;
@@ -5230,8 +5196,9 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
 \Recommencez un ou plusieurs entraînement pour viser l&#39;excellence !
 &lt;&lt;else&gt;&gt;  /* $Total &gt;= $SeuilArgent */
     &#39;&#39;Votre score global est au dessus de $SeuilArgent points.&#39;&#39;
-    Bravo $Nom — excellente performance ! Vous rentrez au panthéon 🏦des chirurgiens dentistes ! Avant vous, Brånemark, Black, Magne, Tanaka et seulement quelques autres ont réussi cet exploit.
-    Vous obtenez le &#39;&#39;badge d&#39;or&#39;&#39;. 
+    Bravo $Nom — excellente performance !
+    Vous obtenez le &#39;&#39;badge d&#39;or&#39;&#39;.
+    Vous rentrez au panthéon 🏦des chirurgiens dentistes ! Avant vous, Brånemark, Black, Magne, Tanaka, De Sanctis et seulement quelques autres ont réussi cet exploit!
         \&lt;div style=&quot;text-align:center;&quot;&gt;
   \&lt;span style=&quot;
     font-size:5em;
@@ -5241,7 +5208,7 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
    \🥇
   &lt;/span&gt;
 &lt;/div&gt;
-\Recommencez un ou plusieurs entraînement pour vérifier que ce n&#39;est pas un coup de chance 😉ou bien testez-vous sur d&#39;autres de cas cliniques!
+\Recommencez un ou plusieurs entraînement pour vérifier que ce n&#39;est pas un coup de chance 😉ou bien testez-vous sur d&#39;autres cas cliniques!
 \&lt;&lt;/if&gt;&gt;
 \&lt;&lt;/if&gt;&gt;
 
@@ -5740,10 +5707,10 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 Nous avons atteint la fin de ce cas. 
 Pour votre information voici des photos de suivi de ce cas clinique [1] :
 4 semaines
-&lt;img src=&quot;./Cas_clinique1/exo_buc2.jpg&quot; width=&quot;400vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique1/exo_buc2.jpg&quot; width=&quot;300vw&quot;&gt;
 
 \A 1 an 
-&lt;img src=&quot;./Cas_clinique1/exo_buc3.jpg&quot; width=&quot;400vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique1/exo_buc3.jpg&quot; width=&quot;300vw&quot;&gt;
 
 &#39;&#39;[[Je vais consulter mon résultat final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="146" name="URG CH Andre" tags="Chrono-simple" position="4250,350" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
@@ -5857,7 +5824,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 &lt;&lt;/silently&gt;&gt;
 Vous commencez à l&#39;examiner. La palpation ne révèle pas de problème particulier.
 Voici une vue intra orale [4] :
-&lt;img src=&quot;./Cas_clinique4/Cas4_vue_init_extra.jpg&quot; width=&quot;300vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique4/Cas4_vue_init_extra.jpg&quot; width=&quot;500vw&quot;&gt;
 Cocher les affirmations justes : 
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; La dent 11 est fracturée au niveau de l&#39;émail et de la dentine&lt;/span&gt;
@@ -5951,7 +5918,7 @@ Je peux faire une rainure interne dans la face du morceau qui sera collée à la
 
 &#39;&#39;[[Vraie bonne idée?|oui rainure]]&#39;&#39;
 
-&#39;&#39;[[Vrai mauvaise idée?|non rainure]]&#39;&#39;
+&#39;&#39;[[Vraie mauvaise idée?|non rainure]]&#39;&#39;
 
 &lt;&lt;silently&gt;&gt;
  &lt;&lt;repeat 1s&gt;&gt;
@@ -6072,7 +6039,7 @@ La 21 est asymptomatique.
 Elle a un test de vitalité positif mais retardé.
 
 Vous vous dîtes :
-&#39;&#39;[[Si la pulpe n&#39;est pas exposée je lui fais une restauration directe. C&#39;est un cas intéressant avec 2 angles|Erreur cas3 restau directe]]&#39;&#39;
+&#39;&#39;[[Si la pulpe n&#39;est pas exposée, je lui fais une restauration directe. C&#39;est un cas intéressant🤑 avec 2 angles|Erreur cas3 restau directe]]&#39;&#39;
 
 &#39;&#39;[[En découpant un moule ion adroitement on peut lui faire une restauration indirecte collée au fauteuil|moule ion]]&#39;&#39;
 
@@ -6473,8 +6440,6 @@ Désolé, mais c&#39;est à vous de gérer la situation d&#39;une façon ou d&#3
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Votre score clinique final est de &lt;span id=&quot;score&quot;&gt;&lt;span style=&quot;color: red;&quot;&gt;&#39;&#39;$Score&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
-Votre score de rapidité final est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt;span style=&quot;color: green;&quot;&gt;&#39;&#39;$Rapidite&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
 La maman est repartie furieuse promettant de ne pas vous louper dans les avis en ligne.
 
 Quelques jours après vous apprenez que c&#39;était la présidente de l&#39;association des parents d&#39;élèves de l&#39;école du village. La réputation du cabinet en a pris un sacré coup.
@@ -6484,8 +6449,6 @@ Quelques jours après vous apprenez que c&#39;était la présidente de l&#39;ass
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Votre score clinique final est de &lt;span id=&quot;score&quot;&gt;&lt;span style=&quot;color: red;&quot;&gt;&#39;&#39;$Score&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
-Votre score de rapidité final est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt;span style=&quot;color: green;&quot;&gt;&#39;&#39;$Rapidite&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
 Vous n&#39;entendez plus parler de ce cas clinique pendant un moment...jusqu&#39;au jour où votre dossier d&#39;extension de cabinet dentaire est réfusé par la mairie. 
 En consultant le dossier vous vous apercevez que le père du patient est le conseiller municipal en charge de l&#39;urbanisme...sans doute a-t-il gardé quelque rancune à votre égard...
 
@@ -6740,7 +6703,6 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
 Oui c&#39;est normal, la dent à tester est la 21, pas la 11. Nous nous sommes trompés, désolé.
 L&#39;ajustement du morceau sur la 21 est très satisfaisant.
 Qu&#39;est ce qui peut faire partie du protocole pour recoller le morceau ?
@@ -6954,7 +6916,6 @@ Attention ceci est normal. Le morceau ne s&#39;adapte pas à la 11 car c&#39;est
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
 Voici le résultat final sur ce cas clinique [3] :
 &lt;img src=&quot;./Cas_clinique3/levre_dent_final.jpg&quot; width=&quot;300vw&quot;&gt;
 
@@ -7023,7 +6984,6 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;four&quot;,&quot;five&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
 Qu&#39;est ce qui peut faire partie du protocole pour recoller le morceau ?
 Sur le fragment à recoller : 
 \&lt;&lt;set $desc = {}&gt;&gt;
@@ -7075,7 +7035,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="194" name="question isolation" tags="Question-ouverte Media-image-son" position="3150,1475" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $Timer to 40&gt;&gt;
+&lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $tempScore = 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 &lt;img src=&quot;./Cas_clinique4/Cas4_digue_wedget.jpg&quot; width=&quot;400vw&quot;&gt;
@@ -7128,10 +7088,9 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Après collage voici le résultat :
-&lt;img src=&quot;./Cas_clinique4/Cas4_deshydratation.jpg&quot; width=&quot;300vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique4/Cas4_deshydratation.jpg&quot; width=&quot;400vw&quot;&gt;
 Vous observez une nette différence de teinte entre votre fragment et le reste de la dent.
 [[C&#39;est normal]] 
-
 [[Oups ! j&#39;ai oublié une étape]]
 
 &lt;&lt;silently&gt;&gt;
