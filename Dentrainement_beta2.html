@@ -5165,8 +5165,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="130" name="Resultat avance" tags="Media-image-son" position="2575,2975" size="100,100">&lt;div class=&quot;pulseTitle&quot;&gt;RÉSULTAT FINAL&lt;/div&gt;
-Vous avez obtenu un score clinique final de &lt;span id=&quot;score&quot;&gt;&lt;span style=&quot;color: purple;&quot;&gt;&#39;&#39;$Score&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
-Votre score final de rapidité est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt;span style=&quot;color: green;&quot;&gt;&#39;&#39;$Rapidite&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
+Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span style=&quot;color: purple;&quot;&gt;&#39;&#39;$Score&#39;&#39;&lt;/span&gt;&lt;/span&gt; et un score de rapidité de &lt;span id=&quot;Score_rapid&quot;&gt;&lt;span style=&quot;color: green;&quot;&gt;&#39;&#39;$Rapidite&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
 &lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Total = Math.round($Score + $Rapidite/4)&gt;&gt;
 /* Définition des seuils selon le scénario */
@@ -5175,8 +5174,8 @@ Votre score final de rapidité est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt
     &lt;&lt;set $SeuilBronze = 100&gt;&gt;
     &lt;&lt;set $SeuilArgent = 200&gt;&gt;
   &lt;&lt;case &quot;Scénario2_avancé&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 50&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 120&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 60&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 110&gt;&gt;
   &lt;&lt;case &quot;Scénario3_avancé&quot;&gt;&gt;
     &lt;&lt;set $SeuilBronze = 60&gt;&gt;
     &lt;&lt;set $SeuilArgent = 140&gt;&gt;
@@ -5194,15 +5193,15 @@ Votre score final de rapidité est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt
     &lt;&lt;set $SeuilArgent = 150&gt;&gt;
 &lt;&lt;/switch&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-\Votre &#39;&#39;score global&#39;&#39; (Score clinique + Score de rapidité/4) est de &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt;.
-\&lt;&lt;if ($Rapidite - $Total) &gt; 150&gt;&gt;
-\&#39;&#39;Vous avez un score de rapidité très élevé mais un score clinique faible.&#39;&#39;
+&#39;&#39;Votre score global est de&#39;&#39; &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt;(Score clinique + Score de rapidité/4) 
+\&lt;&lt;if ($Rapidite - $Total) &gt; 200&gt;&gt;
+&#39;&#39;Vous avez un score de rapidité très élevé mais un score clinique faible.&#39;&#39;
   Vous voulez peut-être trop brûler les étapes. Il ne sert à rien d&#39;aller trop vite si les décisions cliniques ne sont pas bonnes.
   Vous êtes pris en flagrant délit d&#39;excès de vitesse ! 
-  &lt;br&gt;&lt;img src=&quot;./Images/exces_vitesse.jpg&quot; width=&quot;50vw&quot;&gt; 
+  &lt;br&gt;&lt;img src=&quot;./Images/exces_vitesse.jpg&quot; width=&quot;200vw&quot;&gt; 
 &lt;&lt;else&gt;&gt;
   &lt;&lt;if $Total &lt; $SeuilBronze&gt;&gt;
-    &#39;&#39;Vous avez moins de $SeuilBronze points.&#39;&#39;
+    &#39;&#39;Votre score global est en dessous de $SeuilBronze points.&#39;&#39;
     Vous avez fait de votre mieux, bravo !
     Vous obtenez le &#39;&#39;badge de bronze&#39;&#39; 
     &lt;div style=&quot;text-align:center;&quot;&gt;
@@ -5216,7 +5215,7 @@ Votre score final de rapidité est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt
 &lt;/div&gt;
 \Recommencez un ou plusieurs entraînement pour progresser et viser plus haut !
   &lt;&lt;elseif $Total &gt;= $SeuilBronze and $Total &lt; $SeuilArgent&gt;&gt;
-    &#39;&#39;Vous avez au moins $SeuilBronze points.&#39;&#39;
+    &#39;&#39;Votre score global est entre $SeuilBronze points et $SeuilArgent points.&#39;&#39;
     Très bien — vous avez franchi un premier palier !
     Vous obtenez le &#39;&#39;badge d&#39;argent&#39;&#39;
     &lt;div style=&quot;text-align:center;&quot;&gt;
@@ -5230,8 +5229,8 @@ Votre score final de rapidité est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt
 &lt;/div&gt;
 \Recommencez un ou plusieurs entraînement pour viser l&#39;excellence !
 &lt;&lt;else&gt;&gt;  /* $Total &gt;= $SeuilArgent */
-    &#39;&#39;Vous avez au moins $SeuilArgent points.&#39;&#39;
-    Bravo $Nom — excellente performance !
+    &#39;&#39;Votre score global est au dessus de $SeuilArgent points.&#39;&#39;
+    Bravo $Nom — excellente performance ! Vous rentrez au panthéon 🏦des chirurgiens dentistes ! Avant vous, Brånemark, Black, Magne, Tanaka et seulement quelques autres ont réussi cet exploit.
     Vous obtenez le &#39;&#39;badge d&#39;or&#39;&#39;. 
         \&lt;div style=&quot;text-align:center;&quot;&gt;
   \&lt;span style=&quot;
@@ -5251,69 +5250,7 @@ Votre score final de rapidité est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt
 🥈 Argent ≥ $SeuilBronze et &lt; $SeuilArgent points
 🥇 Or ≥ $SeuilArgent points
 
-[[Je recommence un entraînement|Passage 1]]
-
-&lt;&lt;script&gt;&gt;
-(function () {
-
-    let parties = JSON.parse(localStorage.getItem(&quot;partiesTwine&quot;) || &quot;[]&quot;);
-
-    const nom = State.getVar(&quot;$Nom&quot;) ?? &quot;&quot;;
-    const niveau = (State.getVar(&quot;$niveau&quot;)?.type) ?? &quot;&quot;;
-    const promo = (State.getVar(&quot;$promo&quot;)?.type) ?? &quot;&quot;;
-    const score = Number(State.getVar(&quot;$Score&quot;) ?? 0);
-    const rapidite = Number(State.getVar(&quot;$Rapidite&quot;) ?? 0);
-    const total = Number(State.getVar(&quot;$Total&quot;) ?? 0);
-    
-    const entree = {
-        nom: String(nom),
-        niveau: String(niveau),
-        promo: String(promo),
-        score: score,
-        rapidite: rapidite,
-        total: total,
-        timestamp: new Date().toISOString()
-    };
-
-    parties.push(entree);
-
-    localStorage.setItem(&quot;partiesTwine&quot;, JSON.stringify(parties));
-
-    function csvEscape(field) {
-        const s = String(field).replace(/&quot;/g, &#39;&quot;&quot;&#39;);
-        return `&quot;${s}&quot;`;
-    }
-
-    let csv = &quot;Nom;Niveau;Promo;Score;Rapidite;Total;Timestamp\n&quot;;
-    parties.forEach(p =&gt; {
-        csv += 
-            `${csvEscape(p.nom)};` +
-            `${csvEscape(p.niveau)};` +
-            `${csvEscape(p.promo)};` +
-            `${csvEscape(p.score)};` +
-            `${csvEscape(p.rapidite)};` +
-            `${csvEscape(p.total)};` +
-            `${csvEscape(p.timestamp)}\n`;
-    });
-
-    const nomFichierHTML = location.pathname.split(&#39;/&#39;).pop().replace(&#39;.html&#39;,&#39;&#39;);
-    const nomFichierCSV = `score_${nomFichierHTML}.csv`;
-
-    const blob = new Blob([csv], { type: &quot;text/csv;charset=utf-8;&quot; });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement(&quot;a&quot;);
-    a.href = url;
-    a.download = nomFichierCSV;
-
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-})();
-&lt;&lt;/script&gt;&gt;
-</tw-passagedata><tw-passagedata pid="131" name="Retro 11" tags="" position="1175,1225" size="100,100">&lt;&lt;silently&gt;&gt;
+[[Je recommence un entraînement|Passage 1]]</tw-passagedata><tw-passagedata pid="131" name="Retro 11" tags="" position="1175,1225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
@@ -6859,12 +6796,12 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 Que prescrivez-vous maintenant que nous avons écarté les antibiotiques ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Codoliprane (Codéine/Paracétamol)&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Bain de bouche (Eludril Perio®)&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Bain de bouche classique à la chlorhexidine&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; Azythromycine&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;three&quot;&gt;&lt;&lt;checkbox &quot;$desc.three&quot; false true&gt;&gt; Paracétamol&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Prednisolone&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;five&quot;&gt;&lt;&lt;checkbox &quot;$desc.five&quot; false true&gt;&gt; Eventuellement du hyaluronate de sodium (Hyalugel®)&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;six&quot;&gt;&lt;&lt;checkbox &quot;$desc.six&quot; false true&gt;&gt; Bain de bouche sans alcool (Paroex®)&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;five&quot;&gt;&lt;&lt;checkbox &quot;$desc.five&quot; false true&gt;&gt; Eventuellement du hyaluronate de sodium (Hyalugel® ou Elugel®)&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;six&quot;&gt;&lt;&lt;checkbox &quot;$desc.six&quot; false true&gt;&gt; Bain de bouche à la chlorhexidine sans alcool&lt;/span&gt;
 \&lt;div id=&quot;checkbox-feedback&quot; style=&quot;opacity:0; transition: opacity 0.5s; margin-top: 1em;&quot;&gt;&lt;/div&gt;
 \&lt;div id=&quot;checkbox-submit&quot;&gt;\
 &lt;&lt;button &#39;Soumettre ma ou mes réponses&#39;&gt;&gt;
@@ -7366,95 +7303,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
     &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="200" name="Code sauvegarde resultat a la main" tags="" position="2700,2975" size="100,100">&lt;div class=&quot;pulseTitle&quot;&gt;RÉSULTAT FINAL&lt;/div&gt;
-Vous avez obtenu la note de clinique de &lt;span id=&quot;score&quot;&gt;&lt;span style=&quot;color: purple;&quot;&gt;&#39;&#39;$Score&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
-Votre score final de rapidité est de &lt;span id=&quot;Score_rapid&quot;&gt;&lt;span style=&quot;color: green;&quot;&gt;&#39;&#39;$Rapidite&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
-&lt;&lt;silently&gt;&gt;
-&lt;&lt;set $Total = Math.round($Score + $Rapidite/4)&gt;&gt;
-/* Définition des seuils selon le scénario */
-&lt;&lt;switch $Scenario&gt;&gt;
-  &lt;&lt;case &quot;Scénario1_avancé&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 100&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 200&gt;&gt;
-  &lt;&lt;case &quot;Scénario2_avancé&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 50&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 120&gt;&gt;
-  &lt;&lt;case &quot;Scénario3_avancé&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 60&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 140&gt;&gt;
-     &lt;&lt;case &quot;Scénario4_avancé&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 60&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 140&gt;&gt;
-         &lt;&lt;case &quot;Scénario5_avancé&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 60&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 140&gt;&gt;
-         &lt;&lt;case &quot;Scénario6_avancé&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 60&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 140&gt;&gt;
-  &lt;&lt;default&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 50&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 150&gt;&gt;
-&lt;&lt;/switch&gt;&gt;
-&lt;&lt;/silently&gt;&gt;
-Votre &#39;&#39;score global&#39;&#39; (Score clinique + Score de rapidité/4) est de &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt;.
-&lt;&lt;if ($Rapidite - $Total) &gt; 150&gt;&gt;
-\&#39;&#39;Vous avez un score de rapidité très élevé mais un score clinique faible.&#39;&#39;
-  Vous voulez peut-être trop brûler les étapes. Il ne sert à rien d&#39;aller trop vite si les décisions cliniques ne sont pas bonnes.
-  Vous êtes pris en flagrant délit d&#39;excès de vitesse ! 
-  &lt;br&gt;&lt;img src=&quot;./Images/exces_vitesse.jpg&quot; width=&quot;50vw&quot;&gt; 
-&lt;&lt;else&gt;&gt;
-  &lt;&lt;if $Total &lt; $SeuilBronze&gt;&gt;
-    &#39;&#39;Vous avez moins de $SeuilBronze points.&#39;&#39;
-    Vous avez fait de votre mieux, bravo !
-    Vous obtenez le &#39;&#39;badge de bronze&#39;&#39; 
-    &lt;div style=&quot;text-align:center;&quot;&gt;
-  &lt;span style=&quot;
-    font-size:5em;
-    text-shadow: 0 0 10px rgba(160, 100, 255, 0.8);
-    display:inline-block;
-  &quot;&gt;
-    🥉
-  &lt;/span&gt;
-&lt;/div&gt;
-Recommencez un ou plusieurs entraînement pour progresser et viser plus haut !
-  &lt;&lt;elseif $Total &gt;= $SeuilBronze and $Total &lt; $SeuilArgent&gt;&gt;
-    &#39;&#39;Vous avez au moins $SeuilBronze points.&#39;&#39;
-    Très bien — vous avez franchi un premier palier !
-    Vous obtenez le &#39;&#39;badge d&#39;argent&#39;&#39;
-    &lt;div style=&quot;text-align:center;&quot;&gt;
-  &lt;span style=&quot;
-    font-size:5em;
-    text-shadow: 0 0 10px rgba(160, 100, 255, 0.8);
-    display:inline-block;
-  &quot;&gt;
-    🥈
-  &lt;/span&gt;
-&lt;/div&gt;
-Recommencez un ou plusieurs entraînement pour viser l&#39;excellence !
-&lt;&lt;else&gt;&gt;  /* $Total &gt;= $SeuilArgent */
-    &#39;&#39;Vous avez au moins $SeuilArgent points.&#39;&#39;
-    Bravo $Nom — excellente performance !
-    Vous obtenez le &#39;&#39;badge d&#39;or&#39;&#39;. 
-        \&lt;div style=&quot;text-align:center;&quot;&gt;
-  \&lt;span style=&quot;
-    font-size:5em;
-    text-shadow: 0 0 10px rgba(160, 100, 255, 0.8);
-    display:inline-block;
-  &quot;&gt;
-   \🥇
-  &lt;/span&gt;
-&lt;/div&gt;
-\Recommencez un ou plusieurs entraînement pour vérifier que ce n&#39;est pas un coup de chance 😉ou bien testez-vous sur d&#39;autres de cas cliniques!
-  &lt;&lt;/if&gt;&gt;
-&lt;&lt;/if&gt;&gt;
-&#39;&#39;Objectifs de votre votre cas clinique :&#39;&#39;&lt;br&gt;
-🥉 Bronze &lt; $SeuilBronze points&lt;br&gt;
-🥈 Argent ≥ $SeuilBronze et &lt; $SeuilArgent points&lt;br&gt;
-🥇 Or ≥ $SeuilArgent points
-
-[[Je recommence un entraînement|Passage 1]]
-
-&lt;&lt;script&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="200" name="Code sauvegarde resultat a la main" tags="" position="2700,2975" size="100,100">&lt;&lt;script&gt;&gt;
 (function () {
 
     let parties = JSON.parse(localStorage.getItem(&quot;partiesTwine&quot;) || &quot;[]&quot;);
