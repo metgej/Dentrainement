@@ -104,7 +104,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<tw-storydata name="Dentrainement_beta" startnode="120" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="0981FC2D-D35B-4648-B502-5E96F427D51E" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
+	<tw-storydata name="Dentrainement_beta" startnode="120" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="0981FC2D-D35B-4648-B502-5E96F427D51E" options="" tags="" zoom="0.3" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
   #story {
     margin-top: 0;
     margin-left: 300;
@@ -461,6 +461,21 @@ span.checkligne {
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+#mobileHUD {
+    position: fixed;
+    bottom: 6px;
+    right: 6px;
+    z-index: 1000;
+
+    background: rgba(0,0,0,0.7);
+    color: purple;
+    padding: 4px 7px;
+
+    font-size: 0.7em;
+    border-radius: 6px;
+    pointer-events: none;
 }
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">document.addEventListener("keydown", function(e) {
     if (e.key === "Enter") {
@@ -2673,8 +2688,8 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
     &lt;&lt;set $SeuilBronze = 90&gt;&gt;
     &lt;&lt;set $SeuilArgent = 180&gt;&gt;
          &lt;&lt;case &quot;Scénario6_débutant&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 90&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 160&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 100&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 200&gt;&gt;
   &lt;&lt;default&gt;&gt;
     &lt;&lt;set $SeuilBronze = 50&gt;&gt;
     &lt;&lt;set $SeuilArgent = 150&gt;&gt;
@@ -4867,12 +4882,9 @@ A des fins statistiques, dans quelle promotion êtes-vous ?
     Niveau= $niveau.type
     Promo= $promo.type
     &lt;&lt;/silently&gt;&gt;
-     &lt;&lt;replace &quot;#nom_niveau&quot;&gt;&gt;Et maintenant, votre vacation débute  &#39;&#39;[[Ici|Dispatch niveau]]&#39;&#39;
-     
-     
-     
-     Pour les beta-testeurs (évite la distribution aléatoire)
-&lt;&lt;if $niveau.type is &quot;Débutant&quot; &gt;&gt;
+     &lt;&lt;replace &quot;#nom_niveau&quot;&gt;&gt; 
+\Pour les beta-testeurs (choix manuel du scénario, évite la distribution aléatoire)
+\&lt;&lt;if $niveau.type is &quot;Débutant&quot; &gt;&gt;
 [[Scénario1_débutant]]
 [[Scénario4_débutant]]
 [[Scénario5_débutant]]
@@ -4884,6 +4896,8 @@ A des fins statistiques, dans quelle promotion êtes-vous ?
 [[Scénario4_avancé]]
 [[Scénario5_avancé]] 
 [[Scénario6_avancé]]&lt;&lt;/if&gt;&gt;
+
+\Pour commencer un cas de façon aléatoire &#39;&#39;[[Cliquez ici!|Dispatch niveau]]&#39;&#39;
 &lt;&lt;/replace&gt;&gt;&lt;&lt;stop&gt;&gt;
   &lt;&lt;else&gt;&gt;          
 	&lt;&lt;/if&gt;&gt;
@@ -5240,7 +5254,21 @@ Total=$Total
 Decalage=$Decalage
 Scenario=$Scenario
 Random=$Random
-&lt;&lt;addAudio &quot;sonnerie&quot; &quot;https://lasonotheque.org/UPLOAD/mp3/1699.mp3&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="134" name="StoryCaption" tags="" position="150,375" size="100,100">&#39;&#39;[[Credits et références|Credits Ref]]&#39;&#39;</tw-passagedata><tw-passagedata pid="135" name="Surbooké" tags="" position="550,400" size="100,100">&lt;&lt;silently&gt;&gt;
+
+&lt;&lt;script&gt;&gt;
+setup.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i
+    .test(navigator.userAgent);
+&lt;&lt;/script&gt;&gt;
+
+&lt;&lt;if setup.isMobile&gt;&gt;
+&lt;div id=&quot;mobileHUD&quot;&gt;
+  🟣 &lt;span class=&quot;value-score&quot;&gt;&lt;&lt;= $Score &gt;&gt;&lt;/span&gt;
+  &amp;nbsp;|&amp;nbsp;
+  ⏱ &lt;span class=&quot;value-timer&quot;&gt;&lt;&lt;= $Timer &gt;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;&lt;/if&gt;&gt;
+
+</tw-passagedata><tw-passagedata pid="134" name="StoryCaption" tags="" position="150,375" size="100,100">&#39;&#39;[[Credits et références|Credits Ref]]&#39;&#39;</tw-passagedata><tw-passagedata pid="135" name="Surbooké" tags="" position="550,400" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
