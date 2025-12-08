@@ -462,6 +462,55 @@ span.checkligne {
     opacity: 1;
   }
 }
+
+#mobileHUD {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 9999;
+    pointer-events: none;
+    font-size: 0.85em;
+    font-family: Arial, sans-serif;
+}
+
+/* Reprend le style de ta statbox desktop */
+#statsBoxMobile {
+    background: #eaf4ff;            /* bleu très clair */
+    border-left: 4px solid #4a90e2; /* bande verticale bleue */
+    border-radius: 10px;
+    padding: 10px 12px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    display: inline-block;
+}
+
+/* Couleurs du texte */
+.value-score { font-weight: bold; color: purple; }
+.value-timer { font-weight: bold; color: blue; }
+.timer-warning { font-weight: bold; color: red; }
+
+/* ====== FLASH FEEDBACK HUD & STATBOX ====== */
+
+.flash-good {
+    animation: flashGreen 0.6s ease;
+}
+
+.flash-bad {
+    animation: flashRed 0.6s ease;
+}
+
+@keyframes flashGreen {
+    0%   { background-color: #d4ffd4; }
+    100% { background-color: #eaf4ff; }
+}
+
+@keyframes flashRed {
+    0%   { background-color: #ffd6d6; }
+    100% { background-color: #eaf4ff; }
+}
+
+// Mémorise l'ancien score clinique pour détecter les variations
+window.LastScore = null;
+
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">document.addEventListener("keydown", function(e) {
     if (e.key === "Enter") {
         e.preventDefault();
@@ -518,6 +567,32 @@ setInterval(function () {
     } else {
         $("#scoreCliniqueLine").addClass("hidden");
     }
+  
+      /* ----- Effet variation du score ----- */
+    if (window.LastScore !== null) {
+
+        // Augmentation
+        if (State.variables.Score > window.LastScore) {
+            $("#statsBox, #statsBoxMobile").removeClass("flash-bad").addClass("flash-good");
+
+            setTimeout(() => {
+                $("#statsBox, #statsBoxMobile").removeClass("flash-good");
+            }, 600);
+        }
+
+        // Diminution
+        else if (State.variables.Score < window.LastScore) {
+            $("#statsBox, #statsBoxMobile").removeClass("flash-good").addClass("flash-bad");
+
+            setTimeout(() => {
+                $("#statsBox, #statsBoxMobile").removeClass("flash-bad");
+            }, 600);
+        }
+
+    }
+
+    window.LastScore = State.variables.Score;
+
 
     /* ----- Score de rapidité ----- */
     if (typeof State.variables.Rapidite !== "undefined" && State.variables.Rapidite !== null) {
@@ -559,7 +634,53 @@ setInterval(function () {
         }
     }
 
-}, 1000);</script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
+}, 1000);
+
+// ===== HUD MOBILE UNIFIÉ (Score + Rapidité + Timer) =====
+
+// Crée le HUD dès que le jeu est prêt
+$(document).one(":storyready", function() {
+
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i
+        .test(navigator.userAgent);
+
+    if (!isMobile) return; // mobile/tablette uniquement
+
+    // Crée le HUD et ajoute au body
+    const hud = $('<div id="mobileHUD"></div>');
+    $('body').append(hud);
+
+    // ---- FONCTION UNIQUE DE RAFRAICHISSEMENT ----
+    function updateHUD() {
+
+        const score     = State.variables.Score    || 0;
+        const rapidite  = State.variables.Rapidite || 0;
+        const timer     = State.variables.Timer    || 0;
+
+        // Timer en rouge si <=5
+        const timerClass =
+            (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
+
+        hud.html(`
+            <div id="statsBoxMobile">
+
+                🦷 <span class="value-score">${score}</span>
+                &nbsp;&nbsp;
+
+                🏃‍♂️ <span class="value-rapid">${rapidite}</span>
+                &nbsp;&nbsp;
+
+                ⏱ <span class="${timerClass}">${timer}s</span>
+
+            </div>
+        `);
+    }
+
+    // 🔁 RAFRAICHISSEMENT SYNCHRO AVEC LA STATSBOX
+    updateHUD();
+    setInterval(updateHUD, 1000);
+});
+</script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $Score to $Score+10&gt;&gt;
@@ -646,8 +767,10 @@ La vaccination est à jour. Le traumatisme dentaire remonte à 2 heures. Vous ne
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="2" name="Accueil enfant" tags="Fonction-random Chrono-simple Media-image-son" position="675,400" size="100,100">&lt;&lt;silently&gt;&gt;
-\&lt;&lt;set $Score to $Score+5&gt;&gt;
-\&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
+&lt;&lt;if $gainRapidite&gt;&gt;
+  &lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+&lt;&lt;set $gainRapidite to false&gt;&gt; &lt;!-- réinitialisation --&gt;
 \&lt;&lt;set $Timer to 40&gt;&gt;
 \&lt;&lt;/silently&gt;&gt;
 Vous accueillez l&#39;enfant. La maman commence à vous expliquer comment l&#39;accident a eu lieu sur la voirie.
@@ -781,11 +904,23 @@ Martine fait éruption dans la pièce.
 Une mère et un enfant se sont présentés pour un trauma. C&#39;est le médecin généraliste d&#39;à côté qui leur a gentiment suggéré de débarquer sans rdv. L&#39;enfant a mal.
 &lt;&lt;silently&gt;&gt;&lt;&lt;set $Timer to 40&gt;&gt;&lt;&lt;/silently&gt;&gt;
 
-&#39;&#39;[[Vous dîtes à votre assistante que vous êtes déjà surbooké. On ne peut pas bacler le bridge provisoire.|Surbooké]]&#39;&#39;
+&lt;&lt;link &quot;Vous dîtes à votre assistante que vous êtes déjà surbooké. On ne peut pas bacler le bridge provisoire&quot;&gt;&gt;
+ &lt;&lt;set $gainRapidite = false&gt;&gt;
+  &lt;&lt;set $Score to $Score-10&gt;&gt;
+  &lt;&lt;goto &quot;Surbooké&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;
 
-&#39;&#39;[[Vous lui dîtes que vous le prenez dans 5 minutes le temps d&#39;enlever l&#39;excés de ciment du bridge|Accueil enfant]]&#39;&#39;
+&lt;&lt;link &quot;Vous lui dîtes que vous le prenez dans 5 minutes le temps d&#39;enlever l&#39;excés de ciment du bridge&quot;&gt;&gt;
+ &lt;&lt;set $gainRapidite = true&gt;&gt;
+  &lt;&lt;set $Score to $Score+5&gt;&gt;
+  &lt;&lt;goto &quot;Accueil enfant&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;
 
-&#39;&#39;[[Vous lui demandez des précisions. Age de l&#39;enfant, dent(s) concernée(s)|Précisions trauma]]&#39;&#39;
+&lt;&lt;link &quot;Vous lui demandez des précisions. Age de l&#39;enfant, dent(s) concernée(s)&quot;&gt;&gt;
+  &lt;&lt;set $gainRapidite = true&gt;&gt;
+  &lt;&lt;set $Score to $Score+10&gt;&gt;
+  &lt;&lt;goto &quot;Précisions trauma&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;
 
 &lt;&lt;silently&gt;&gt;
  &lt;&lt;repeat 1s&gt;&gt;
@@ -3475,8 +3610,10 @@ Demandez directement s&#39;il y a violence à l&#39;enfant peut le mettre mal à
           &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="80" name="Dent pas cassée" tags="" position="925,400" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
-&lt;&lt;set $Score to $Score-10&gt;&gt;
-&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
+&lt;&lt;if $gainRapidite&gt;&gt;
+  &lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+&lt;&lt;set $gainRapidite to false&gt;&gt; &lt;!-- réinitialisation --&gt;
 &lt;&lt;/silently&gt;&gt;
 Attention, il ne faut pas prendre à la lettre ce qui vous est raporté sur un cas avant de l&#39;avoir observé cliniquement, surtout quand l&#39;observation est sujette à des erreurs par des non professionels.. Une dent annoncée comme non cassée peut l&#39;être. Elle peut aussi être félée ou fracturée,etc...et cela peut nécessiter votre intervention.
 
@@ -3599,7 +3736,7 @@ Votre score clinique pour ce passage est : &lt;span style=&quot;color:purple;&qu
     &lt;&lt;if $random is 5&gt;&gt;&lt;&lt;goto &quot;Scénario5_avancé&quot;&gt;&gt;&lt;&lt;/if&gt;&gt;
     &lt;&lt;if $random is 6&gt;&gt;&lt;&lt;goto &quot;Scénario6_avancé&quot;&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;/if&gt;&gt;
-</tw-passagedata><tw-passagedata pid="86" name="Ecoute" tags="Chrono-simple Fonction-random" position="575,525" size="100,100">&lt;&lt;silently&gt;&gt;
+</tw-passagedata><tw-passagedata pid="86" name="Ecoute" tags="Chrono-simple Fonction-random" position="600,525" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
@@ -4978,8 +5115,10 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="125" name="Précisions trauma" tags="Chrono-simple" position="800,400" size="100,100">&lt;&lt;silently&gt;&gt;
-&lt;&lt;set $Score to $Score+5&gt;&gt;
-&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
+&lt;&lt;if $gainRapidite&gt;&gt;
+  &lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+&lt;&lt;set $gainRapidite to false&gt;&gt; &lt;!-- réinitialisation --&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 C&#39;est un bon réflexe de vouloir connaître quelques informations cruciales sur un cas d&#39;urgences 👍.
@@ -5175,7 +5314,7 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
     text-shadow: 0 0 10px rgba(160, 100, 255, 0.8);
     display:inline-block;
   &quot;&gt;
-    🥉
+    \🥉
   &lt;/span&gt;
 &lt;/div&gt;
 \Recommencez un ou plusieurs entraînement pour progresser et viser plus haut !
@@ -5189,7 +5328,7 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
     text-shadow: 0 0 10px rgba(160, 100, 255, 0.8);
     display:inline-block;
   &quot;&gt;
-    🥈
+    \🥈
   &lt;/span&gt;
 &lt;/div&gt;
 \Recommencez un ou plusieurs entraînement pour viser l&#39;excellence !
@@ -5216,7 +5355,99 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
 🥈 Argent ≥ $SeuilBronze et &lt; $SeuilArgent points
 🥇 Or ≥ $SeuilArgent points
 
-[[Je recommence un entraînement|Passage 1]]</tw-passagedata><tw-passagedata pid="131" name="Retro 11" tags="" position="1175,1225" size="100,100">&lt;&lt;silently&gt;&gt;
+\&lt;&lt;set $Scenario = &quot;Scénario1_avancé&quot;&gt;&gt;  &lt;!-- Exemple --&gt;
+\&lt;&lt;set $nom = &quot;Juju5&quot;&gt;&gt;
+\&lt;&lt;set $Score = 600&gt;&gt;
+\&lt;div id=&quot;resultat&quot;&gt;Chargement du Top 10...&lt;/div&gt;
+\&lt;&lt;script&gt;&gt;
+const url = &quot;https://6936b66bf8dc350aff31e3ea.mockapi.io/scores&quot;; // remplace par ton URL MockAPI
+
+const player = {
+  nom: State.variables.nom,
+  score: State.variables.Score,
+  scenario: State.variables.Scenario,
+  timestamp: Date.now()
+};
+
+// Fonction pour transformer $Scenario en titre lisible
+function getScenarioTitre(scenario) {
+    const mapping = {
+      &quot;Scénario1_avancé&quot;: &quot;Cas 1 niveau avancé&quot;,
+      &quot;Scénario2_avancé&quot;: &quot;Cas 2 niveau avancé&quot;,
+      &quot;Scénario3_avancé&quot;: &quot;Cas 3 niveau avancé&quot;,
+      &quot;Scénario4_avancé&quot;: &quot;Cas 4 niveau avancé&quot;,
+      &quot;Scénario5_avancé&quot;: &quot;Cas 5 niveau avancé&quot;,
+      &quot;Scénario6_avancé&quot;: &quot;Cas 6 niveau avancé&quot;,
+      &quot;Scénario1_débutant&quot;: &quot;Cas 1 niveau débutant&quot;,
+      &quot;Scénario4_débutant&quot;: &quot;Cas 4 niveau débutant&quot;,
+      &quot;Scénario5_débutant&quot;: &quot;Cas 5 niveau débutant&quot;,
+      &quot;Scénario6_débutant&quot;: &quot;Cas 6 niveau débutant&quot;
+    };
+    return mapping[scenario] || scenario;
+}
+
+// --- 1️⃣ Envoi du score ---
+fetch(url, {
+    method: &quot;POST&quot;,
+    headers: {&quot;Content-Type&quot;: &quot;application/json&quot;},
+    body: JSON.stringify(player)
+})
+.then(() =&gt; fetch(url))  // --- 2️⃣ Récupération après l&#39;envoi ---
+.then(res =&gt; res.json())
+.then(scores =&gt; {
+
+    // Filtrer par scénario courant
+    let scoresScenario = scores.filter(s =&gt; s.scenario === State.variables.Scenario);
+
+    // Trier par score décroissant
+    scoresScenario.sort((a,b) =&gt; b.score - a.score);
+
+    // Top 10
+    let top10 = scoresScenario.slice(0, 10);
+
+    // --- Construire tableau HTML ---
+    let html = `&lt;h3&gt;Voici le Top 10 des scores de vos confrères sur ce cas clinique : &lt;i&gt;${getScenarioTitre(State.variables.Scenario)}&lt;/i&gt;&lt;/h3&gt;`;
+    html += `&lt;table style=&quot;
+                border-collapse: collapse; 
+                width: 100%; 
+                font-family: Arial, sans-serif; 
+                color: #111;
+                background-color: #FFFBF0;
+                text-align: center;
+                &quot;&gt;
+                &lt;tr style=&quot;background-color:#eaf4ff; color:#111;&quot;&gt;
+                  &lt;th&gt;Rang&lt;/th&gt;
+                  &lt;th&gt;Nom&lt;/th&gt;
+                  &lt;th&gt;Score&lt;/th&gt;
+                  &lt;th&gt;Date&lt;/th&gt;
+                &lt;/tr&gt;`;
+
+    top10.forEach((s, i) =&gt; {
+        // Fond clair alterné
+        let bgColor = i % 2 === 0 ? &quot;#FFFDF5&quot; : &quot;#F6F2E8&quot;;
+
+        // Joueur courant en gras
+        let fontWeight = (s.nom === State.variables.nom) ? &quot;bold&quot; : &quot;normal&quot;;
+
+        html += `&lt;tr style=&quot;background-color:${bgColor}; font-weight:${fontWeight};&quot;&gt;
+                    &lt;td&gt;${i+1}&lt;/td&gt;
+                    &lt;td&gt;${s.nom}&lt;/td&gt;
+                    &lt;td&gt;${s.score}&lt;/td&gt;
+                    &lt;td&gt;${new Date(s.timestamp).toLocaleDateString()}&lt;/td&gt;
+                 &lt;/tr&gt;`;
+    });
+
+    html += `&lt;/table&gt;`;
+
+    document.getElementById(&quot;resultat&quot;).innerHTML = html;
+
+})
+.catch(err =&gt; {
+    document.getElementById(&quot;resultat&quot;).innerHTML = &quot;&lt;b&gt;Erreur :&lt;/b&gt; &quot; + err;
+});
+
+&lt;&lt;/script&gt;&gt;
+\[[Je recommence un entraînement|Passage 1]]</tw-passagedata><tw-passagedata pid="131" name="Retro 11" tags="" position="1175,1225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
@@ -5235,13 +5466,33 @@ Avec la mobilité de la dent, la cicatrisation ne va pas pouvoir se faire dans d
 &#39;&#39;[[J&#39;ajoute un dispositif|Contention1]]&#39;&#39;</tw-passagedata><tw-passagedata pid="133" name="Story Init" tags="" position="150,150" size="100,100">Score=$Score
 Timer=$Timer
 Rapidite=$Rapidite
+gainRapidite = $gainRapidite
+&lt;&lt;set $gainRapidite to false&gt;&gt;
 Total=$Total
 Decalage=$Decalage
 Scenario=$Scenario
 Random=$Random
-&lt;&lt;addAudio &quot;sonnerie&quot; &quot;https://lasonotheque.org/UPLOAD/mp3/1699.mp3&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="134" name="StoryCaption" tags="" position="150,375" size="100,100">&#39;&#39;[[Credits et références|Credits Ref]]&#39;&#39;</tw-passagedata><tw-passagedata pid="135" name="Surbooké" tags="" position="550,400" size="100,100">&lt;&lt;silently&gt;&gt;
-&lt;&lt;set $Score to $Score-10&gt;&gt;
-&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
+
+&lt;&lt;script&gt;&gt;
+setup.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i
+    .test(navigator.userAgent);
+&lt;&lt;/script&gt;&gt;
+
+&lt;&lt;if setup.isMobile&gt;&gt;
+&lt;div id=&quot;mobileHUD&quot;&gt;
+  🟣 &lt;span class=&quot;value-score&quot;&gt;&lt;&lt;= $Score &gt;&gt;&lt;/span&gt;
+  &amp;nbsp;|&amp;nbsp;
+  ⏱ &lt;span class=&quot;value-timer&quot;&gt;&lt;&lt;= $Timer &gt;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;&lt;/if&gt;&gt;
+
+&lt;div id=&quot;mobileHUD&quot;&gt;HUD TEST&lt;/div&gt;
+
+</tw-passagedata><tw-passagedata pid="134" name="StoryCaption" tags="" position="150,375" size="100,100">&#39;&#39;[[Credits et références|Credits Ref]]&#39;&#39;</tw-passagedata><tw-passagedata pid="135" name="Surbooké" tags="" position="550,400" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;if $gainRapidite&gt;&gt;
+  &lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+&lt;&lt;set $gainRapidite to false&gt;&gt; &lt;!-- réinitialisation --&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Refuser une urgence traumatique chez l&#39;enfant sans évaluer la situation n&#39;est pas professionel.
@@ -7321,6 +7572,7 @@ Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;
 
 })();
 &lt;&lt;/script&gt;&gt;
+</tw-passagedata><tw-passagedata pid="201" name="Passage sans titre" tags="" position="325,300" size="100,100"></tw-passagedata><tw-passagedata pid="202" name="StoryHeader" tags="" position="325,150" size="100,100">&lt;div id=&quot;mobileHUD&quot;&gt;HUD TEST&lt;/div&gt;
 </tw-passagedata></tw-storydata>
 	<script id="script-sugarcube" type="text/javascript">
 	/*! SugarCube JS */
