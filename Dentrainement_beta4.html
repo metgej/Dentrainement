@@ -465,25 +465,28 @@ span.checkligne {
 
 #mobileHUD {
     position: fixed;
-    bottom: 6px;
-    right: 6px;
+    bottom: 10px;
+    right: 10px;
     z-index: 9999;
-
-    background: rgba(255,255,255,0.9); /* beaucoup plus clair */
-    color: #111;
-    padding: 6px 10px;
-
-    font-size: 0.85em;
-    border-radius: 8px;
     pointer-events: none;
-    font-weight: bold;
+    font-size: 0.85em;
+    font-family: Arial, sans-serif;
 }
 
-.value-score { color: purple; }
-.value-timer { color: blue; }
+/* Reprend le style de ta statbox desktop */
+#statsBoxMobile {
+    background: #eaf4ff;            /* bleu très clair */
+    border-left: 4px solid #4a90e2; /* bande verticale bleue */
+    border-radius: 10px;
+    padding: 10px 12px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    display: inline-block;
+}
 
-/* Timer en rouge si <= 5s */
-.timer-warning { color: red; font-weight: bold; }
+/* Couleurs du texte */
+.value-score { font-weight: bold; color: purple; }
+.value-timer { font-weight: bold; color: blue; }
+.timer-warning { font-weight: bold; color: red; }
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">document.addEventListener("keydown", function(e) {
     if (e.key === "Enter") {
         e.preventDefault();
@@ -583,6 +586,8 @@ setInterval(function () {
 
 }, 1000);
 
+// ===== HUD MOBILE UNIFIÉ (Score + Rapidité + Timer) =====
+
 // Crée le HUD dès que le jeu est prêt
 $(document).one(":storyready", function() {
 
@@ -595,24 +600,34 @@ $(document).one(":storyready", function() {
     const hud = $('<div id="mobileHUD"></div>');
     $('body').append(hud);
 
-    // Fonction pour mettre à jour le HUD
+    // ---- FONCTION UNIQUE DE RAFRAICHISSEMENT ----
     function updateHUD() {
-        const score = State.variables.Score || 0;
-        const timer = State.variables.Timer || 0;
 
-        // Détecte si timer <= 5 pour changer la couleur
-        const timerClass = (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
+        const score     = State.variables.Score    || 0;
+        const rapidite  = State.variables.Rapidite || 0;
+        const timer     = State.variables.Timer    || 0;
+
+        // Timer en rouge si <=5
+        const timerClass =
+            (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
 
         hud.html(`
-            <span>Score clinique: </span>
-            <span class="value-score">${score}</span>
-            &nbsp;|&nbsp;
-            ⏱ <span class="${timerClass}">${timer}</span>
+            <div id="statsBoxMobile">
+
+                🦷 <span class="value-score">${score}</span>
+                &nbsp;&nbsp;
+
+                🏃‍♂️ <span class="value-rapid">${rapidite}</span>
+                &nbsp;&nbsp;
+
+                ⏱ <span class="${timerClass}">${timer}s</span>
+
+            </div>
         `);
     }
 
-    // Rafraîchissement toutes les secondes
-    updateHUD(); // initial
+    // 🔁 RAFRAICHISSEMENT SYNCHRO AVEC LA STATSBOX
+    updateHUD();
     setInterval(updateHUD, 1000);
 });
 </script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
