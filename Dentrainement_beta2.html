@@ -5443,7 +5443,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="129" name="Resultat avance" tags="Media-image-son" position="2575,2975" size="100,100">&lt;div class=&quot;pulseTitle&quot;&gt;RÉSULTAT FINAL&lt;/div&gt;
 Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span style=&quot;color: purple;&quot;&gt;&#39;&#39;$Score&#39;&#39;&lt;/span&gt;&lt;/span&gt; et un score de rapidité de &lt;span id=&quot;Score_rapid&quot;&gt;&lt;span style=&quot;color: green;&quot;&gt;&#39;&#39;$Rapidite&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
 &lt;&lt;silently&gt;&gt;
-&lt;&lt;set $Total = Math.round($Score + $Rapidite/4)&gt;&gt;
+&lt;&lt;set $Total = Math.round($Score + $Rapidite/3)&gt;&gt;
 /* Définition des seuils selon le scénario */
 &lt;&lt;switch $Scenario&gt;&gt;
   &lt;&lt;case &quot;Scénario1_avancé&quot;&gt;&gt;
@@ -5469,7 +5469,7 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
     &lt;&lt;set $SeuilArgent = 150&gt;&gt;
 &lt;&lt;/switch&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-&#39;&#39;Votre score global est de&#39;&#39; &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt;(Score clinique + Score de rapidité/4) 
+&#39;&#39;Votre score global est de&#39;&#39; &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt;(Score clinique + Score de rapidité/3) 
 \&lt;&lt;if ($Rapidite - $Total) &gt; 200&gt;&gt;
 &#39;&#39;Vous avez un score de rapidité très élevé mais un score clinique faible.&#39;&#39;
   Vous voulez peut-être trop brûler les étapes. Il ne sert à rien d&#39;aller trop vite si les décisions cliniques ne sont pas bonnes.
@@ -5532,8 +5532,8 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
 const url = &quot;https://6936b66bf8dc350aff31e3ea.mockapi.io/scores&quot;; // remplace par ton URL MockAPI
 
 const player = {
-  nom: State.variables.nom,
-  score: State.variables.Score,
+  nom: State.variables.Nom,
+  score: State.variables.Total,
   scenario: State.variables.Scenario,
   timestamp: Date.now()
 };
@@ -5596,7 +5596,7 @@ fetch(url, {
         let bgColor = i % 2 === 0 ? &quot;#FFFDF5&quot; : &quot;#F6F2E8&quot;;
 
         // Joueur courant en gras
-        let fontWeight = (s.nom === State.variables.nom) ? &quot;bold&quot; : &quot;normal&quot;;
+        let fontWeight = (s.nom === State.variables.Nom) ? &quot;bold&quot; : &quot;normal&quot;;
 
         html += `&lt;tr style=&quot;background-color:${bgColor}; font-weight:${fontWeight};&quot;&gt;
                     &lt;td&gt;${i+1}&lt;/td&gt;
