@@ -513,15 +513,22 @@ window.LastScore = null;
 
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
 function unlockAudio() {
-    try {
-        window.BeepSound.play().then(() => {
+
+    // ✅ Attendre que l'audio existe vraiment
+    if (!window.BeepSound) return;
+
+    window.BeepSound.volume = 0;
+
+    window.BeepSound.play()
+        .then(() => {
             window.BeepSound.pause();
             window.BeepSound.currentTime = 0;
-        }).catch(()=>{});
-    } catch(e){}
 
-    document.removeEventListener("keydown", unlockAudio);
-    document.removeEventListener("click", unlockAudio);
+            // ✅ On enlève les listeners uniquement si succès
+            document.removeEventListener("keydown", unlockAudio);
+            document.removeEventListener("click", unlockAudio);
+        })
+        .catch(()=>{});
 }
 
 // écoute les premières vraies actions utilisateur
@@ -549,6 +556,7 @@ document.addEventListener("keydown", function(e) {
 window.BeepSound = new Audio("Son/beepu.mp3");
 window.BeepSound.preload = "auto";
 window.TimerBeepPlayed = false;
+
 
 /* --- Création de l'encart dans la barre UI (une seule fois) --- */
 $(document).on(':storyready', function () {
@@ -583,7 +591,7 @@ setInterval(function () {
         $("#scoreCliniqueLine").addClass("hidden");
     }
   
-      /* ----- Effet variation du score ----- */
+    /* ----- Effet variation du score ----- */
     if (window.LastScore !== null) {
 
         // Augmentation
@@ -617,46 +625,46 @@ setInterval(function () {
         $("#scoreRapideLine").addClass("hidden");
     }
 
-/* ----- Timer (affiche seulement si > 0) ----- */
-if (typeof State.variables.Timer !== "undefined"
- && State.variables.Timer !== null
- && State.variables.Timer > 0) {
+    /* ----- Timer (affiche seulement si > 0) ----- */
+    if (typeof State.variables.Timer !== "undefined"
+     && State.variables.Timer !== null
+     && State.variables.Timer > 0) {
 
-    $("#countdownNumber")
-        .text(State.variables.Timer)
-        .removeClass("timer-warning");
+        $("#countdownNumber")
+            .text(State.variables.Timer)
+            .removeClass("timer-warning");
 
-    $("#timerLine").removeClass("hidden");
+        $("#timerLine").removeClass("hidden");
 
-    /* ⚠️ Rouge à partir de 5 secondes */
-    if (State.variables.Timer <= 5) {
-        $("#countdownNumber").addClass("timer-warning");
+        /* ⚠️ Rouge à partir de 5 secondes */
+        if (State.variables.Timer <= 5) {
+            $("#countdownNumber").addClass("timer-warning");
+        }
+
+        /* 🔊 Bip doux UNIQUE à 5 secondes */
+        if (State.variables.Timer === 5 && !window.TimerBeepPlayed) {
+            try {
+                window.BeepSound.currentTime = 0;
+                window.BeepSound.play();
+            } catch (e) {}
+
+            window.TimerBeepPlayed = true;
+        }
+
+        /* Réarme si reset ou remontée */
+        if (State.variables.Timer > 5) {
+            window.TimerBeepPlayed = false;
+        }
+
     }
+    else {
 
-    /* 🔊 Bip doux UNIQUE à 5 secondes */
-    if (State.variables.Timer === 5 && !window.TimerBeepPlayed) {
-        try {
-            window.BeepSound.currentTime = 0;
-            window.BeepSound.play();
-        } catch (e) {}
+        /* Cache la ligne si pas de timer */
+        $("#timerLine").addClass("hidden");
 
-        window.TimerBeepPlayed = true;
-    }
-
-    /* Réarme si reset ou remontée */
-    if (State.variables.Timer > 5) {
+        /* Réarme le bip pour le prochain cycle */
         window.TimerBeepPlayed = false;
     }
-
-}
-else {
-
-    /* Cache la ligne si pas de timer */
-    $("#timerLine").addClass("hidden");
-
-    /* Réarme le bip pour le prochain cycle */
-    window.TimerBeepPlayed = false;
-}
 
   
 }, 1000);
@@ -1715,15 +1723,15 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;
 \&lt;&lt;set $Timer to 30&gt;&gt;
 Pour la suite :
-&lt;&lt;link &quot;Montrez-moi la rétro alvéolaire de la 11 s&#39;il vous plaît.&quot;&gt;&gt;
+&lt;&lt;link &quot;Montrez-moi la rétro alvéolaire de la 11 s&#39;il vous plaît&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;Retro 11&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Par principe ALARA, on peut se passer de radio et d&#39;irradiation.&quot;&gt;&gt;
+&lt;&lt;link &quot;Par principe ALARA, on peut se passer de radio et d&#39;irradiation&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;No RX&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Avant de faire une radio je vérifie des choses supplémentaires sur certaines dents car je n&#39;ai pas toutes les infos cliniques utiles.&quot;&gt;&gt;
+&lt;&lt;link &quot;Avant de faire une radio je vérifie des choses supplémentaires sur certaines dents car je n&#39;ai pas toutes les infos cliniques utiles&quot;&gt;&gt;
  &lt;&lt;set $Score to $Score+10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
 &lt;&lt;goto &quot;Conduite cst4&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 &lt;&lt;/replace&gt;&gt;
@@ -5155,7 +5163,9 @@ Il peut être utile de se munir d&#39;un stylo et d&#39;une feuille blanche au p
 Une bonne réponse rapporte des points, une mauvaise vous en fera perdre.
 Parfois, plusieurs réponses peuvent être valides.
 
-Si vous avez compris et que vous êtes motivé(e) pour devenir un expert en clinique, cliquez-ici &#39;&#39;[[Départ|Passage 1]]&#39;&#39;</tw-passagedata><tw-passagedata pid="120" name="Passage 1" tags="Media-image-son" position="1025,25" size="100,100">&lt;&lt;silently&gt;&gt;
+Si vous avez compris et que vous êtes motivé(e) pour devenir un expert en clinique :
+&lt;&lt;link &quot;Cliquez-ici pour commencer&quot;&gt;&gt;
+       &lt;&lt;goto &quot;Passage 1&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="120" name="Passage 1" tags="Media-image-son" position="1025,25" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score=0&gt;&gt;
 &lt;&lt;set $Timer=0&gt;&gt;
 &lt;&lt;set $Rapidite=0&gt;&gt;
@@ -5637,7 +5647,7 @@ Oui une rétro alvéolaire de la 11 et des dents adjacentes semble indiquée dan
 
 Néanmoins, avant de passer à la radio, il y a aussi des points que vous auriez pu vérifier.
 
-&#39;&#39;[[D&#39;accord je vérifie quelques points avant de prendre ma rétro|Conduite cst4]]&#39;&#39;c</tw-passagedata><tw-passagedata pid="131" name="Sans contention" tags="" position="1525,1975" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[D&#39;accord je vérifie quelques points avant de prendre ma rétro|Conduite cst4]]&#39;&#39;</tw-passagedata><tw-passagedata pid="131" name="Sans contention" tags="" position="1525,1975" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Avec la mobilité de la dent, la cicatrisation ne va pas pouvoir se faire dans des conditions optimales. Et la position de la dent ne va pas se maintenir.
@@ -5676,19 +5686,19 @@ Refuser une urgence traumatique chez l&#39;enfant sans évaluer la situation n&#
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Pour le reste de la séance que faîtes-vous d&#39;abord?
-&lt;&lt;link &quot;Les soins sont complexes, j&#39;adresse à un pédodontiste spécialisé qui pourra les faire sous MEOPA.&quot;&gt;&gt;
+&lt;&lt;link &quot;Les soins sont complexes, j&#39;adresse à un pédodontiste spécialisé qui pourra les faire sous MEOPA&quot;&gt;&gt;
    &lt;&lt;set $Score to $Score-20&gt;&gt;
   &lt;&lt;goto &quot;MEOPA&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Je suis les procédures de l&#39;IADT et la première chose à faire est de repositionner la dent manuellement puis la surveiller sur plusieurs mois.&quot;&gt;&gt;
+&lt;&lt;link &quot;Je suis les procédures de l&#39;IADT et la première chose à faire est de repositionner la dent manuellement puis la surveiller sur plusieurs mois&quot;&gt;&gt;
    &lt;&lt;set $Score to $Score-10&gt;&gt;
   &lt;&lt;goto &quot;piege IADT&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;J&#39;essaye d&#39;anesthésier en local avant de repositionner la dent en douceur.&quot;&gt;&gt;
+&lt;&lt;link &quot;J&#39;essaye d&#39;anesthésier en local avant de repositionner la dent en douceur&quot;&gt;&gt;
    &lt;&lt;set $Score to $Score-5&gt;&gt;
   &lt;&lt;goto &quot;Reposition1&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Avant toute chose, je nettoie la plaie au serum physiologique ou à la chlorhexidine.&quot;&gt;&gt;
+&lt;&lt;link &quot;Avant toute chose, je nettoie la plaie au serum physiologique ou à la chlorhexidine&quot;&gt;&gt;
    &lt;&lt;set $Score to $Score+10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
   &lt;&lt;goto &quot;nettoyage&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
@@ -5785,11 +5795,11 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
 &lt;&lt;/silently&gt;&gt;
 La dent est remise en place dans l&#39;alévole et la radio de contrôle est bonne.
 
-&lt;&lt;link &quot;Je laisse la cicatrisation se faire dans la position que je viens d&#39;ajuster. Je ne veux pas être trop iatrogène.&quot;&gt;&gt;
+&lt;&lt;link &quot;Je laisse la cicatrisation se faire dans la position que je viens d&#39;ajuster. Je ne veux pas être trop iatrogène&quot;&gt;&gt;
    &lt;&lt;set $Score to $Score-15&gt;&gt;
    &lt;&lt;goto &quot;Sans contention&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;J&#39;ai besoin d&#39;ajouter un dispositif pour sécuriser la cicatrisation.&quot;&gt;&gt;
+&lt;&lt;link &quot;J&#39;ai besoin d&#39;ajouter un dispositif pour sécuriser la cicatrisation&quot;&gt;&gt;
    &lt;&lt;set $Score to $Score+10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
   &lt;&lt;goto &quot;Contention1&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
