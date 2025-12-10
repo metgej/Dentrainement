@@ -536,8 +536,10 @@ window.LastScore = null;
 }
 
 /* Highlight du joueur */
-#resultat tr[style*="bold"] {
+#resultat tr.is-player {
     background: #b388ff !important;
+    color: #111;
+    font-weight: bold;
 }
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
 function unlockAudio() {
@@ -1328,7 +1330,7 @@ La pulpe n&#39;est pas exposée. Comme solution je propose :
 &lt;&lt;set $Score to $Score-30&gt;&gt;
 &lt;&lt;goto &quot;enfant2_oubli morceau&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Il me manque une information capitale pour me decider|enfant2_demande morceau&quot;&gt;&gt;
+&lt;&lt;link &quot;Il me manque une information capitale pour me decider&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score+10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
 &lt;&lt;goto &quot;enfant2_demande morceau&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
@@ -5623,7 +5625,7 @@ $(document).one(&#39;:passagedisplay&#39;, function () {
 
         top10.forEach((s, i) =&gt; {
             html += `
-                &lt;tr style=&quot;font-weight:${s.nom === player.nom ? &#39;bold&#39; : &#39;normal&#39;}&quot;&gt;
+            &lt;tr class=&quot;${s.nom === player.nom ? &#39;is-player&#39; : &#39;&#39;}&quot;&gt;
                     &lt;td&gt;${i + 1}&lt;/td&gt;
                     &lt;td&gt;${s.nom}&lt;/td&gt;
                     &lt;td&gt;${s.score}&lt;/td&gt;
@@ -6589,7 +6591,6 @@ Il n&#39;arrive pas à décrire ce qui s&#39;est passé pour sa dent mis à part
           &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="157" name="enfant2_demande morceau" tags="Question-ouverte-1variante" position="1825,725" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $Score to $Score+15&gt;&gt;
 &lt;&lt;set $Timer to 35&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Oui, il manque une information pour décider de la solution de reconstruction.
@@ -6720,16 +6721,16 @@ Ecrivez la séquence de collage dans le bon ordre ( ex1 : 1/9/7/5, ex2 : 8/2/5/1
     ].includes($answer)&gt;&gt;
 &lt;&lt;silently&gt;&gt;&lt;&lt;set $tempScore += 30&gt;&gt;&lt;&lt;/silently&gt;&gt;
 &lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;//Correct!//&lt;&lt;/replace&gt;&gt;
-            &lt;&lt;else&gt;&gt;
+&lt;&lt;else&gt;&gt;
 &lt;&lt;silently&gt;&gt;&lt;&lt;set $tempScore -=20&gt;&gt;&lt;&lt;/silently&gt;&gt;
 &lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;//Incorrect!//&lt;&lt;/replace&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 \&lt;&lt;set $Score += $tempScore&gt;&gt;
-&lt;&lt;run $(&#39;#textbox-answer&#39;).attr(&#39;readonly&#39;, &#39;true&#39;).css(&#39;transition&#39;, &#39;background-color 0.5s&#39;).css(&#39;background-color&#39;,&#39;#eee&#39;);&gt;&gt;
-&lt;&lt;run $(&#39;#textbox-reply&#39;).css(&#39;opacity&#39;,1);&gt;&gt;
-&lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;&lt;i&gt;On nettoie une 1ere fois le fragment, on vérifie l&#39;adaptation marginale du fragment, (si ok) on isole la dent, on nettoie de façon approfondie, on fait le traitement des surfaces, on ajoute du composite d&#39;assemblage et on repositionne le fragment. On retire les excès puis on photopolymérise. On polit les joints.&lt;/i&gt;
-Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 30.
+\&lt;&lt;run $(&#39;#textbox-answer&#39;).attr(&#39;readonly&#39;, &#39;true&#39;).css(&#39;transition&#39;, &#39;background-color 0.5s&#39;).css(&#39;background-color&#39;,&#39;#eee&#39;);&gt;&gt;
+\&lt;&lt;run $(&#39;#textbox-reply&#39;).css(&#39;opacity&#39;,1);&gt;&gt;
+\&lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 30.
 \&lt;&lt;if $tempScore is 30&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
+&lt;i&gt;Solution : 4/6/3/1/7/2/5. On nettoie une 1ere fois le fragment, on vérifie l&#39;adaptation marginale du fragment, (si ok) on isole la dent, on nettoie de façon approfondie, on fait le traitement des surfaces, on ajoute du composite d&#39;assemblage et on repositionne le fragment. On retire les excès puis on photopolymérise. On polit les joints.&lt;/i&gt;
 &#39;&#39;[[La suite|morceau no ok cas2]]&#39;&#39;\&lt;&lt;/replace&gt;&gt;
 &lt;&lt;set $button to 1&gt;&gt;
     &lt;&lt;/button&gt;&gt;\
@@ -6786,7 +6787,7 @@ Vous reprogrammez ensuite de voir l&#39;enfant pour le suivi et pour réaliser u
 &#39;&#39;[[Je vais consulter mon score final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="164" name="exam clinique cas 2" tags="Choix-multiple-a-cocher Media-image-son" position="1900,350" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;four&quot;,&quot;seven&quot;,&quot;eight&quot;]&gt;&gt;
+&lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;four&quot;,&quot;five&quot;,&quot;seven&quot;,&quot;eight&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous commencez à l&#39;examiner. La palpation ne révèle pas de problème particulier au niveau des articulations.
 Voici une vue exo buccale [2]
@@ -6807,15 +6808,15 @@ Cocher les affirmations justes :
 \&lt;div id=&quot;checkbox-submit&quot;&gt;
     \&lt;&lt;button &#39;Soumettre ma ou mes réponses&#39;&gt;&gt;
         &lt;&lt;set $tempScore = 0&gt;&gt;
-        &lt;&lt;if $desc.zero&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.one&gt;&gt;&lt;&lt;set $tempScore += 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.two&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.three&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.four&gt;&gt;&lt;&lt;set $tempScore += 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.five&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.six&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.seven&gt;&gt;&lt;&lt;set $tempScore += 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.eight&gt;&gt;&lt;&lt;set $tempScore += 10&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.zero&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.one&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.two&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.three&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.four&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.five&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.six&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.seven&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.eight&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;set $Score += $tempScore&gt;&gt;
 
         &lt;&lt;run Array.from(document.querySelectorAll(&#39;input[type=&quot;checkbox&quot;]&#39;)).forEach(cb =&gt; cb.disabled = true)&gt;&gt;
@@ -6826,9 +6827,9 @@ Cocher les affirmations justes :
         })&gt;&gt;
 
         &lt;&lt;replace &quot;#checkbox-feedback&quot;&gt;&gt;
-Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 40.
-\&lt;&lt;if $tempScore is 40&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
-//4 réponses peuvent être acceptées.
+Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 25.
+\&lt;&lt;if $tempScore is 25&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
+//5 réponses sont correctes.
 La 11 est au moins fracturée au niveau de l&#39;émail et de la dentine.  On teste au moins la mobilité de 11,12,21. On fait un test de vitalité sur 11 et on s&#39;attend à avoir une réponse altérée. Avec le miroir on vérifie si les lésions intéressent la pulpe de 11 ou non et on s&#39;assure que les antagonistes ne sont pas également fracturées.
 Les résultats de vos tests sont les suivants : 12,11,21 ne sont pas particulièrement mobiles. Le test de vitalité est positif mais retardé sur 11. En occlusal de 11, la pulpe ne vous semble pas exposée en regardant au miroir.//
 &lt;&lt;/replace&gt;&gt;
