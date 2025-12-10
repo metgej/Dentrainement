@@ -511,7 +511,24 @@ span.checkligne {
 // Mémorise l'ancien score clinique pour détecter les variations
 window.LastScore = null;
 
-</style><script role="script" id="twine-user-script" type="text/twine-javascript">document.addEventListener("keydown", function(e) {
+</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
+function unlockAudio() {
+    try {
+        window.BeepSound.play().then(() => {
+            window.BeepSound.pause();
+            window.BeepSound.currentTime = 0;
+        }).catch(()=>{});
+    } catch(e){}
+
+    document.removeEventListener("keydown", unlockAudio);
+    document.removeEventListener("click", unlockAudio);
+}
+
+// écoute les premières vraies actions utilisateur
+document.addEventListener("keydown", unlockAudio);
+document.addEventListener("click", unlockAudio);
+
+document.addEventListener("keydown", function(e) {
     if (e.key === "Enter") {
         e.preventDefault();
 
@@ -774,7 +791,7 @@ La vaccination est à jour. Le traumatisme dentaire remonte à 2 heures. Vous ne
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="2" name="Accueil enfant" tags="Fonction-random Chrono-simple Media-image-son" position="675,400" size="100,100">&lt;&lt;silently&gt;&gt;
-\&lt;&lt;set $Timer to 40&gt;&gt;
+\&lt;&lt;set $Timer to 35&gt;&gt;
 \&lt;&lt;/silently&gt;&gt;
 Vous accueillez l&#39;enfant. La maman commence à vous expliquer comment l&#39;accident a eu lieu sur la voirie.
 &lt;img src=&quot;./Images/mere_explication.jpg&quot; width=&quot;400vw&quot;&gt;
@@ -908,7 +925,6 @@ Très bien &#39;&#39;$Nom&#39;&#39; vous êtes en train de terminer un bridge pr
 Martine fait éruption dans la pièce. 
 Une mère et un enfant se sont présentés pour un trauma. C&#39;est le médecin généraliste d&#39;à côté qui leur a gentiment suggéré de débarquer sans rdv. L&#39;enfant a mal.
 &lt;&lt;silently&gt;&gt;&lt;&lt;set $Timer to 40&gt;&gt;&lt;&lt;/silently&gt;&gt;
-
 &lt;&lt;link &quot;Vous dîtes à votre assistante que vous êtes déjà surbooké. On ne peut pas bacler le bridge provisoire&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score-10&gt;&gt;
   &lt;&lt;goto &quot;Surbooké&quot;&gt;&gt;
@@ -927,11 +943,10 @@ Une mère et un enfant se sont présentés pour un trauma. C&#39;est le médecin
 &lt;&lt;silently&gt;&gt;
  &lt;&lt;repeat 1s&gt;&gt;
         &lt;&lt;set $Timer to $Timer-1&gt;&gt;
-        &lt;&lt;if $Timer gt 0&gt;&gt;
-        &lt;&lt;else&gt;&gt;
+        &lt;&lt;if $Timer is 0&gt;&gt;
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
-          &lt;&lt;/repeat&gt;&gt;
+        &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 &lt;&lt;/timed&gt;&gt;</tw-passagedata><tw-passagedata pid="8" name="Scénario2_avancé" tags="" position="1900,225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;if $Nom is &quot;&quot;&gt;&gt;&lt;&lt;set $Nom to &quot;Anonymous&quot;&gt;&gt;&lt;&lt;/if&gt;&gt;
@@ -2393,6 +2408,7 @@ Voici le cliché rétro-alvéolaire de la 21 [2]
 &lt;&lt;set $button = 1&gt;&gt;
 &lt;&lt;/button&gt;&gt;\
 &lt;/div&gt;
+
 &lt;&lt;silently&gt;&gt;
 &lt;&lt;repeat 1s&gt;&gt;
 &lt;&lt;set $Timer -= 1&gt;&gt;
@@ -3068,7 +3084,7 @@ fetch(url, {
 [[Je recommence un entraînement|Passage 1]]</tw-passagedata><tw-passagedata pid="58" name="D_Surbooké" tags="" position="5575,400" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Refuser une urgence traumatique chez l&#39;enfant sans évaluer la situation n&#39;est pas professionel.
+Refuser une urgence traumatique chez l&#39;enfant sans évaluer la situation n&#39;est pas professionnel.
 
 &#39;&#39;[[Je reprends mes esprits et j&#39;accueille l&#39;enfant.|D_Accueil enfant]]&#39;&#39;</tw-passagedata><tw-passagedata pid="59" name="D_TTT1" tags="Choix-multiple-a-cocher Media-image-son" position="5525,1075" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
@@ -3877,11 +3893,11 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
     &lt;&lt;if $random is 6&gt;&gt;&lt;&lt;goto &quot;Scénario6_avancé&quot;&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 </tw-passagedata><tw-passagedata pid="85" name="Ecoute" tags="Chrono-simple Fonction-random" position="725,525" size="100,100">&lt;&lt;silently&gt;&gt;
-&lt;&lt;set $Timer to 0&gt;&gt;
+&lt;&lt;set $Timer to 25&gt;&gt;
 &lt;&lt;set $random=random(1,2)&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Elle n&#39;en finit pas de parler. Vous saviez que vous auriez dû couper court dès le début. 
-&lt;&lt;link &quot;Vous lui dîtes de sortir 3 minutes.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous lui dîtes de sortir 3 minutes&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score+5&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
   &lt;&lt;if $random is 1&gt;&gt;&lt;&lt;goto &quot;Hasard sortie 1&quot;&gt;&gt;
 &lt;&lt;else&gt;&gt;&lt;&lt;goto &quot;Hasard sortie 2&quot;&gt;&gt;
@@ -4032,12 +4048,12 @@ Vous l&#39;encouragez à se calmer davantage en étant doux.
 
 Mais quand vous approchez, et que vous faîtes des petits gestes avec les bras, l&#39;enfant semble avoir peur, cherche à vous esquiver.
 
-&lt;&lt;link &quot;Vous vous dîtes qu&#39;il y une chose à vérifier au sujet de ce comportement.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous vous dîtes qu&#39;il y une chose à vérifier au sujet de ce comportement&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score+5&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
 &lt;&lt;goto &quot;Verif violence&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Vous laissez un peu plus d&#39;espace à l&#39;enfant et continuez votre interrogatoire sans y prêtez plus d&#39;attention.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous laissez un peu plus d&#39;espace à l&#39;enfant et continuez votre interrogatoire sans y prêtez plus d&#39;attention&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;noVerif violence&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
@@ -4055,7 +4071,7 @@ Mais quand vous approchez, et que vous faîtes des petits gestes avec les bras, 
 &lt;&lt;/silently&gt;&gt;
 Une fois la mère sortie, l&#39;enfant devient encore plus anxieux et vous patinez.
 
-&lt;&lt;link &quot;[Vous expliquez à l&#39;enfant que si ça continue, on ne va rien pouvoir faire pour sa dent.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous expliquez à l&#39;enfant que si ça continue, on ne va rien pouvoir faire pour sa dent.&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;Ennervement&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
@@ -4065,7 +4081,7 @@ Une fois la mère sortie, l&#39;enfant devient encore plus anxieux et vous patin
   &lt;&lt;goto &quot;Conduite cst&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;[Vous demandez à votre assistante dentaire, très à l&#39;aise avec les enfants, d&#39;examiner elle-même l&#39;enfant, c&#39;est mieux pour tout le monde.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous demandez à votre assistante dentaire, très à l&#39;aise avec les enfants, d&#39;examiner elle-même l&#39;enfant, c&#39;est mieux pour tout le monde.&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;laisse assistante&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
@@ -5532,9 +5548,9 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
 const url = &quot;https://6936b66bf8dc350aff31e3ea.mockapi.io/scores&quot;; // remplace par ton URL MockAPI
 
 const player = {
-  nom: State.variables.Nom,
-  score: State.variables.Total,
-  scenario: State.variables.Scenario,
+  nom: &quot;&lt;&lt;= $Nom &gt;&gt;&quot;,
+  score: &lt;&lt;= $Total &gt;&gt;,
+  scenario: &quot;&lt;&lt;= $Scenario &gt;&gt;&quot;,
   timestamp: Date.now()
 };
 
@@ -5575,7 +5591,7 @@ fetch(url, {
     let top10 = scoresScenario.slice(0, 10);
 
     // --- Construire tableau HTML ---
-    let html = `&lt;h3&gt;Voici le Top 10 des scores de vos confrères sur ce cas clinique : &lt;i&gt;${getScenarioTitre(State.variables.Scenario)}&lt;/i&gt;&lt;/h3&gt;`;
+    let html = `&lt;h3&gt;Voici le Top 10 des scores sur ce cas clinique : &lt;i&gt;${getScenarioTitre(State.variables.Scenario)}&lt;/i&gt;&lt;/h3&gt;`;
     html += `&lt;table style=&quot;
                 border-collapse: collapse; 
                 width: 100%; 
@@ -5660,7 +5676,7 @@ setup.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|
 </tw-passagedata><tw-passagedata pid="133" name="StoryCaption" tags="" position="150,375" size="100,100">&#39;&#39;[[Credits et références|Credits Ref]]&#39;&#39;</tw-passagedata><tw-passagedata pid="134" name="Surbooké" tags="" position="550,400" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Refuser une urgence traumatique chez l&#39;enfant sans évaluer la situation n&#39;est pas professionel.
+Refuser une urgence traumatique chez l&#39;enfant sans évaluer la situation n&#39;est pas professionnel.
 
 &#39;&#39;[[Je reprends mes esprits et j&#39;accueille l&#39;enfant.|Accueil enfant]]&#39;&#39;</tw-passagedata><tw-passagedata pid="135" name="TTT1" tags="Chrono-simple" position="1425,1475" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
@@ -6167,13 +6183,13 @@ Martine est d&#39;accord avec nous. Elle vous précise qu&#39;avec son praticien
 &lt;&lt;/silently&gt;&gt;
 Le dépistage de la violence infantile est un des points à vérifier lors d&#39;un trauma chez l&#39;enfant. L&#39;adulte accompagnant peut parler d&#39;une chute, d&#39;un accident, mais l&#39;enfant peut avoir subi des coups.
 
-&lt;&lt;link &quot;Vous vérifiez si des marques de coups visibles sont présentes.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous vérifiez si des marques de coups visibles sont présentes&quot;&gt;&gt;
  &lt;&lt;set $gainRapidite = true&gt;&gt;
   &lt;&lt;set $Score to $Score+5&gt;&gt;
 &lt;&lt;if $random is 1&gt;&gt;&lt;&lt;goto &quot;echymoses&quot;&gt;&gt;
 &lt;&lt;else&gt;&gt;&lt;&lt;goto &quot;no echymoses&quot;&gt;&gt;&lt;&lt;/if&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Vous faîtes reformuler à l&#39;enfant ce qui s&#39;est passé pour sa dent de façon simple.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous faîtes reformuler à l&#39;enfant ce qui s&#39;est passé pour sa dent de façon simple&quot;&gt;&gt;
  &lt;&lt;set $gainRapidite = true&gt;&gt;
   &lt;&lt;set $Score to $Score+5&gt;&gt;
 &lt;&lt;if $random is 1&gt;&gt;&lt;&lt;goto &quot;reformulation violence oui&quot;&gt;&gt;
@@ -6931,17 +6947,17 @@ D&#39;après Martine il était un peu &quot;ennervé&quot;, encore un qui ne vas
 &lt;&lt;/silently&gt;&gt;
 Le dépistage de la violence infantile est un des points à vérifier lors d&#39;un trauma chez l&#39;enfant. L&#39;adulte accompagnant peut parler d&#39;une chute, d&#39;un accident, mais l&#39;enfant peut avoir subi des coups.
 
-&lt;&lt;link &quot;Vous demandez à l&#39;enfant s&#39;il est victime de violence.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous demandez à l&#39;enfant s&#39;il est victime de violence&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;Demande violence&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Vous vérifiez rapidement si l&#39;enfant n&#39;a pas de marques de coups visibles.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous vérifiez rapidement si l&#39;enfant n&#39;a pas de marques de coups visibles&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score+5&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
 &lt;&lt;goto &quot;no echymoses&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Vous faîtes reformuler à l&#39;enfant ce qui s&#39;est passé pour sa dent de façon simple.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous faîtes reformuler à l&#39;enfant ce qui s&#39;est passé pour sa dent de façon simple&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score+5&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
 &lt;&lt;goto &quot;reformulation violence no&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
