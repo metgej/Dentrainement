@@ -4123,15 +4123,15 @@ Donc vous décidez de remettre le morceau sur la dent de façon pérenne et en a
 
 Je peux faire une rainure interne sur la face du morceau qui sera en contact avec le reste de la dent.
 
-&lt;&lt;link &quot;Vraie bonne idée?&quot;&gt;&gt;
+&lt;&lt;link &quot;Vraie bonne idée ?&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score+15&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
 &lt;&lt;goto &quot;Rainure&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Fausse bonne idée?&quot;&gt;&gt;
+&lt;&lt;link &quot;Fausse bonne idée ?&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;Rainure&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Vraie mauvaise idée?&quot;&gt;&gt;
+&lt;&lt;link &quot;Vraie mauvaise idée ?&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;Rainure&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
@@ -4157,15 +4157,15 @@ Oui, avec le composite d&#39;assemblage vous pourriez combler ce léger hiatus.
 Donc vous décidez de remettre le morceau sur la dent de façon pérenne et en attendant vous immergez le morceau dans du sérum physiologique.
 
 Je peux faire une rainure interne sur la face du morceau qui sera en contact avec le reste de la dent.
-&lt;&lt;link &quot;Vraie bonne idée?&quot;&gt;&gt;
+&lt;&lt;link &quot;Vraie bonne idée ?&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score+15&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
 &lt;&lt;goto &quot;Rainure&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Vraie mauvaise idée?&quot;&gt;&gt;
+&lt;&lt;link &quot;Vraie mauvaise idée ?&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;Rainure&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Fausse bonne idée?&quot;&gt;&gt;
+&lt;&lt;link &quot;Fausse bonne idée ?&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;Rainure&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
@@ -7554,7 +7554,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
 </tw-passagedata><tw-passagedata pid="198" name="cas4 morceau no ok" tags="Chrono-simple" position="3400,1200" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 20&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-En fait, pendant votre protocole vous vous apercevez que le morceau ne s&#39;adapte pas bien et qu&#39;il manque un morceau significatif.
+Le morceau est disponible. Mais pendant votre protocole vous vous apercevez qu&#39;il ne s&#39;adapte pas bien et qu&#39;il manque un morceau significatif.
 
 &lt;&lt;link &quot;Dommage. Je modifie mon plan de traitement et je fais une reconstruction directe pour protéger la dent&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score+20&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
@@ -7572,10 +7572,10 @@ En fait, pendant votre protocole vous vous apercevez que le morceau ne s&#39;ada
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="199" name="Cas4 oui reco directe" tags="Chrono-simple" position="3375,1325" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="199" name="Cas4 oui reco directe" tags="Chrono-simple" position="3350,1325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 20&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Oui, si le positionnement n&#39;est pas bon, que l&#39;adaptation marginale n&#39;est pas satisfaisante et qu&#39;il manque un morceau signigicatif il n&#39;est pas conseillé de recoller. Une reconstruction directe est pertinente.
+Oui, si le positionnement n&#39;est pas bon, que l&#39;adaptation marginale n&#39;est pas satisfaisante et qu&#39;il manque un morceau significatif il n&#39;est pas conseillé de le recoller. Une reconstruction directe est pertinente.
 
 &lt;&lt;link &quot;Vous réalisez une reconstruction directe au composite&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-20&gt;&gt;
@@ -7583,7 +7583,7 @@ Oui, si le positionnement n&#39;est pas bon, que l&#39;adaptation marginale n&#3
 
 &lt;&lt;link &quot;Vous réalisez une reconstruction au CVI pour temporiser&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score+20&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
-&lt;&lt;goto &quot;Cas4 oui cvi &quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
+&lt;&lt;goto &quot;Cas4 oui cvi&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
 &lt;&lt;silently&gt;&gt;
     &lt;&lt;repeat 1s&gt;&gt;
@@ -7614,7 +7614,7 @@ Si le positionnement n&#39;est pas bon, que l&#39;adaptation marginale n&#39;est
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="201" name="Cas4 erreur recons au compo" tags="" position="3475,1425" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="201" name="Cas4 erreur recons au compo" tags="" position="3475,1450" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Non, dans un contexte d&#39;urgence, on ne privilégie pas la reconstruction directe au composite. On préfèrera temporiser au CVI, qui est rapide et facile à mettre à place.
@@ -7635,15 +7635,15 @@ Vous décidez de remettre le morceau sur la dent de façon pérenne et en attend
 
 Je peux faire une rainure interne sur la face du morceau qui sera en contact avec le reste de la dent.
 
-&lt;&lt;link &quot;Fausse bonne idée?&quot;&gt;&gt;
+&lt;&lt;link &quot;Fausse bonne idée ?&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;Rainure&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Vraie bonne idée?&quot;&gt;&gt;
+&lt;&lt;link &quot;Vraie bonne idée ?&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score+15&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
 &lt;&lt;goto &quot;Rainure&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Vraie mauvaise idée?&quot;&gt;&gt;
+&lt;&lt;link &quot;Vraie mauvaise idée ?&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;Rainure&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
