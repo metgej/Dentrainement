@@ -511,6 +511,34 @@ span.checkligne {
 // Mémorise l'ancien score clinique pour détecter les variations
 window.LastScore = null;
 
+#resultat table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#resultat th {
+    background: #333;
+    color: white;
+}
+
+#resultat th,
+#resultat td {
+    padding: 6px;
+    border: 1px solid #555;
+}
+
+#resultat tr:nth-child(even) {
+    background: #f0f0f0;
+}
+
+#resultat tr:nth-child(odd) {
+    background: #cfcfcf;
+}
+
+/* Highlight du joueur */
+#resultat tr[style*="bold"] {
+    background: #b388ff !important;
+}
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
 function unlockAudio() {
 
@@ -1508,7 +1536,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
     &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="21" name="Conduite cst" tags="Media-image-son Choix-multiple-a-cocher" position="1325,575" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $Timer to 50&gt;&gt;
+&lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;four&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 &lt;img src=&quot;./Images/interrogatoire2.jpg&quot; width=&quot;300vw&quot;&gt;
@@ -1629,6 +1657,7 @@ Ecrivez un ou des mots clés, ci-dessous (Ex : traitement iatrogene).
   &lt;&lt;/script&gt;&gt;
   &lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;
 \&lt;i&gt;Il faut vérifier si l&#39;enfant n&#39;a pas de signe de traumatisme crânien, si tel était le cas il faudrait adresser aux urgences pédiatriques 🚑.&lt;/i&gt;
+
 Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 25.
 &lt;&lt;if $tempScore gte 15&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
 Admettons qu&#39;il n&#39;y a pas de signe de traumatisme crânien dans notre cas et continuons.
@@ -1788,6 +1817,7 @@ Voici la vue exo-buccale de l&#39;enfant
         &lt;&lt;replace &quot;#checkbox-feedback&quot;&gt;&gt;
 Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 20.
 \&lt;&lt;if $tempScore is 20&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
+
 //L&#39;enfant a certainement mal à la lèvre vu son aspect, mais l&#39;information ne sera pas spécialement pertinente. 
 Les tests de vitalité sont recommandés pour le suivi même s&#39;ils peuvent être peu concluants juste après un trauma.
 Les dents adjacentes 12 et 21 peuvent avoir aussi subi le choc. 
@@ -1880,11 +1910,11 @@ Quel dispositif allez-vous utiliser ?
     })();
   &lt;&lt;/script&gt;&gt;
   &lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;
+Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 10.
+\&lt;&lt;if $tempScore is 10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
 Il faut mettre en place une contention passive et flexible, probablement de canine à canine.
 Voici ce que cela donne dans notre cas :
 &lt;img src=&quot;./Cas_clinique1/contention.jpg&quot; width=&quot;400vw&quot;&gt;
-Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt;sur un maximum de 10.
-\&lt;&lt;if $tempScore is 10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
 [[La suite|TTT4 (ordo)]]
 &lt;&lt;/replace&gt;&gt;
   &lt;&lt;set $button to 1&gt;&gt;
@@ -4078,17 +4108,17 @@ Mais quand vous approchez, et que vous faîtes des petits gestes avec les bras, 
 &lt;&lt;/silently&gt;&gt;
 Une fois la mère sortie, l&#39;enfant devient encore plus anxieux et vous patinez.
 
-&lt;&lt;link &quot;Vous expliquez à l&#39;enfant que si ça continue, on ne va rien pouvoir faire pour sa dent.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous expliquez à l&#39;enfant que si ça continue, on ne va rien pouvoir faire pour sa dent&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;Ennervement&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Vous faites rentrer la mère et lui dîtes poliment mais fermement qu&#39;il y a des points à vérifier d&#39;urgence et que c&#39;est à vous de conduire la consultation pour cela, dans le bien de l&#39;enfant.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous faites rentrer la mère et lui dîtes poliment mais fermement qu&#39;il y a des points à vérifier d&#39;urgence et que c&#39;est à vous de conduire la consultation pour cela, dans le bien de l&#39;enfant&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score+10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
   &lt;&lt;goto &quot;Conduite cst&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Vous demandez à votre assistante dentaire, très à l&#39;aise avec les enfants, d&#39;examiner elle-même l&#39;enfant, c&#39;est mieux pour tout le monde.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous demandez à votre assistante dentaire, très à l&#39;aise avec les enfants, d&#39;examiner elle-même l&#39;enfant, c&#39;est mieux pour tout le monde&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-10&gt;&gt;
 &lt;&lt;goto &quot;laisse assistante&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
@@ -5368,19 +5398,15 @@ Si la dent avait été fracturée au niveau radiculaire comme sur la photo ci-de
             const ligne = document.querySelector(&#39;[data-id=&quot;&#39;+id+&#39;&quot;]&#39;);
             if (ligne) ligne.classList.add(&quot;good-answer&quot;);
         })&gt;&gt;
-
         &lt;&lt;replace &quot;#checkbox-feedback&quot;&gt;&gt;
 Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 10.
 \&lt;&lt;if $tempScore is 10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
 //Dans le cas d&#39;une fracture radiculaire, il est recommandé de déposer la contention à 4 semaines.//
 &lt;&lt;/replace&gt;&gt;
-
         &lt;&lt;run $(&#39;#checkbox-feedback&#39;).css(&#39;opacity&#39;,1)&gt;&gt;
-
         &lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;
 &#39;&#39;[[La suite|TTT9]]&#39;&#39;
 &lt;&lt;/replace&gt;&gt;
-
         &lt;&lt;set $button = 1&gt;&gt;
     &lt;&lt;/button&gt;&gt;
 &lt;/div&gt;
@@ -5494,7 +5520,7 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
     &lt;&lt;set $SeuilArgent = 150&gt;&gt;
 &lt;&lt;/switch&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-&#39;&#39;Votre score global est de&#39;&#39; &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt;(Score clinique + Score de rapidité/3) 
+&#39;&#39;Votre score global est de&#39;&#39; &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt; (Score clinique + Score de rapidité/3) 
 \&lt;&lt;if ($Rapidite - $Total) &gt; 200&gt;&gt;
 &#39;&#39;Vous avez un score de rapidité très élevé mais un score clinique faible.&#39;&#39;
   Vous voulez peut-être trop brûler les étapes. Il ne sert à rien d&#39;aller trop vite si les décisions cliniques ne sont pas bonnes.
@@ -5553,9 +5579,6 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
 🥇 Or ≥ $SeuilArgent points
 
 \&lt;div id=&quot;resultat&quot;&gt;Chargement du Top 10...&lt;/div&gt;
-\&lt;&lt;script&gt;&gt;
-const url = &quot;https://6936b66bf8dc350aff31e3ea.mockapi.io/scores&quot;; // remplace par ton URL MockAPI
-
 &lt;&lt;script&gt;&gt;
 $(document).one(&#39;:passagedisplay&#39;, function () {
 
@@ -5816,11 +5839,11 @@ La dent est remise en place dans l&#39;alévole et la radio de contrôle est bon
 &lt;&lt;/silently&gt;&gt;
 Désormais vous devez décider s&#39;il faut préparer une ordonnance pour ce cas.
 
-&lt;&lt;link &quot;Je prescris notamment des antibiotiques (recommandations HAS 2011).&quot;&gt;&gt;
+&lt;&lt;link &quot;Je prescris notamment des antibiotiques (recommandations HAS 2011)&quot;&gt;&gt;
    &lt;&lt;set $Score to $Score-15&gt;&gt;
    &lt;&lt;goto &quot;ordo_atb&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Je vais prescrire mais pas des antibiotiques.&quot;&gt;&gt;
+&lt;&lt;link &quot;Je vais prescrire mais pas des antibiotiques&quot;&gt;&gt;
    &lt;&lt;set $Score to $Score+10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
   &lt;&lt;goto &quot;ordo sans atb&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
@@ -5924,7 +5947,7 @@ Quelle est votre prescription de Paracétamol ? (sachets ou comprimés de 200mg,
         &lt;&lt;if $desc.six&gt;&gt;&lt;&lt;set $tempScore -= 0&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.seven&gt;&gt;&lt;&lt;set $tempScore += 0&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;set $Score += $tempScore&gt;&gt;
-        &lt;&lt;run Array.from(document.querySe20ctorAll(&#39;input[type=&quot;checkbox&quot;]&#39;)).forEach(cb =&gt;cb.disabled = true)&gt;&gt;
+        &lt;&lt;run Array.from(document.querySelectorAll(&#39;input[type=&quot;checkbox&quot;]&#39;)).forEach(cb =&gt;cb.disabled = true)&gt;&gt;
         &lt;&lt;!-- Mise en évidence des bonnes réponses --&gt;&gt;
         &lt;&lt;run $bonnesReponses.forEach(id =&gt; {
             const ligne = document.querySelector(&#39;[data-id=&quot;&#39;+id+&#39;&quot;]&#39;);
@@ -6022,7 +6045,7 @@ Si votre réponse est oui, précisez directement le nom de ce document.
   &lt;&lt;/script&gt;&gt;
   &lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;
 Il faut établir le CMI/Certificat Médical Initial.
-Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt;sur un maximum de 10.
+Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 10.
 \&lt;&lt;if $tempScore is 10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
 [[La suite|TTT7 (suivi)]]
 &lt;&lt;/replace&gt;&gt;
@@ -7026,7 +7049,7 @@ Que prescrivez-vous maintenant que nous avons écarté les antibiotiques ?
         &lt;&lt;replace &quot;#checkbox-feedback&quot;&gt;&gt;
 \Votre score clinique pour ce passage est de : &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 15.
 \&lt;&lt;if $tempScore is 15&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
-\//Il y a seulement 3 bonnes réponses. Du bain de bouche sans alcool (pour un enfant), du paracétamol et éventuellement un gel pour faciliter la cicatrisation.//&lt;&lt;/replace&gt;&gt;
+//Il y a seulement 3 bonnes réponses. Du bain de bouche sans alcool (pour un enfant), du paracétamol et éventuellement un gel pour faciliter la cicatrisation.//&lt;&lt;/replace&gt;&gt;
 
         &lt;&lt;run $(&#39;#checkbox-feedback&#39;).css(&#39;opacity&#39;,1)&gt;&gt;
         &lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;
