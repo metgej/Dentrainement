@@ -795,19 +795,19 @@ La vaccination est à jour. Le traumatisme dentaire remonte à 2 heures. Vous ne
 \&lt;&lt;/silently&gt;&gt;
 Vous accueillez l&#39;enfant. La maman commence à vous expliquer comment l&#39;accident a eu lieu sur la voirie.
 &lt;img src=&quot;./Images/mere_explication.jpg&quot; width=&quot;400vw&quot;&gt;
-&lt;&lt;link &quot;Vous l&#39;écoutez quelques minutes pour la laisser se calmer et pouvoir procéder à votre consultation ensuite.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous l&#39;écoutez quelques minutes pour la laisser se calmer et pouvoir procéder à votre consultation ensuite&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score-10&gt;&gt;
   &lt;&lt;goto &quot;Ecoute&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Vous l&#39;interrompez poliment mais fermement pour lui dire qu&#39;il y a des points à vérifier d&#39;urgence et que c&#39;est à vous de conduire la consultation pour cela, dans le bien de l&#39;enfant.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous l&#39;interrompez poliment mais fermement pour lui dire qu&#39;il y a des points à vérifier d&#39;urgence et que c&#39;est à vous de conduire la consultation pour cela, dans le bien de l&#39;enfant&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score+10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
   &lt;&lt;goto &quot;Conduite cst&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
 &lt;&lt;silently&gt;
 &lt;&lt;set $random=random(1,2)&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-&lt;&lt;link &quot;Vous la faites sortir pour se calmer 3 minutes.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous la faites sortir pour se calmer 3 minutes&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score+5&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
 &lt;&lt;if $random is 1&gt;&gt;&lt;&lt;goto &quot;Hasard sortie 1&quot;&gt;&gt;
 &lt;&lt;else&gt;&gt;&lt;&lt;goto &quot;Hasard sortie 2&quot;&gt;&gt;
@@ -925,7 +925,7 @@ Très bien &#39;&#39;$Nom&#39;&#39; vous êtes en train de terminer un bridge pr
 Martine fait éruption dans la pièce. 
 Une mère et un enfant se sont présentés pour un trauma. C&#39;est le médecin généraliste d&#39;à côté qui leur a gentiment suggéré de débarquer sans rdv. L&#39;enfant a mal.
 &lt;&lt;silently&gt;&gt;&lt;&lt;set $Timer to 40&gt;&gt;&lt;&lt;/silently&gt;&gt;
-&lt;&lt;link &quot;Vous dîtes à votre assistante que vous êtes déjà surbooké. On ne peut pas bacler le bridge provisoire&quot;&gt;&gt;
+\&lt;&lt;link &quot;Vous dîtes à votre assistante que vous êtes déjà surbooké. On ne peut pas bacler le bridge provisoire&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score-10&gt;&gt;
   &lt;&lt;goto &quot;Surbooké&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
@@ -959,8 +959,7 @@ Une mère et un enfant se sont présentés pour un trauma. C&#39;est le médecin
 
 &#39;&#39;[[Je passe à l&#39;examen clinique|exam clinique cas 2]]&#39;&#39;</tw-passagedata><tw-passagedata pid="9" name="Scénario3_avancé" tags="Media-image-son" position="2450,250" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;if $Nom is &quot;&quot;&gt;&gt;&lt;&lt;set $Nom to &quot;Anonymous&quot;&gt;&gt;&lt;&lt;/if&gt;&gt;
-&lt;&lt;set $Score to 0&gt;&gt;
-&lt;&lt;set $Rapidite to 0&gt;&gt;
+&lt;&lt;if $Scenario != &quot;Scénario4_avancé&quot;&gt;&gt;&lt;&lt;set $Score to 0&gt;&gt;&lt;&lt;set $Rapidite to 0&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;set $Scenario to &quot;Scénario3_avancé&quot;&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -1004,7 +1003,7 @@ setTimeout(function() {
 &lt;/script&gt;
 C&#39;est le téléphone sans fil du cabinet que Martine a oublié pas loin de votre fauteuil.
 \&lt;&lt;/timed&gt;&gt;
-\&lt;&lt;timed 7s&gt;&gt;
+\&lt;&lt;timed 9s&gt;&gt;
 Martine arrive enfin pour décrocher... 
 \&lt;&lt;/timed&gt;&gt;
 &lt;&lt;timed 11s&gt;&gt;
@@ -3904,7 +3903,7 @@ Elle n&#39;en finit pas de parler. Vous saviez que vous auriez dû couper court 
 &lt;&lt;/if&gt;&gt;
 &lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Vous l&#39;interrompez poliment mais fermement pour lui dire qu&#39;il y a des points à vérifier d&#39;urgence et que c&#39;est à vous de conduire la consultation pour cela, dans le bien de l&#39;enfant.&quot;&gt;&gt;
+&lt;&lt;link &quot;Vous l&#39;interrompez poliment mais fermement pour lui dire qu&#39;il y a des points à vérifier d&#39;urgence et que c&#39;est à vous de conduire la consultation pour cela, dans le bien de l&#39;enfant&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score+10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
   &lt;&lt;goto &quot;Conduite cst&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;
@@ -5678,7 +5677,7 @@ setup.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|
 &lt;&lt;/silently&gt;&gt;
 Refuser une urgence traumatique chez l&#39;enfant sans évaluer la situation n&#39;est pas professionnel.
 
-&#39;&#39;[[Je reprends mes esprits et j&#39;accueille l&#39;enfant.|Accueil enfant]]&#39;&#39;</tw-passagedata><tw-passagedata pid="135" name="TTT1" tags="Chrono-simple" position="1425,1475" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je reprends mes esprits et j&#39;accueille l&#39;enfant|Accueil enfant]]&#39;&#39;</tw-passagedata><tw-passagedata pid="135" name="TTT1" tags="Chrono-simple" position="1425,1475" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Pour le reste de la séance que faîtes-vous d&#39;abord?
