@@ -510,7 +510,6 @@ span.checkligne {
 
 // Mémorise l'ancien score clinique pour détecter les variations
 window.LastScore = null;
-
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
 function unlockAudio() {
 
@@ -1300,7 +1299,7 @@ La pulpe n&#39;est pas exposée. Comme solution je propose :
 &lt;&lt;set $Score to $Score-30&gt;&gt;
 &lt;&lt;goto &quot;enfant2_oubli morceau&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Il me manque une information capitale pour me decider|enfant2_demande morceau&quot;&gt;&gt;
+&lt;&lt;link &quot;Il me manque une information capitale pour me decider&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score+10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
 &lt;&lt;goto &quot;enfant2_demande morceau&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
@@ -2922,7 +2921,7 @@ Il vous est précisé que l&#39;enfant a 9 ans. Il a vraiment mal et se plaint b
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="57" name="D_Resultat" tags="Media-image-son" position="6950,1875" size="100,100">&lt;div class=&quot;pulseTitle&quot;&gt;RÉSULTAT FINAL&lt;/div&gt;
 Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span style=&quot;color: purple;&quot;&gt;&#39;&#39;$Score&#39;&#39;&lt;/span&gt;&lt;/span&gt; et un score de rapidité de &lt;span id=&quot;Score_rapid&quot;&gt;&lt;span style=&quot;color: green;&quot;&gt;&#39;&#39;$Rapidite&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
 &lt;&lt;silently&gt;&gt;
-&lt;&lt;set $Total = Math.round($Score + $Rapidite/4)&gt;&gt;
+&lt;&lt;set $Total = Math.round($Score + $Rapidite/3)&gt;&gt;
 /* Définition des seuils selon le scénario */
 &lt;&lt;switch $Scenario&gt;&gt;
   &lt;&lt;case &quot;Scénario1_débutant&quot;&gt;&gt;
@@ -2937,12 +2936,12 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
          &lt;&lt;case &quot;Scénario6_débutant&quot;&gt;&gt;
     &lt;&lt;set $SeuilBronze = 100&gt;&gt;
     &lt;&lt;set $SeuilArgent = 200&gt;&gt;
-  &lt;&lt;default&gt;&gt;
+    &lt;&lt;default&gt;&gt;
     &lt;&lt;set $SeuilBronze = 50&gt;&gt;
     &lt;&lt;set $SeuilArgent = 150&gt;&gt;
 &lt;&lt;/switch&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-&#39;&#39;Votre score global est de&#39;&#39; &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt;(Score clinique + Score de rapidité/4) 
+&#39;&#39;Votre score global est de&#39;&#39; &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt; (Score clinique + Score de rapidité/3) 
 \&lt;&lt;if ($Rapidite - $Total) &gt; 200&gt;&gt;
 &#39;&#39;Vous avez un score de rapidité très élevé mais un score clinique faible.&#39;&#39;
   Vous voulez peut-être trop brûler les étapes. Il ne sert à rien d&#39;aller trop vite si les décisions cliniques ne sont pas bonnes.
@@ -2959,7 +2958,7 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
     text-shadow: 0 0 10px rgba(160, 100, 255, 0.8);
     display:inline-block;
   &quot;&gt;
-   \🥉
+    \🥉
   &lt;/span&gt;
 &lt;/div&gt;
 \Recommencez un ou plusieurs entraînement pour progresser et viser plus haut !
@@ -2973,7 +2972,7 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
     text-shadow: 0 0 10px rgba(160, 100, 255, 0.8);
     display:inline-block;
   &quot;&gt;
-   \🥈
+    \🥈
   &lt;/span&gt;
 &lt;/div&gt;
 \Recommencez un ou plusieurs entraînement pour viser l&#39;excellence !
@@ -2991,7 +2990,7 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
    \🥇
   &lt;/span&gt;
 &lt;/div&gt;
-\Recommencez un ou plusieurs entraînement pour vérifier que ce n&#39;est pas un coup de chance 😉ou bien testez-vous sur d&#39;autres cas cliniques ou encore passez en niveau avancé !
+\Recommencez un ou plusieurs entraînement pour vérifier que ce n&#39;est pas un coup de chance 😉ou bien testez-vous sur d&#39;autres cas cliniques, ou encore passez en niveau avancé !
 \&lt;&lt;/if&gt;&gt;
 \&lt;&lt;/if&gt;&gt;
 
@@ -3000,97 +2999,97 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
 🥈 Argent ≥ $SeuilBronze et &lt; $SeuilArgent points
 🥇 Or ≥ $SeuilArgent points
 
-\&lt;div id=&quot;resultat&quot;&gt;Chargement du Top 10...&lt;/div&gt;
-\&lt;&lt;script&gt;&gt;
-const url = &quot;https://6936b66bf8dc350aff31e3ea.mockapi.io/scores&quot;; // remplace par ton URL MockAPI
+&lt;div id=&quot;resultat&quot;&gt;Chargement du Top 10...&lt;/div&gt;
 
-const player = {
-  nom: State.variables.nom,
-  score: State.variables.Score,
-  scenario: State.variables.Scenario,
-  timestamp: Date.now()
-};
+&lt;&lt;script&gt;&gt;
+$(document).one(&#39;:passagedisplay&#39;, function () {
 
-// Fonction pour transformer $Scenario en titre lisible
+    const url = &quot;https://6936b66bf8dc350aff31e3ea.mockapi.io/scores&quot;;
+
+    const player = {
+        nom: String(State.variables.Nom || &quot;Anonyme&quot;),
+        score: Number(State.variables.Total || 0),
+        scenario: String(State.variables.Scenario || &quot;Inconnu&quot;),
+        timestamp: Date.now()
+    };
+
+    fetch(url, {
+        method: &quot;POST&quot;,
+        headers: {&quot;Content-Type&quot;: &quot;application/json&quot;},
+        body: JSON.stringify(player)
+    })
+    .then(() =&gt; fetch(url))
+    .then(res =&gt; res.json())
+    .then(scores =&gt; {
+
+        let scoresScenario = scores.filter(s =&gt; s.scenario === player.scenario);
+        scoresScenario.sort((a, b) =&gt; b.score - a.score);
+        let top10 = scoresScenario.slice(0, 10);
+
+        // --- Construire le HTML du tableau ---
+        let html = `&lt;h3&gt;Voici le Top 10 des scores sur le &lt;i&gt;${getScenarioTitre(player.scenario)}&lt;/i&gt;&lt;/h3&gt;`;
+        html += `&lt;table style=&quot;
+                        width:100%; 
+                        border-collapse: collapse; 
+                        font-family: Arial, sans-serif;
+                        text-align: center;
+                        margin-top: 10px;&quot;&gt;`;
+
+        // Entête
+        html += `
+            &lt;tr style=&quot;background-color:#333; color:white;&quot;&gt;
+                &lt;th&gt;Rang&lt;/th&gt;
+                &lt;th&gt;Nom&lt;/th&gt;
+                &lt;th&gt;Score&lt;/th&gt;
+                &lt;th&gt;Date&lt;/th&gt;
+            &lt;/tr&gt;`;
+
+        // Lignes
+        top10.forEach((s, i) =&gt; {
+            // Zebra striping
+            let bgColor = i % 2 === 0 ? &quot;#FFFDF5&quot; : &quot;#F6F2E8&quot;;
+            // Joueur actuel en violet doux
+            if(s.nom === player.nom) bgColor = &quot;#e1d5ff&quot;;
+            html += `
+            &lt;tr style=&quot;background-color:${bgColor}; font-weight:${s.nom === player.nom ? &#39;bold&#39; : &#39;normal&#39;};&quot;&gt;
+                &lt;td&gt;${i + 1}&lt;/td&gt;
+                &lt;td&gt;${s.nom}&lt;/td&gt;
+                &lt;td&gt;${s.score}&lt;/td&gt;
+                &lt;td&gt;${new Date(s.timestamp).toLocaleDateString()}&lt;/td&gt;
+            &lt;/tr&gt;`;
+        });
+
+        html += `&lt;/table&gt;`;
+
+        document.getElementById(&quot;resultat&quot;).innerHTML = html;
+
+    })
+    .catch(err =&gt; {
+        document.getElementById(&quot;resultat&quot;).innerHTML = &quot;&lt;b&gt;Erreur :&lt;/b&gt; &quot; + err;
+    });
+
+});
+
+// -------- mapping ----------
 function getScenarioTitre(scenario) {
     const mapping = {
-      &quot;Scénario1_avancé&quot;: &quot;Cas 1 niveau avancé&quot;,
-      &quot;Scénario2_avancé&quot;: &quot;Cas 2 niveau avancé&quot;,
-      &quot;Scénario3_avancé&quot;: &quot;Cas 3 niveau avancé&quot;,
-      &quot;Scénario4_avancé&quot;: &quot;Cas 4 niveau avancé&quot;,
-      &quot;Scénario5_avancé&quot;: &quot;Cas 5 niveau avancé&quot;,
-      &quot;Scénario6_avancé&quot;: &quot;Cas 6 niveau avancé&quot;,
-      &quot;Scénario1_débutant&quot;: &quot;Cas 1 niveau débutant&quot;,
-      &quot;Scénario4_débutant&quot;: &quot;Cas 4 niveau débutant&quot;,
-      &quot;Scénario5_débutant&quot;: &quot;Cas 5 niveau débutant&quot;,
-      &quot;Scénario6_débutant&quot;: &quot;Cas 6 niveau débutant&quot;
+        &quot;Scénario1_avancé&quot;: &quot;Cas 1 niveau avancé&quot;,
+        &quot;Scénario2_avancé&quot;: &quot;Cas 2 niveau avancé&quot;,
+        &quot;Scénario3_avancé&quot;: &quot;Cas 3 niveau avancé&quot;,
+        &quot;Scénario4_avancé&quot;: &quot;Cas 4 niveau avancé&quot;,
+        &quot;Scénario5_avancé&quot;: &quot;Cas 5 niveau avancé&quot;,
+        &quot;Scénario6_avancé&quot;: &quot;Cas 6 niveau avancé&quot;,
+        &quot;Scénario1_débutant&quot;: &quot;Cas 1 niveau débutant&quot;,
+        &quot;Scénario4_débutant&quot;: &quot;Cas 4 niveau débutant&quot;,
+        &quot;Scénario5_débutant&quot;: &quot;Cas 5 niveau débutant&quot;,
+        &quot;Scénario6_débutant&quot;: &quot;Cas 6 niveau débutant&quot;
     };
     return mapping[scenario] || scenario;
 }
-
-// --- 1️⃣ Envoi du score ---
-fetch(url, {
-    method: &quot;POST&quot;,
-    headers: {&quot;Content-Type&quot;: &quot;application/json&quot;},
-    body: JSON.stringify(player)
-})
-.then(() =&gt; fetch(url))  // --- 2️⃣ Récupération après l&#39;envoi ---
-.then(res =&gt; res.json())
-.then(scores =&gt; {
-
-    // Filtrer par scénario courant
-    let scoresScenario = scores.filter(s =&gt; s.scenario === State.variables.Scenario);
-
-    // Trier par score décroissant
-    scoresScenario.sort((a,b) =&gt; b.score - a.score);
-
-    // Top 10
-    let top10 = scoresScenario.slice(0, 10);
-
-    // --- Construire tableau HTML ---
-    let html = `&lt;h3&gt;Voici le Top 10 des scores de vos confrères sur ce cas clinique : &lt;i&gt;${getScenarioTitre(State.variables.Scenario)}&lt;/i&gt;&lt;/h3&gt;`;
-    html += `&lt;table style=&quot;
-                border-collapse: collapse; 
-                width: 100%; 
-                font-family: Arial, sans-serif; 
-                color: #111;
-                background-color: #FFFBF0;
-                text-align: center;
-                &quot;&gt;
-                &lt;tr style=&quot;background-color:#eaf4ff; color:#111;&quot;&gt;
-                  &lt;th&gt;Rang&lt;/th&gt;
-                  &lt;th&gt;Nom&lt;/th&gt;
-                  &lt;th&gt;Score&lt;/th&gt;
-                  &lt;th&gt;Date&lt;/th&gt;
-                &lt;/tr&gt;`;
-
-    top10.forEach((s, i) =&gt; {
-        // Fond clair alterné
-        let bgColor = i % 2 === 0 ? &quot;#FFFDF5&quot; : &quot;#F6F2E8&quot;;
-
-        // Joueur courant en gras
-        let fontWeight = (s.nom === State.variables.nom) ? &quot;bold&quot; : &quot;normal&quot;;
-
-        html += `&lt;tr style=&quot;background-color:${bgColor}; font-weight:${fontWeight};&quot;&gt;
-                    &lt;td&gt;${i+1}&lt;/td&gt;
-                    &lt;td&gt;${s.nom}&lt;/td&gt;
-                    &lt;td&gt;${s.score}&lt;/td&gt;
-                    &lt;td&gt;${new Date(s.timestamp).toLocaleDateString()}&lt;/td&gt;
-                 &lt;/tr&gt;`;
-    });
-
-    html += `&lt;/table&gt;`;
-
-    document.getElementById(&quot;resultat&quot;).innerHTML = html;
-
-})
-.catch(err =&gt; {
-    document.getElementById(&quot;resultat&quot;).innerHTML = &quot;&lt;b&gt;Erreur :&lt;/b&gt; &quot; + err;
-});
-
 &lt;&lt;/script&gt;&gt;
 
-[[Je recommence un entraînement|Passage 1]]</tw-passagedata><tw-passagedata pid="58" name="D_Surbooké" tags="" position="5575,400" size="100,100">&lt;&lt;silently&gt;&gt;
+
+\[[Je recommence un entraînement|Passage 1]]</tw-passagedata><tw-passagedata pid="58" name="D_Surbooké" tags="" position="5575,400" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Refuser une urgence traumatique chez l&#39;enfant sans évaluer la situation n&#39;est pas professionnel.
@@ -5492,7 +5491,7 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
     &lt;&lt;set $SeuilArgent = 150&gt;&gt;
 &lt;&lt;/switch&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-&#39;&#39;Votre score global est de&#39;&#39; &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt;(Score clinique + Score de rapidité/3) 
+&#39;&#39;Votre score global est de&#39;&#39; &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt; (Score clinique + Score de rapidité/3) 
 \&lt;&lt;if ($Rapidite - $Total) &gt; 200&gt;&gt;
 &#39;&#39;Vous avez un score de rapidité très élevé mais un score clinique faible.&#39;&#39;
   Vous voulez peut-être trop brûler les étapes. Il ne sert à rien d&#39;aller trop vite si les décisions cliniques ne sont pas bonnes.
@@ -5550,7 +5549,8 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
 🥈 Argent ≥ $SeuilBronze et &lt; $SeuilArgent points
 🥇 Or ≥ $SeuilArgent points
 
-\&lt;div id=&quot;resultat&quot;&gt;Chargement du Top 10...&lt;/div&gt;
+&lt;div id=&quot;resultat&quot;&gt;Chargement du Top 10...&lt;/div&gt;
+
 &lt;&lt;script&gt;&gt;
 $(document).one(&#39;:passagedisplay&#39;, function () {
 
@@ -5563,8 +5563,6 @@ $(document).one(&#39;:passagedisplay&#39;, function () {
         timestamp: Date.now()
     };
 
-    console.log(&quot;SCORE ENVOYÉ :&quot;, player);
-
     fetch(url, {
         method: &quot;POST&quot;,
         headers: {&quot;Content-Type&quot;: &quot;application/json&quot;},
@@ -5573,42 +5571,51 @@ $(document).one(&#39;:passagedisplay&#39;, function () {
     .then(() =&gt; fetch(url))
     .then(res =&gt; res.json())
     .then(scores =&gt; {
-        console.log(&quot;TOUS LES SCORES :&quot;, scores);
 
-        let scoresScenario = scores.filter(
-            s =&gt; s.scenario === player.scenario
-        );
-
+        let scoresScenario = scores.filter(s =&gt; s.scenario === player.scenario);
         scoresScenario.sort((a, b) =&gt; b.score - a.score);
         let top10 = scoresScenario.slice(0, 10);
 
-        let html = `&lt;h3&gt;Voici le Top 10 – &lt;i&gt;${getScenarioTitre(player.scenario)}&lt;/i&gt;&lt;/h3&gt;`;
-        html += `&lt;table style=&quot;width:100%; text-align:center;&quot;&gt;`;
+        // --- Construire le HTML du tableau ---
+        let html = `&lt;h3&gt;Voici le Top 10 des scores sur le &lt;i&gt;${getScenarioTitre(player.scenario)}&lt;/i&gt;&lt;/h3&gt;`;
+        html += `&lt;table style=&quot;
+                        width:100%; 
+                        border-collapse: collapse; 
+                        font-family: Arial, sans-serif;
+                        text-align: center;
+                        margin-top: 10px;&quot;&gt;`;
 
+        // Entête
         html += `
-            &lt;tr&gt;
+            &lt;tr style=&quot;background-color:#333; color:white;&quot;&gt;
                 &lt;th&gt;Rang&lt;/th&gt;
                 &lt;th&gt;Nom&lt;/th&gt;
                 &lt;th&gt;Score&lt;/th&gt;
                 &lt;th&gt;Date&lt;/th&gt;
             &lt;/tr&gt;`;
 
+        // Lignes
         top10.forEach((s, i) =&gt; {
+            // Zebra striping
+            let bgColor = i % 2 === 0 ? &quot;#FFFDF5&quot; : &quot;#F6F2E8&quot;;
+            // Joueur actuel en violet doux
+            if(s.nom === player.nom) bgColor = &quot;#e1d5ff&quot;;
             html += `
-                &lt;tr style=&quot;font-weight:${s.nom === player.nom ? &#39;bold&#39; : &#39;normal&#39;}&quot;&gt;
-                    &lt;td&gt;${i + 1}&lt;/td&gt;
-                    &lt;td&gt;${s.nom}&lt;/td&gt;
-                    &lt;td&gt;${s.score}&lt;/td&gt;
-                    &lt;td&gt;${new Date(s.timestamp).toLocaleDateString()}&lt;/td&gt;
-                &lt;/tr&gt;`;
+            &lt;tr style=&quot;background-color:${bgColor}; font-weight:${s.nom === player.nom ? &#39;bold&#39; : &#39;normal&#39;};&quot;&gt;
+                &lt;td&gt;${i + 1}&lt;/td&gt;
+                &lt;td&gt;${s.nom}&lt;/td&gt;
+                &lt;td&gt;${s.score}&lt;/td&gt;
+                &lt;td&gt;${new Date(s.timestamp).toLocaleDateString()}&lt;/td&gt;
+            &lt;/tr&gt;`;
         });
 
         html += `&lt;/table&gt;`;
+
         document.getElementById(&quot;resultat&quot;).innerHTML = html;
+
     })
     .catch(err =&gt; {
-        document.getElementById(&quot;resultat&quot;).innerHTML =
-            &quot;&lt;b&gt;Erreur :&lt;/b&gt; &quot; + err;
+        document.getElementById(&quot;resultat&quot;).innerHTML = &quot;&lt;b&gt;Erreur :&lt;/b&gt; &quot; + err;
     });
 
 });
@@ -5630,6 +5637,7 @@ function getScenarioTitre(scenario) {
     return mapping[scenario] || scenario;
 }
 &lt;&lt;/script&gt;&gt;
+
 
 \[[Je recommence un entraînement|Passage 1]]</tw-passagedata><tw-passagedata pid="130" name="Retro 11" tags="" position="1175,1225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;if $gainRapidite&gt;&gt;
@@ -5811,11 +5819,11 @@ La dent est remise en place dans l&#39;alévole et la radio de contrôle est bon
 &lt;&lt;/silently&gt;&gt;
 Désormais vous devez décider s&#39;il faut préparer une ordonnance pour ce cas.
 
-&lt;&lt;link &quot;Je prescris notamment des antibiotiques (recommandations HAS 2011).&quot;&gt;&gt;
+&lt;&lt;link &quot;Je prescris notamment des antibiotiques (recommandations HAS 2011)&quot;&gt;&gt;
    &lt;&lt;set $Score to $Score-15&gt;&gt;
    &lt;&lt;goto &quot;ordo_atb&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;&lt;link &quot;Je vais prescrire mais pas des antibiotiques.&quot;&gt;&gt;
+&lt;&lt;link &quot;Je vais prescrire mais pas des antibiotiques&quot;&gt;&gt;
    &lt;&lt;set $Score to $Score+10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
   &lt;&lt;goto &quot;ordo sans atb&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
@@ -6017,7 +6025,7 @@ Si votre réponse est oui, précisez directement le nom de ce document.
   &lt;&lt;/script&gt;&gt;
   &lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;
 Il faut établir le CMI/Certificat Médical Initial.
-Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt;sur un maximum de 10.
+Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 10.
 \&lt;&lt;if $tempScore is 10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
 [[La suite|TTT7 (suivi)]]
 &lt;&lt;/replace&gt;&gt;
@@ -6561,7 +6569,6 @@ Il n&#39;arrive pas à décrire ce qui s&#39;est passé pour sa dent mis à part
           &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="157" name="enfant2_demande morceau" tags="Question-ouverte-1variante" position="1825,725" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $Score to $Score+15&gt;&gt;
 &lt;&lt;set $Timer to 35&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Oui, il manque une information pour décider de la solution de reconstruction.
@@ -6645,7 +6652,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
 &lt;&lt;/silently&gt;&gt;
 L&#39;enfant et les parents n&#39;ont pas pensé à ramasser le bout de dent.
 
-&lt;&lt;link &quot;Je leur demande d&#39;aller le chercher.&quot;&gt;&gt;
+&lt;&lt;link &quot;Je leur demande d&#39;aller le chercher&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-25&gt;&gt;
 &lt;&lt;goto &quot;erreur cherche morceau&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
@@ -6692,16 +6699,16 @@ Ecrivez la séquence de collage dans le bon ordre ( ex1 : 1/9/7/5, ex2 : 8/2/5/1
     ].includes($answer)&gt;&gt;
 &lt;&lt;silently&gt;&gt;&lt;&lt;set $tempScore += 30&gt;&gt;&lt;&lt;/silently&gt;&gt;
 &lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;//Correct!//&lt;&lt;/replace&gt;&gt;
-            &lt;&lt;else&gt;&gt;
+&lt;&lt;else&gt;&gt;
 &lt;&lt;silently&gt;&gt;&lt;&lt;set $tempScore -=20&gt;&gt;&lt;&lt;/silently&gt;&gt;
 &lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;//Incorrect!//&lt;&lt;/replace&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 \&lt;&lt;set $Score += $tempScore&gt;&gt;
-&lt;&lt;run $(&#39;#textbox-answer&#39;).attr(&#39;readonly&#39;, &#39;true&#39;).css(&#39;transition&#39;, &#39;background-color 0.5s&#39;).css(&#39;background-color&#39;,&#39;#eee&#39;);&gt;&gt;
-&lt;&lt;run $(&#39;#textbox-reply&#39;).css(&#39;opacity&#39;,1);&gt;&gt;
-&lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;&lt;i&gt;On nettoie une 1ere fois le fragment, on vérifie l&#39;adaptation marginale du fragment, (si ok) on isole la dent, on nettoie de façon approfondie, on fait le traitement des surfaces, on ajoute du composite d&#39;assemblage et on repositionne le fragment. On retire les excès puis on photopolymérise. On polit les joints.&lt;/i&gt;
-Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 30.
+\&lt;&lt;run $(&#39;#textbox-answer&#39;).attr(&#39;readonly&#39;, &#39;true&#39;).css(&#39;transition&#39;, &#39;background-color 0.5s&#39;).css(&#39;background-color&#39;,&#39;#eee&#39;);&gt;&gt;
+\&lt;&lt;run $(&#39;#textbox-reply&#39;).css(&#39;opacity&#39;,1);&gt;&gt;
+\&lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 30.
 \&lt;&lt;if $tempScore is 30&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
+&lt;i&gt;Solution : 4/6/3/1/7/2/5. On nettoie une 1ere fois le fragment, on vérifie l&#39;adaptation marginale du fragment, (si ok) on isole la dent, on nettoie de façon approfondie, on fait le traitement des surfaces, on ajoute du composite d&#39;assemblage et on repositionne le fragment. On retire les excès puis on photopolymérise. On polit les joints.&lt;/i&gt;
 &#39;&#39;[[La suite|morceau no ok cas2]]&#39;&#39;\&lt;&lt;/replace&gt;&gt;
 &lt;&lt;set $button to 1&gt;&gt;
     &lt;&lt;/button&gt;&gt;\
@@ -6758,7 +6765,7 @@ Vous reprogrammez ensuite de voir l&#39;enfant pour le suivi et pour réaliser u
 &#39;&#39;[[Je vais consulter mon score final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="164" name="exam clinique cas 2" tags="Choix-multiple-a-cocher Media-image-son" position="1900,350" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;four&quot;,&quot;seven&quot;,&quot;eight&quot;]&gt;&gt;
+&lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;four&quot;,&quot;five&quot;,&quot;seven&quot;,&quot;eight&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous commencez à l&#39;examiner. La palpation ne révèle pas de problème particulier au niveau des articulations.
 Voici une vue exo buccale [2]
@@ -6779,15 +6786,15 @@ Cocher les affirmations justes :
 \&lt;div id=&quot;checkbox-submit&quot;&gt;
     \&lt;&lt;button &#39;Soumettre ma ou mes réponses&#39;&gt;&gt;
         &lt;&lt;set $tempScore = 0&gt;&gt;
-        &lt;&lt;if $desc.zero&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.one&gt;&gt;&lt;&lt;set $tempScore += 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.two&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.three&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.four&gt;&gt;&lt;&lt;set $tempScore += 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.five&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.six&gt;&gt;&lt;&lt;set $tempScore -= 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.seven&gt;&gt;&lt;&lt;set $tempScore += 10&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.eight&gt;&gt;&lt;&lt;set $tempScore += 10&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.zero&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.one&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.two&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.three&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.four&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.five&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.six&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.seven&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.eight&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;set $Score += $tempScore&gt;&gt;
 
         &lt;&lt;run Array.from(document.querySelectorAll(&#39;input[type=&quot;checkbox&quot;]&#39;)).forEach(cb =&gt; cb.disabled = true)&gt;&gt;
@@ -6798,9 +6805,9 @@ Cocher les affirmations justes :
         })&gt;&gt;
 
         &lt;&lt;replace &quot;#checkbox-feedback&quot;&gt;&gt;
-Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 40.
-\&lt;&lt;if $tempScore is 40&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
-//4 réponses peuvent être acceptées.
+Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 25.
+\&lt;&lt;if $tempScore is 25&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
+//5 réponses sont correctes.
 La 11 est au moins fracturée au niveau de l&#39;émail et de la dentine.  On teste au moins la mobilité de 11,12,21. On fait un test de vitalité sur 11 et on s&#39;attend à avoir une réponse altérée. Avec le miroir on vérifie si les lésions intéressent la pulpe de 11 ou non et on s&#39;assure que les antagonistes ne sont pas également fracturées.
 Les résultats de vos tests sont les suivants : 12,11,21 ne sont pas particulièrement mobiles. Le test de vitalité est positif mais retardé sur 11. En occlusal de 11, la pulpe ne vous semble pas exposée en regardant au miroir.//
 &lt;&lt;/replace&gt;&gt;
