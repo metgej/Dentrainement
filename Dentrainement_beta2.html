@@ -774,7 +774,7 @@ Par quoi commencez vous avant toute chose (le trauma crânien a été exclu pré
 Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt;  sur un maximum de 15.
 \&lt;&lt;if $tempScore is 15&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
 //On commence par réaliser l&#39;interrogatoire médical ou l&#39;anamnèse du patient.//
-Ici, l&#39;enfant est un garçon de 8 ans, asthmatique (traitement type Ventoline), opéré de l&#39;apendicite 2 ans plus tôt, sans allergie mais intolérant au gluten.
+Ici, l&#39;enfant est un garçon de 8 ans, asthmatique (traitement type Ventoline®), opéré de l&#39;apendicite 2 ans plus tôt, sans allergie mais intolérant au gluten.
 La vaccination est à jour. Le traumatisme dentaire remonte à 2 heures. Vous ne détectez pas de signe de violence familiale.
 
 &#39;&#39;[[La suite|Vue extra orale Cas 4]]&#39;&#39;&lt;&lt;/replace&gt;&gt;
@@ -909,7 +909,7 @@ Dans notre cas clinique, vous vous apercevez qu&#39;ils sont bien asymptomatique
 Oui, le fragment s&#39;est très probablement déshydraté et il s&#39;est éclairci. Une réhydratation sur plusieurs heures/jours va changer à nouveau sa teinte.
 
 Pour votre information, voici la situation à 1 an de votre patient[4]:
-&lt;img src=&quot;./Cas_clinique4/cas4_suivi_1an.jpg&quot; width=&quot;400vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique4/Cas4_suivi_1an.jpg&quot; width=&quot;400vw&quot;&gt;
 Le joint de collage est à peine discernable et la réhydratation du fragment offre un résultat esthétique plus que satisfaisant 
 
 Le patient est libéré avec une prise de rendez-vous pour le suivi.
@@ -924,7 +924,7 @@ Très bien &#39;&#39;$Nom&#39;&#39; vous êtes en train de terminer un bridge pr
 \&lt;&lt;timed 4s&gt;&gt;
 Martine fait éruption dans la pièce. 
 Une mère et un enfant se sont présentés pour un trauma. C&#39;est le médecin généraliste d&#39;à côté qui leur a gentiment suggéré de débarquer sans rdv. L&#39;enfant a mal.
-&lt;&lt;silently&gt;&gt;&lt;&lt;set $Timer to 40&gt;&gt;&lt;&lt;/silently&gt;&gt;
+&lt;&lt;silently&gt;&gt;&lt;&lt;set $Timer to 30&gt;&gt;&lt;&lt;/silently&gt;&gt;
 \&lt;&lt;link &quot;Vous dîtes à votre assistante que vous êtes déjà surbooké. On ne peut pas bacler le bridge provisoire&quot;&gt;&gt;
   &lt;&lt;set $Score to $Score-10&gt;&gt;
   &lt;&lt;goto &quot;Surbooké&quot;&gt;&gt;
@@ -1006,7 +1006,7 @@ C&#39;est le téléphone sans fil du cabinet que Martine a oublié pas loin de v
 \&lt;&lt;timed 9s&gt;&gt;
 Martine arrive enfin pour décrocher... 
 \&lt;&lt;/timed&gt;&gt;
-&lt;&lt;timed 11s&gt;&gt;
+&lt;&lt;timed 12s&gt;&gt;
 C&#39;est une maman qui habite dans la rue. L&#39;école l&#39;a appelé car son fils de 8 ans a fait une chute dans la cour de l’école. Martine demande s&#39;il a perdu connaissance ou s&#39;il a vomi juste après et la réponse est négative. La maman indique a Martine que son cousin est dentiste à Nice et qu&#39;il a mentionné une dévitalisation à faire rapidement chez le dentiste le plus proche. Elle est paniquée et veut venir tout de suite.
 &lt;&lt;set $Timer to 40&gt;&gt;
 Vous demandez à votre assistante dentaire de dire à la maman :
@@ -1332,7 +1332,7 @@ Vous faîtes une rétro alvéolaire du bloc antérieur maxillaire
 
       // Groupe unique : dispositif
       const groups = [
-        [&quot;erreur&quot;,&quot;inversion&quot;,&quot;mauvaiseradio&quot;,&quot;radioinversee&quot;,&quot;laradioestinversee&quot;,&quot;ilyauneinversiondelaradio&quot;,&quot;radioalenvers&quot;,&quot;laradioestalenvers&quot;,&quot;inversionradio&quot;,&quot;inversiondelaradio&quot;]
+        [&quot;erreur&quot;,&quot;inversion&quot;,&quot;mauvaiseradio&quot;,&quot;radioinversee&quot;,&quot;laradioestinversee&quot;,&quot;ilyauneinversiondelaradio&quot;,&quot;radioalenvers&quot;,&quot;laradioestalenvers&quot;,&quot;inversionradio&quot;,&quot;inversiondelaradio&quot;,&quot;inverse&quot;,&quot;envers&quot;,&quot;retourne&quot;,&quot;retournee&quot;,&quot;symetrie&quot;,&quot;symetrique&quot;]
         ];
 
       let found = [];
@@ -4184,7 +4184,7 @@ Non il n&#39;y a pas eu d&#39;étape oubliée pouvant expliquer la différence d
 Le fragment s&#39;est déshydraté et il s&#39;est éclairci. Une réhydratation sur plusieurs heures/jours va changer à nouveau sa teinte
 
 Pour votre information, voici la situation à 1 an de votre patient[4]:
-&lt;img src=&quot;./Cas_clinique4/hydratation.jpg&quot; width=&quot;400vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique4/Cas4_suivi_1an.jpg&quot; width=&quot;400vw&quot;&gt;
 Le joint de collage est à peine discernable et la réhydratation du fragment offre un résultat esthétique plus que satisfaisant 
 
 Le patient est libéré avec une prise de rendez-vous pour le suivi.
@@ -5546,91 +5546,86 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
 \&lt;&lt;script&gt;&gt;
 const url = &quot;https://6936b66bf8dc350aff31e3ea.mockapi.io/scores&quot;; // remplace par ton URL MockAPI
 
-const player = {
-  nom: &quot;&lt;&lt;= $Nom &gt;&gt;&quot;,
-  score: &lt;&lt;= $Total &gt;&gt;,
-  scenario: &quot;&lt;&lt;= $Scenario &gt;&gt;&quot;,
-  timestamp: Date.now()
-};
+&lt;&lt;script&gt;&gt;
+$(document).one(&#39;:passagedisplay&#39;, function () {
 
-// Fonction pour transformer $Scenario en titre lisible
-function getScenarioTitre(scenario) {
-    const mapping = {
-      &quot;Scénario1_avancé&quot;: &quot;Cas 1 niveau avancé&quot;,
-      &quot;Scénario2_avancé&quot;: &quot;Cas 2 niveau avancé&quot;,
-      &quot;Scénario3_avancé&quot;: &quot;Cas 3 niveau avancé&quot;,
-      &quot;Scénario4_avancé&quot;: &quot;Cas 4 niveau avancé&quot;,
-      &quot;Scénario5_avancé&quot;: &quot;Cas 5 niveau avancé&quot;,
-      &quot;Scénario6_avancé&quot;: &quot;Cas 6 niveau avancé&quot;,
-      &quot;Scénario1_débutant&quot;: &quot;Cas 1 niveau débutant&quot;,
-      &quot;Scénario4_débutant&quot;: &quot;Cas 4 niveau débutant&quot;,
-      &quot;Scénario5_débutant&quot;: &quot;Cas 5 niveau débutant&quot;,
-      &quot;Scénario6_débutant&quot;: &quot;Cas 6 niveau débutant&quot;
+    const url = &quot;https://6936b66bf8dc350aff31e3ea.mockapi.io/scores&quot;;
+
+    const player = {
+        nom: String(State.variables.Nom || &quot;Anonyme&quot;),
+        score: Number(State.variables.Total || 0),
+        scenario: String(State.variables.Scenario || &quot;Inconnu&quot;),
+        timestamp: Date.now()
     };
-    return mapping[scenario] || scenario;
-}
 
-// --- 1️⃣ Envoi du score ---
-fetch(url, {
-    method: &quot;POST&quot;,
-    headers: {&quot;Content-Type&quot;: &quot;application/json&quot;},
-    body: JSON.stringify(player)
-})
-.then(() =&gt; fetch(url))  // --- 2️⃣ Récupération après l&#39;envoi ---
-.then(res =&gt; res.json())
-.then(scores =&gt; {
+    console.log(&quot;SCORE ENVOYÉ :&quot;, player);
 
-    // Filtrer par scénario courant
-    let scoresScenario = scores.filter(s =&gt; s.scenario === State.variables.Scenario);
+    fetch(url, {
+        method: &quot;POST&quot;,
+        headers: {&quot;Content-Type&quot;: &quot;application/json&quot;},
+        body: JSON.stringify(player)
+    })
+    .then(() =&gt; fetch(url))
+    .then(res =&gt; res.json())
+    .then(scores =&gt; {
+        console.log(&quot;TOUS LES SCORES :&quot;, scores);
 
-    // Trier par score décroissant
-    scoresScenario.sort((a,b) =&gt; b.score - a.score);
+        let scoresScenario = scores.filter(
+            s =&gt; s.scenario === player.scenario
+        );
 
-    // Top 10
-    let top10 = scoresScenario.slice(0, 10);
+        scoresScenario.sort((a, b) =&gt; b.score - a.score);
+        let top10 = scoresScenario.slice(0, 10);
 
-    // --- Construire tableau HTML ---
-    let html = `&lt;h3&gt;Voici le Top 10 des scores sur ce cas clinique : &lt;i&gt;${getScenarioTitre(State.variables.Scenario)}&lt;/i&gt;&lt;/h3&gt;`;
-    html += `&lt;table style=&quot;
-                border-collapse: collapse; 
-                width: 100%; 
-                font-family: Arial, sans-serif; 
-                color: #111;
-                background-color: #FFFBF0;
-                text-align: center;
-                &quot;&gt;
-                &lt;tr style=&quot;background-color:#eaf4ff; color:#111;&quot;&gt;
-                  &lt;th&gt;Rang&lt;/th&gt;
-                  &lt;th&gt;Nom&lt;/th&gt;
-                  &lt;th&gt;Score&lt;/th&gt;
-                  &lt;th&gt;Date&lt;/th&gt;
-                &lt;/tr&gt;`;
+        let html = `&lt;h3&gt;Voici le Top 10 – &lt;i&gt;${getScenarioTitre(player.scenario)}&lt;/i&gt;&lt;/h3&gt;`;
+        html += `&lt;table style=&quot;width:100%; text-align:center;&quot;&gt;`;
 
-    top10.forEach((s, i) =&gt; {
-        // Fond clair alterné
-        let bgColor = i % 2 === 0 ? &quot;#FFFDF5&quot; : &quot;#F6F2E8&quot;;
+        html += `
+            &lt;tr&gt;
+                &lt;th&gt;Rang&lt;/th&gt;
+                &lt;th&gt;Nom&lt;/th&gt;
+                &lt;th&gt;Score&lt;/th&gt;
+                &lt;th&gt;Date&lt;/th&gt;
+            &lt;/tr&gt;`;
 
-        // Joueur courant en gras
-        let fontWeight = (s.nom === State.variables.Nom) ? &quot;bold&quot; : &quot;normal&quot;;
-
-        html += `&lt;tr style=&quot;background-color:${bgColor}; font-weight:${fontWeight};&quot;&gt;
-                    &lt;td&gt;${i+1}&lt;/td&gt;
+        top10.forEach((s, i) =&gt; {
+            html += `
+                &lt;tr style=&quot;font-weight:${s.nom === player.nom ? &#39;bold&#39; : &#39;normal&#39;}&quot;&gt;
+                    &lt;td&gt;${i + 1}&lt;/td&gt;
                     &lt;td&gt;${s.nom}&lt;/td&gt;
                     &lt;td&gt;${s.score}&lt;/td&gt;
                     &lt;td&gt;${new Date(s.timestamp).toLocaleDateString()}&lt;/td&gt;
-                 &lt;/tr&gt;`;
+                &lt;/tr&gt;`;
+        });
+
+        html += `&lt;/table&gt;`;
+        document.getElementById(&quot;resultat&quot;).innerHTML = html;
+    })
+    .catch(err =&gt; {
+        document.getElementById(&quot;resultat&quot;).innerHTML =
+            &quot;&lt;b&gt;Erreur :&lt;/b&gt; &quot; + err;
     });
 
-    html += `&lt;/table&gt;`;
-
-    document.getElementById(&quot;resultat&quot;).innerHTML = html;
-
-})
-.catch(err =&gt; {
-    document.getElementById(&quot;resultat&quot;).innerHTML = &quot;&lt;b&gt;Erreur :&lt;/b&gt; &quot; + err;
 });
 
+// -------- mapping ----------
+function getScenarioTitre(scenario) {
+    const mapping = {
+        &quot;Scénario1_avancé&quot;: &quot;Cas 1 niveau avancé&quot;,
+        &quot;Scénario2_avancé&quot;: &quot;Cas 2 niveau avancé&quot;,
+        &quot;Scénario3_avancé&quot;: &quot;Cas 3 niveau avancé&quot;,
+        &quot;Scénario4_avancé&quot;: &quot;Cas 4 niveau avancé&quot;,
+        &quot;Scénario5_avancé&quot;: &quot;Cas 5 niveau avancé&quot;,
+        &quot;Scénario6_avancé&quot;: &quot;Cas 6 niveau avancé&quot;,
+        &quot;Scénario1_débutant&quot;: &quot;Cas 1 niveau débutant&quot;,
+        &quot;Scénario4_débutant&quot;: &quot;Cas 4 niveau débutant&quot;,
+        &quot;Scénario5_débutant&quot;: &quot;Cas 5 niveau débutant&quot;,
+        &quot;Scénario6_débutant&quot;: &quot;Cas 6 niveau débutant&quot;
+    };
+    return mapping[scenario] || scenario;
+}
 &lt;&lt;/script&gt;&gt;
+
 \[[Je recommence un entraînement|Passage 1]]</tw-passagedata><tw-passagedata pid="130" name="Retro 11" tags="" position="1175,1225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;if $gainRapidite&gt;&gt;
   &lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
@@ -7098,7 +7093,7 @@ Voici un exemple de création de rainure [4]:
 \&lt;&lt;set $Score += $tempScore&gt;&gt;
 &lt;&lt;run $(&#39;#textbox-answer&#39;).attr(&#39;readonly&#39;, &#39;true&#39;).css(&#39;transition&#39;, &#39;background-color 0.5s&#39;).css(&#39;background-color&#39;,&#39;#eee&#39;);&gt;&gt;
         &lt;&lt;run $(&#39;#textbox-reply&#39;).css(&#39;opacity&#39;,1);&gt;&gt;
-&lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;&lt;i&gt;Voici l&#39;enchaînement : anesthésie, isolation, etching à l&#39;acide orthophosphorique, adhésif MR2 avec séchage et photopolymérisation, ajout de composite d&#39;assemblage, mise en place du fragment, retrait des excés, photopolymérisation et polissage.&lt;/i&gt;
+&lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;&lt;i&gt;Voici l&#39;enchaînement : 9/7/3/2/5/4/1/8/6. Anesthésie, isolation, etching à l&#39;acide orthophosphorique, adhésif MR2 avec séchage et photopolymérisation, ajout de composite d&#39;assemblage, mise en place du fragment, retrait des excés, photopolymérisation et polissage.&lt;/i&gt;
 Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 30.
 \&lt;&lt;if $tempScore is 30&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
 &#39;&#39;[[La suite|question isolation]]&#39;&#39;\&lt;&lt;/replace&gt;&gt;
@@ -7292,7 +7287,8 @@ Classez dans l&#39;ordre de la solution la mieux isolante à la moins isolante (
 \&lt;&lt;set $Score += $tempScore&gt;&gt;
  &lt;&lt;run $(&#39;#textbox-answer&#39;).attr(&#39;readonly&#39;, &#39;true&#39;).css(&#39;transition&#39;, &#39;background-color 0.5s&#39;).css(&#39;background-color&#39;,&#39;#eee&#39;);&gt;&gt;
         &lt;&lt;run $(&#39;#textbox-reply&#39;).css(&#39;opacity&#39;,1);&gt;&gt;
-&lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;&lt;i&gt;De la meilleure à la pire des solutions : isolation avec la digue, isolation avec la digue simplifiée, aspiration avec cotons salivaires, aspiration seule, soufflette permanente.&lt;/i&gt;
+&lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;&lt;i&gt;Réponse 2/5/4/1/3
+De la meilleure à la pire des solutions : isolation avec la digue, isolation avec la digue simplifiée, aspiration avec cotons salivaires, aspiration seule, soufflette permanente.&lt;/i&gt;
 Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 15.
 \&lt;&lt;if $tempScore is 15&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
 &#39;&#39;[[La suite|question teinte]]&#39;&#39;\ &lt;&lt;/replace&gt;&gt;
