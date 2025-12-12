@@ -105,6 +105,17 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
 	<tw-storydata name="Dentrainement_beta" startnode="118" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="0981FC2D-D35B-4648-B502-5E96F427D51E" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
+
+
+
+
+
+
+
+
+
+
+
   #story {
     margin-top: 0;
     margin-left: 300;
@@ -629,21 +640,24 @@ window.LastScore = null;
 }
 
 #mobileHUD {
-    background-color: rgba(255,255,255,0.95);
+    position: fixed;       /* reste collé à l'écran */
+    bottom: 0;             /* en bas de l'écran */
+    right: 0;              /* à droite */
+    left: 0;               /* étire sur toute la largeur si besoin */
+    z-index: 10000;        /* toujours au-dessus du contenu */
+    background-color: rgba(255, 255, 255, 0.95); /* fond semi-transparent */
     padding: 10px 15px;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.3);
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+    font-size: 14px;
+    text-align: right;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    text-align: right;
-    font-size: 14px;
 }
-
 .value-score { color: purple; font-weight: bold; }
 .timer-warning { color: red; font-weight: bold; }
 
-/* ajoute un padding bottom au passage pour que le contenu ne soit jamais caché par le HUD */
 .passage {
-    padding-bottom: 90px; /* ajuster selon la taille du HUD */
+    padding-bottom: 70px; /* correspond à la hauteur du HUD */
 }
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
 function unlockAudio() {
@@ -805,65 +819,47 @@ setInterval(function () {
 
 // ===== HUD MOBILE UNIFIÉ (Score + Rapidité + Timer) =====
 
-// ===== HUD MOBILE UNIFIÉ (Score + Rapidité + Timer) =====
+// Crée le HUD dès que le jeu est prêt
 $(document).one(":storyready", function() {
 
-    // Détecte mobile / tablette
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i
         .test(navigator.userAgent);
 
-    if (!isMobile) return; // exécute seulement sur mobile/tablette
+    if (!isMobile) return; // mobile/tablette uniquement
 
-    // Crée le HUD et l'ajoute au conteneur #story pour gérer scroll
+    // Crée le HUD et ajoute au body
     const hud = $('<div id="mobileHUD"></div>');
-    $('#story').append(hud);
+    $('body').append(hud);
 
-    // ---- Fonction de mise à jour du contenu du HUD ----
-    function updateHUDContent() {
-        const score    = State.variables.Score || 0;
-        const rapidite = State.variables.Rapidite || 0;
-        const timer    = State.variables.Timer || 0;
+    // ---- FONCTION UNIQUE DE RAFRAICHISSEMENT ----
+    function updateHUD() {
 
-        const timerClass = (timer > 0 && timer <= 5) ? 'timer-warning' : 'value-timer';
+        const score     = State.variables.Score    || 0;
+        const rapidite  = State.variables.Rapidite || 0;
+        const timer     = State.variables.Timer    || 0;
+
+        // Timer en rouge si <=5
+        const timerClass =
+            (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
 
         hud.html(`
             <div id="statsBoxMobile">
+
                 🦷 <span class="value-score">${score}</span>
                 &nbsp;&nbsp;
+
                 🏃‍♂️ <span class="value-rapid">${rapidite}</span>
                 &nbsp;&nbsp;
+
                 ⏱ <span class="${timerClass}">${timer}s</span>
+
             </div>
         `);
     }
 
-    // ---- Fonction de positionnement dynamique ----
-    function updateHUDPosition() {
-        const storyRect = $('#story')[0].getBoundingClientRect();
-        hud.css({
-            position: 'absolute', // évite les problèmes avec scrollable #story
-            top: window.scrollY + window.innerHeight - hud.outerHeight() - storyRect.top + 'px',
-            left: 0,
-            width: '100%',
-            'z-index': 10000
-        });
-    }
-
-    // ---- Gestion du clavier virtuel (input / textarea) ----
-    $('input, textarea').on('focus', function() {
-        hud.hide(); // cache le HUD pour ne pas être masqué par le clavier
-    }).on('blur', function() {
-        updateHUDPosition();
-        hud.show();
-    });
-
-    // ---- Initialisation ----
-    updateHUDContent();
-    updateHUDPosition();
-
-    // ---- Rafraîchissement automatique ----
-    setInterval(updateHUDContent, 1000);
-    $(window).on('scroll resize', updateHUDPosition);
+    // 🔁 RAFRAICHISSEMENT SYNCHRO AVEC LA STATSBOX
+    updateHUD();
+    setInterval(updateHUD, 1000);
 });
 </script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-tag name="question-ouverte-ordre" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
