@@ -104,7 +104,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<tw-storydata name="Dentrainement_beta" startnode="119" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="0981FC2D-D35B-4648-B502-5E96F427D51E" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
+	<tw-storydata name="Dentrainement_beta" startnode="118" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="0981FC2D-D35B-4648-B502-5E96F427D51E" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
   #story {
     margin-top: 0;
     margin-left: 300;
@@ -511,35 +511,121 @@ span.checkligne {
 // Mémorise l'ancien score clinique pour détecter les variations
 window.LastScore = null;
 
-#resultat table {
-    border-collapse: collapse;
-    width: 100%;
+/* ====== TILES DRAG & DROP - ajustées ====== */
+
+.sortable {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-#resultat th {
-    background: #333;
-    color: white;
+/* Hauteur réduite : padding plus petit, line-height proche du texte */
+.tile {
+    background: #f9f9f9;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 8px 10px;            /* moins haut */
+    font-size: 0.98em;
+    line-height: 1.2em;           /* compacte */
+    cursor: grab;
+    user-select: none;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.12s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    white-space: normal;
 }
 
-#resultat th,
-#resultat td {
-    padding: 6px;
-    border: 1px solid #555;
+/* petit effet tactile quand on attrape */
+.tile.dragging {
+    opacity: 0.85;
+    transform: scale(1.01);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
 }
 
-#resultat tr:nth-child(even) {
-    background: #f0f0f0;
+.tile:active {
+    cursor: grabbing;
 }
 
-#resultat tr:nth-child(odd) {
-    background: #cfcfcf;
+.tile.locked {
+    cursor: default;
+    opacity: 0.9;
 }
 
-/* Highlight du joueur */
-#resultat tr.is-player {
-    background: #b388ff !important;
-    color: #111;
-    font-weight: bold;
+/* tuile correcte */
+.tile.good {
+    background-color: #eafdf0 !important; /* vert discret */
+    border-color: #4CAF50 !important;
+}
+
+/* tuile incorrecte */
+.tile.bad {
+    background-color: #fff0f0 !important; /* rouge discret */
+    border-color: #d9534f !important;
+}
+
+/* Placeholder visible entre tuiles pour indiquer l'emplacement possible */
+.placeholder {
+    height: 12px;
+    margin: 4px 0;
+    border-radius: 6px;
+    background: linear-gradient(90deg, rgba(74,144,226,0.14), rgba(74,144,226,0.06));
+    border: 1px dashed rgba(74,144,226,0.25);
+    transition: background 0.15s, height 0.12s;
+}
+
+/* pour mobile : zone tactile un peu plus généreuse */
+@media (max-width: 600px) {
+    .tile { padding: 10px 12px; font-size: 1em; }
+    .placeholder { height: 16px; }
+}
+
+/* Wrapper local pour isoler les dalles */
+#dalle-wrapper {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 600px;
+    text-align: left !important;
+}
+
+#dalle-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;          /* espace vertical entre les dalles */
+    margin: 0;
+    padding: 0 4px;    /* petit espace horizontal pour tout le container */
+    line-height: 0;    /* supprime l’espace fantôme du flex vertical */
+}
+
+/* Chaque dalle */
+#dalle-container .dalle {
+    background: #f9f9f9;
+    border: 1px solid #ccc;  /* bordure complète autour de la dalle */
+    border-radius: 4px;       /* coins légèrement arrondis pour un rendu plus joli */
+    padding: 4px 6px;         /* padding horizontal pour que le texte ne touche pas les bords */
+    margin: 0;
+    display: block;
+}
+
+/* Texte interne */
+.dalle-text {
+    display: block;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+/* Bouton et feedback */
+#dalle-wrapper #soumettre {
+    margin-top: 10px;
+    font-size: 16px;      /* restaure la taille normale du bouton */
+}
+
+#dalle-wrapper #feedback {
+    margin-top: 5px;
+    opacity: 0;
+    transition: opacity 0.5s;
 }
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
 function unlockAudio() {
@@ -743,7 +829,7 @@ $(document).one(":storyready", function() {
     updateHUD();
     setInterval(updateHUD, 1000);
 });
-</script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
+</script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-tag name="question-ouverte-ordre" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -952,7 +1038,7 @@ Le joint de collage est à peine discernable et la réhydratation du fragment of
 
 Le patient est libéré avec une prise de rendez-vous pour le suivi.
 
-&#39;&#39;[[Je vais consulter mon résultat final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="7" name="Scénario1_avancé" tags="Chrono-simple" position="750,275" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je vais consulter mon résultat final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="7" name="Scénario1_avancé" tags="Chrono-simple" position="750,275" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;if $Nom is &quot;&quot;&gt;&gt;&lt;&lt;set $Nom to &quot;Anonymous&quot;&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;set $Score to 0&gt;&gt;
 &lt;&lt;set $Rapidite to 0&gt;&gt;
@@ -2021,7 +2107,7 @@ Comme solution, je propose :
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Une reconstruction directe au composite, c&#39;est le plus conservateur&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; De recoller le morceau manquant s&#39;il est disponible et s&#39;adapte bien&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;three&quot;&gt;&lt;&lt;checkbox &quot;$desc.three&quot; false true&gt;&gt; Une reconstruction directe au CVI pour temporiser si le fragment manquant n&#39;est pas disponible ou s&#39;il ne correspond pas.&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Un coiffage pulpaire indirect ou direct puis un CVI de temporisation&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Un coiffage pulpaire direct puis un CVI de temporisation&lt;/span&gt;
 \&lt;div id=&quot;checkbox-feedback&quot; style=&quot;opacity:0; transition: opacity 0.5s; margin-top: 1em;&quot;&gt;&lt;/div&gt;
 \&lt;div id=&quot;checkbox-submit&quot;&gt;\
 &lt;&lt;button &#39;Soumettre ma ou mes réponses&#39;&gt;&gt;
@@ -2097,8 +2183,8 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
 Avant d&#39;examiner l&#39;enfant en intra-buccal que faîtes vous ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Je vérifie si l&#39;enfant a perdu connaissance ou a eu des vomissements juste après le choc.&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Je fais des tests de percussion en extra buccal&lt;/span&gt;
-&lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; Je fais un test de palpation en extra buccal, notamment au niveau des ATM&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Je fais des tests de percussion en exo buccal&lt;/span&gt;
+&lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; Je fais un test de palpation en exo buccal, notamment au niveau des ATM&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;three&quot;&gt;&lt;&lt;checkbox &quot;$desc.three&quot; false true&gt;&gt; Je vérifie si l&#39;ouverture buccale est normale (amplitude, trajet)&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;four&quot;&gt;&lt;&lt;checkbox &quot;$desc.four&quot; false true&gt;&gt; Je fais des tests de vitalité&lt;/span&gt;
 \&lt;div id=&quot;checkbox-feedback&quot; style=&quot;opacity:0; transition: opacity 0.5s; margin-top: 1em;&quot;&gt;&lt;/div&gt;
@@ -2493,62 +2579,122 @@ Quel serait LE meilleur traitement à envisager tout de suite selon vous (l&#39;
 &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;if $Timer lte 0&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="43" name="D_PEC aprem 6" tags="Question-ouverte Media-image-son" position="7650,925" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="43" name="D_PEC aprem 6" tags="Question-ouverte Media-image-son question-ouverte-ordre" position="7650,925" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 140&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Illustration du traitement de 21 [2]
-&lt;img src=&quot;./Cas_clinique6/Vignesh_treatment1.jpg&quot; width=&quot;600vw&quot;&gt;
-\Remettez les étapes du traitement dans le bon ordre (ex : 1/2/3/4/5/6/7 ou 5/3/4/1/2/6/7 ou 1234567)
-\&lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;
-1- J&#39;extraie la dent 21 de manière la plus atraumatique possible, je la nettoie au sérum physiologique en touchant le moins possible la racine dans mes futures manipulations
-2- Je réimplante la dent
-3- Je donne un rendez-vous de suivi pour la contention et je remets un CMI au responsable légal
-4- Je désinfecte le site à l&#39;aide d&#39;une compresse et de la bétadine buccale
-5- Je donne les conseils post-opératoires
-6- Je mets en place un tenon fibré avec un composite dual
-7- J&#39;anesthésie localement la dent à traiter
-8- Je réalise le traitement endodontique puis une désobturation pour laisser environ 4 mm de gutta à l&#39;apex
-9- Je mets en place une contention passive
-10- Je recolle les morceaux de dents à l&#39;aide d&#39;adhésif et de composite d&#39;assemblage&lt;/span&gt;
-&lt;&lt;set $answer to &#39;&#39;&gt;&gt;
-&lt;&lt;textbox &#39;$answer&#39; &#39;&#39; id=&quot;textbox-answer&quot; autofocus&gt;&gt;
-&lt;div id=&quot;textbox-reply&quot; style=&quot;opacity:0; transition: opacity 0.5s;&quot;&gt;&lt;/div&gt;
-&lt;div id=&quot;textbox-submit&quot;&gt;
-\&lt;&lt;button &#39;Soumettre ma séquence&#39;&gt;&gt;
-\&lt;&lt;set $tempScore = 0&gt;&gt;
-       &lt;&lt;set $answer to $answer.trim().toLowerCase().replace(/\s+/g, &#39;&#39;).split(&quot;/&quot;).join(&quot;&quot;)&gt;&gt;
-        &lt;&lt;if [
-	&quot;4/7/1/8/6/10/2/9/5/3&quot;,
-    &quot;47186102953&quot;,    
-].includes($answer)&gt;&gt;
-&lt;&lt;silently&gt;&gt;&lt;&lt;set $tempScore += 45&gt;&gt;&lt;&lt;/silently&gt;&gt;
-&lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;//Correct!//&lt;&lt;/replace&gt;&gt;
-&lt;&lt;else&gt;&gt;
-&lt;&lt;silently&gt;&gt;&lt;&lt;set $tempScore -=20&gt;&gt;&lt;&lt;/silently&gt;&gt;
-&lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;//Incorrect!//&lt;&lt;/replace&gt;&gt;
-&lt;&lt;/if&gt;&gt;
-&lt;&lt;set $Score += $tempScore&gt;&gt;
-&lt;&lt;run $(&#39;#textbox-answer&#39;).attr(&#39;readonly&#39;, &#39;true&#39;).css(&#39;transition&#39;, &#39;background-color 0.5s&#39;).css(&#39;background-color&#39;,&#39;#eee&#39;);&gt;&gt;
-&lt;&lt;run $(&#39;#textbox-reply&#39;).css(&#39;opacity&#39;,1);&gt;&gt;
-&lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;
-\&lt;i&gt;Pour cette procédure on réduit la charge bactérienne en désinfectant le site,  on anesthésie, on extraie 21 et on la traite endodontiquement, on recolle les fragments, on réimplante 21, on met en place une contention passive, on donne une médication et les conseils post-op. On prévoit un rdv de suivi et on remet un CMI.&lt;/i&gt;
-Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 45.
-\&lt;&lt;if $tempScore is 45&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
-&#39;&#39;[[Je passe à la suite|D_PEC aprem 7]]&#39;&#39;
-&lt;&lt;/replace&gt;&gt;
-&lt;&lt;set $button to 1&gt;&gt;
-&lt;&lt;/button&gt;&gt;
+\&lt;p&gt;Illustration du traitement de 21 [2]&lt;/p&gt;
+&lt;img src=&quot;./Cas_clinique6/Vignesh_treatment1.jpg&quot; width=&quot;600&quot;&gt;
+&lt;p&gt;Remettez les étapes du traitement dans le bon ordre :&lt;/p&gt;
+\&lt;div id=&quot;dalle-wrapper&quot;&gt;
+ \ &lt;div id=&quot;dalle-container&quot;&gt;
+  \  &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;1&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;1- J&#39;extraie la dent 21 de manière la plus atraumatique possible, je la nettoie au sérum physiologique en touchant le moins possible la racine dans mes futures manipulations&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;2&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;2-Je réimplante la dent&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;3&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;3-Je donne un rendez-vous de suivi pour la contention et je remets un CMI au responsable légal&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;4&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;4-Je désinfecte le site à l&#39;aide d&#39;une compresse et de la bétadine buccale&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;5&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;5-Je donne les conseils post-opératoires&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;6&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;6-Je mets en place un tenon fibré avec un composite dual&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;7&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;7-J&#39;anesthésie localement la dent à traiter&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;8&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;8-Je réalise le traitement endodontique puis une désobturation pour laisser environ 4 mm de gutta à l&#39;apex&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;9&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;9-Je mets en place une contention passive&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;10&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;10-Je recolle les morceaux de dents à l&#39;aide d&#39;adhésif et de composite d&#39;assemblage&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+ &lt;button id=&quot;soumettre&quot; class=&quot;macro-button&quot;&gt;Soumettre ma séquence&lt;/button&gt;
+  &lt;div id=&quot;feedback&quot;&gt;&lt;/div&gt;
+   &lt;div id=&quot;feedback2&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;&lt;silently&gt;&gt;
-    &lt;&lt;repeat 1s&gt;&gt;
-        &lt;&lt;set $Timer to $Timer-1&gt;&gt;
-         &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;
-        &lt;&lt;elseif $Timer gt 0&gt;&gt;
-        &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
-        &lt;&lt;/if&gt;&gt;
-          &lt;&lt;/repeat&gt;&gt;
+&lt;&lt;script&gt;&gt;
+setTimeout(function() {
+    const container = document.getElementById(&#39;dalle-container&#39;);
+    if (!container) return;
+
+    let dragSrcEl = null;
+
+    function handleDragStart(e) {
+        dragSrcEl = this;
+        e.dataTransfer.effectAllowed = &#39;move&#39;;
+        e.dataTransfer.setData(&#39;text/html&#39;, this.innerHTML);
+    }
+
+    function handleDragOver(e) {
+        if (e.preventDefault) e.preventDefault();
+        return false;
+    }
+
+    function handleDrop(e) {
+        if (e.stopPropagation) e.stopPropagation();
+        if (dragSrcEl !== this) {
+            const temp = this.innerHTML;
+            this.innerHTML = dragSrcEl.innerHTML;
+            dragSrcEl.innerHTML = temp;
+
+            const tempId = this.dataset.id;
+            this.dataset.id = dragSrcEl.dataset.id;
+            dragSrcEl.dataset.id = tempId;
+        }
+        return false;
+    }
+
+    const dalles = container.querySelectorAll(&#39;.dalle&#39;);
+    dalles.forEach(function(dalle) {
+        dalle.addEventListener(&#39;dragstart&#39;, handleDragStart, false);
+        dalle.addEventListener(&#39;dragover&#39;, handleDragOver, false);
+        dalle.addEventListener(&#39;drop&#39;, handleDrop, false);
+    });
+
+    document.getElementById(&#39;soumettre&#39;).addEventListener(&#39;click&#39;, function() {
+        // stop timer
+        if (typeof State !== &#39;undefined&#39;) State.variables.button = 1;
+
+        const currentOrder = Array.from(container.children)
+            .filter(d =&gt; d.classList.contains(&#39;dalle&#39;))
+            .map(d =&gt; d.dataset.id);
+
+        const correctOrder = [&quot;4&quot;,&quot;7&quot;,&quot;1&quot;,&quot;8&quot;,&quot;6&quot;,&quot;10&quot;,&quot;2&quot;,&quot;9&quot;,&quot;5&quot;,&quot;3&quot;];
+
+        let tempScore = 0;
+const dalles = Array.from(container.children).filter(d =&gt; d.classList.contains(&#39;dalle&#39;));
+for (let i = 0; i &lt; correctOrder.length; i++) {
+    if (currentOrder[i] === correctOrder[i]) {
+        tempScore += 5;
+        dalles[i].style.backgroundColor = &quot;rgba(0,128,0,0.2)&quot;; // vert discret
+        } else {
+        tempScore -=5;
+        dalles[i].style.backgroundColor = &quot;rgba(255,0,0,0.2)&quot;; // rouge discret
+    }
+}
+        if (currentOrder.join(&quot;,&quot;) === correctOrder.join(&quot;,&quot;)) {
+                       document.getElementById(&#39;feedback&#39;).innerHTML = &quot;Correct !&quot;;
+        } else {
+            tempScore -= 20;
+            document.getElementById(&#39;feedback&#39;).innerHTML = &quot;Incorrect !&quot;;
+                   }
+document.getElementById(&#39;feedback2&#39;).innerHTML = &quot;&lt;i&gt;Bonne réponse : 4/7/1/8/6/10/2/9/5/3.&lt;br&gt;Pour cette procédure on réduit la charge bactérienne en désinfectant le site,  on anesthésie, on extraie 21 et on la traite endodontiquement, on recolle les fragments, on réimplante 21, on met en place une contention passive, on donne une médication et les conseils post-op. On prévoit un rdv de suivi et on remet un CMI !&lt;/i&gt;&lt;br&gt;&lt;br&gt;&quot; +
+
+&quot;Votre score clinique pour ce passage est de &lt;span style=&#39;color:purple; font-weight:bold;&#39;&gt;&quot; + tempScore + &quot;&lt;/span&gt; sur un maximum de 70.&quot;;
+      document.getElementById(&#39;feedback&#39;).style.opacity = 1;
+        dalles.forEach(d =&gt; d.setAttribute(&#39;draggable&#39;, false));
+
+        if (typeof State !== &#39;undefined&#39;) {
+            State.variables.tempScore = tempScore;
+            State.variables.Score = (State.variables.Score || 0) + tempScore;
+        }
+        if (State.variables.tempScore === 70) {
+    State.variables.Rapidite = State.variables.Rapidite + State.variables.Timer;
+}
+    });
+}, 50);
+&lt;&lt;/script&gt;&gt;
+
+&lt;&lt;silently&gt;&gt; 
+&lt;&lt;repeat 1s&gt;&gt;
+&lt;&lt;set $Timer to $Timer-1&gt;&gt; 
+&lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt; 
+&lt;&lt;elseif $Timer gt 0&gt;&gt;
+&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt; 
+&lt;&lt;/if&gt;&gt;
+&lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="44" name="D_PEC aprem 7" tags="Choix-multiple-a-cocher" position="7675,1050" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 50&gt;&gt;
@@ -2614,7 +2760,7 @@ Voici une vue de suivi à un an du patient :
 \&lt;&lt;if $tempScore is 5&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
 //La durée recommandée est de 2 semaines.//&lt;&lt;/replace&gt;&gt;
 &lt;&lt;run $(&#39;#checkbox-feedback&#39;).css(&#39;opacity&#39;,1)&gt;&gt;
-&lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;&#39;&#39;[[Je passe à la suite et je consulte mon score final|D_Resultat]]&#39;&#39;&lt;&lt;/replace&gt;&gt;
+&lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;&#39;&#39;[[Je passe à la suite et je consulte mon score final|Resultat]]&#39;&#39;&lt;&lt;/replace&gt;&gt;
 &lt;&lt;set $button = 1&gt;&gt;
 &lt;&lt;/button&gt;&gt;\
 &lt;/div&gt;
@@ -2733,7 +2879,8 @@ Illustration du traitement de 21 [1]
 \&lt;&lt;set $Score += $tempScore&gt;&gt;
 &lt;&lt;run $(&#39;#textbox-answer&#39;).attr(&#39;readonly&#39;, &#39;true&#39;).css(&#39;transition&#39;, &#39;background-color 0.5s&#39;).css(&#39;background-color&#39;,&#39;#eee&#39;);&gt;&gt;
 &lt;&lt;run $(&#39;#textbox-reply&#39;).css(&#39;opacity&#39;,1);&gt;&gt;
- &lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;//Pour cette procédure on anesthésie, on isole, on fait une exérèse de la pulpe puis on cherche l&#39;hémostase. On met en place le matériau de coiffage et après sa prise on protège avec le CVI.//
+ &lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;//Bonne réponse : 4/2/6/7/3/1/5
+ Pour cette procédure on anesthésie, on isole, on fait une exérèse de la pulpe puis on cherche l&#39;hémostase. On met en place le matériau de coiffage et après sa prise on protège avec le CVI.//
  Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 25.
 \&lt;&lt;if $tempScore is 25&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
  &#39;&#39;[[Je passe à la suite|D_PEC immediate 6]]&#39;&#39;\&lt;&lt;/replace&gt;&gt;
@@ -2815,7 +2962,7 @@ Que pourriez vous faire lors de ces rdvs ? \&lt;&lt;set $desc = {}&gt;&gt;
 \&lt;&lt;if $tempScore is 30&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
 //Le suivi recommandé par l&#39;IADT est à 1 semaine, 8 semaines et 1 an. Lors des rdvs à venir vous pourriez remplacer le CVI par un composite direct, surveiller si la dent ne se nécrose pas, surveiller l&#39;évolution de la coloration de la dent, et vérifier si d&#39;autres soins ne sont pas nécessaires chez ce patient.//&lt;&lt;/replace&gt;&gt;
 &lt;&lt;run $(&quot;#checkbox-feedback&quot;).css(&quot;opacity&quot;,1)&gt;&gt;
-&lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;&#39;&#39;[[Je passe à la suite et je consulte mon score final|D_Resultat]]&#39;&#39;&lt;&lt;/replace&gt;&gt;
+&lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;&#39;&#39;[[Je passe à la suite et je consulte mon score final|Resultat]]&#39;&#39;&lt;&lt;/replace&gt;&gt;
 &lt;&lt;set $button = 1&gt;&gt;
 &lt;&lt;/button&gt;&gt;\
 &lt;/div&gt;
@@ -2949,183 +3096,12 @@ Il vous est précisé que l&#39;enfant a 9 ans. Il a vraiment mal et se plaint b
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="57" name="D_Resultat" tags="Media-image-son" position="6950,1875" size="100,100">&lt;div class=&quot;pulseTitle&quot;&gt;RÉSULTAT FINAL&lt;/div&gt;
-Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span style=&quot;color: purple;&quot;&gt;&#39;&#39;$Score&#39;&#39;&lt;/span&gt;&lt;/span&gt; et un score de rapidité de &lt;span id=&quot;Score_rapid&quot;&gt;&lt;span style=&quot;color: green;&quot;&gt;&#39;&#39;$Rapidite&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
-&lt;&lt;silently&gt;&gt;
-&lt;&lt;set $Total = Math.round($Score + $Rapidite/4)&gt;&gt;
-/* Définition des seuils selon le scénario */
-&lt;&lt;switch $Scenario&gt;&gt;
-  &lt;&lt;case &quot;Scénario1_débutant&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 100&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 200&gt;&gt;
-   &lt;&lt;case &quot;Scénario4_débutant&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 80&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 145&gt;&gt;
-         &lt;&lt;case &quot;Scénario5_débutant&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 90&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 180&gt;&gt;
-         &lt;&lt;case &quot;Scénario6_débutant&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 100&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 200&gt;&gt;
-  &lt;&lt;default&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 50&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 150&gt;&gt;
-&lt;&lt;/switch&gt;&gt;
-&lt;&lt;/silently&gt;&gt;
-&#39;&#39;Votre score global est de&#39;&#39; &lt;span style=&quot;color: orange;&quot;&gt;&#39;&#39;$Total&#39;&#39;&lt;/span&gt;(Score clinique + Score de rapidité/4) 
-\&lt;&lt;if ($Rapidite - $Total) &gt; 200&gt;&gt;
-&#39;&#39;Vous avez un score de rapidité très élevé mais un score clinique faible.&#39;&#39;
-  Vous voulez peut-être trop brûler les étapes. Il ne sert à rien d&#39;aller trop vite si les décisions cliniques ne sont pas bonnes.
-  Vous êtes pris en flagrant délit d&#39;excès de vitesse ! 
-  &lt;br&gt;&lt;img src=&quot;./Images/exces_vitesse.jpg&quot; width=&quot;200vw&quot;&gt; 
-&lt;&lt;else&gt;&gt;
-  &lt;&lt;if $Total &lt; $SeuilBronze&gt;&gt;
-    &#39;&#39;Votre score global est en dessous de $SeuilBronze points.&#39;&#39;
-    Vous avez fait de votre mieux, bravo !
-    Vous obtenez le &#39;&#39;badge de bronze&#39;&#39; 
-    &lt;div style=&quot;text-align:center;&quot;&gt;
-  &lt;span style=&quot;
-    font-size:5em;
-    text-shadow: 0 0 10px rgba(160, 100, 255, 0.8);
-    display:inline-block;
-  &quot;&gt;
-   \🥉
-  &lt;/span&gt;
-&lt;/div&gt;
-\Recommencez un ou plusieurs entraînement pour progresser et viser plus haut !
-  &lt;&lt;elseif $Total &gt;= $SeuilBronze and $Total &lt; $SeuilArgent&gt;&gt;
-    &#39;&#39;Votre score global est entre $SeuilBronze points et $SeuilArgent points.&#39;&#39;
-    Très bien — vous avez franchi un premier palier !
-    Vous obtenez le &#39;&#39;badge d&#39;argent&#39;&#39;
-    &lt;div style=&quot;text-align:center;&quot;&gt;
-  &lt;span style=&quot;
-    font-size:5em;
-    text-shadow: 0 0 10px rgba(160, 100, 255, 0.8);
-    display:inline-block;
-  &quot;&gt;
-   \🥈
-  &lt;/span&gt;
-&lt;/div&gt;
-\Recommencez un ou plusieurs entraînement pour viser l&#39;excellence !
-&lt;&lt;else&gt;&gt;  /* $Total &gt;= $SeuilArgent */
-    &#39;&#39;Votre score global est au dessus de $SeuilArgent points.&#39;&#39;
-    Bravo $Nom — excellente performance !
-    Vous obtenez le &#39;&#39;badge d&#39;or&#39;&#39;.
-    Vous rentrez au panthéon 🏦des chirurgiens dentistes ! Avant vous, Brånemark, Black, Magne, Tanaka, De Sanctis et seulement quelques autres ont réussi cet exploit!
-        \&lt;div style=&quot;text-align:center;&quot;&gt;
-  \&lt;span style=&quot;
-    font-size:5em;
-    text-shadow: 0 0 10px rgba(160, 100, 255, 0.8);
-    display:inline-block;
-  &quot;&gt;
-   \🥇
-  &lt;/span&gt;
-&lt;/div&gt;
-\Recommencez un ou plusieurs entraînement pour vérifier que ce n&#39;est pas un coup de chance 😉ou bien testez-vous sur d&#39;autres cas cliniques ou encore passez en niveau avancé !
-\&lt;&lt;/if&gt;&gt;
-\&lt;&lt;/if&gt;&gt;
-
-&#39;&#39;Objectifs de votre votre cas clinique :&#39;&#39;
-🥉 Bronze &lt; $SeuilBronze points
-🥈 Argent ≥ $SeuilBronze et &lt; $SeuilArgent points
-🥇 Or ≥ $SeuilArgent points
-
-\&lt;div id=&quot;resultat&quot;&gt;Chargement du Top 10...&lt;/div&gt;
-\&lt;&lt;script&gt;&gt;
-const url = &quot;https://6936b66bf8dc350aff31e3ea.mockapi.io/scores&quot;; // remplace par ton URL MockAPI
-
-const player = {
-  nom: State.variables.nom,
-  score: State.variables.Score,
-  scenario: State.variables.Scenario,
-  timestamp: Date.now()
-};
-
-// Fonction pour transformer $Scenario en titre lisible
-function getScenarioTitre(scenario) {
-    const mapping = {
-      &quot;Scénario1_avancé&quot;: &quot;Cas 1 niveau avancé&quot;,
-      &quot;Scénario2_avancé&quot;: &quot;Cas 2 niveau avancé&quot;,
-      &quot;Scénario3_avancé&quot;: &quot;Cas 3 niveau avancé&quot;,
-      &quot;Scénario4_avancé&quot;: &quot;Cas 4 niveau avancé&quot;,
-      &quot;Scénario5_avancé&quot;: &quot;Cas 5 niveau avancé&quot;,
-      &quot;Scénario6_avancé&quot;: &quot;Cas 6 niveau avancé&quot;,
-      &quot;Scénario1_débutant&quot;: &quot;Cas 1 niveau débutant&quot;,
-      &quot;Scénario4_débutant&quot;: &quot;Cas 4 niveau débutant&quot;,
-      &quot;Scénario5_débutant&quot;: &quot;Cas 5 niveau débutant&quot;,
-      &quot;Scénario6_débutant&quot;: &quot;Cas 6 niveau débutant&quot;
-    };
-    return mapping[scenario] || scenario;
-}
-
-// --- 1️⃣ Envoi du score ---
-fetch(url, {
-    method: &quot;POST&quot;,
-    headers: {&quot;Content-Type&quot;: &quot;application/json&quot;},
-    body: JSON.stringify(player)
-})
-.then(() =&gt; fetch(url))  // --- 2️⃣ Récupération après l&#39;envoi ---
-.then(res =&gt; res.json())
-.then(scores =&gt; {
-
-    // Filtrer par scénario courant
-    let scoresScenario = scores.filter(s =&gt; s.scenario === State.variables.Scenario);
-
-    // Trier par score décroissant
-    scoresScenario.sort((a,b) =&gt; b.score - a.score);
-
-    // Top 10
-    let top10 = scoresScenario.slice(0, 10);
-
-    // --- Construire tableau HTML ---
-    let html = `&lt;h3&gt;Voici le Top 10 des scores de vos confrères sur ce cas clinique : &lt;i&gt;${getScenarioTitre(State.variables.Scenario)}&lt;/i&gt;&lt;/h3&gt;`;
-    html += `&lt;table style=&quot;
-                border-collapse: collapse; 
-                width: 100%; 
-                font-family: Arial, sans-serif; 
-                color: #111;
-                background-color: #FFFBF0;
-                text-align: center;
-                &quot;&gt;
-                &lt;tr style=&quot;background-color:#eaf4ff; color:#111;&quot;&gt;
-                  &lt;th&gt;Rang&lt;/th&gt;
-                  &lt;th&gt;Nom&lt;/th&gt;
-                  &lt;th&gt;Score&lt;/th&gt;
-                  &lt;th&gt;Date&lt;/th&gt;
-                &lt;/tr&gt;`;
-
-    top10.forEach((s, i) =&gt; {
-        // Fond clair alterné
-        let bgColor = i % 2 === 0 ? &quot;#FFFDF5&quot; : &quot;#F6F2E8&quot;;
-
-        // Joueur courant en gras
-        let fontWeight = (s.nom === State.variables.nom) ? &quot;bold&quot; : &quot;normal&quot;;
-
-        html += `&lt;tr style=&quot;background-color:${bgColor}; font-weight:${fontWeight};&quot;&gt;
-                    &lt;td&gt;${i+1}&lt;/td&gt;
-                    &lt;td&gt;${s.nom}&lt;/td&gt;
-                    &lt;td&gt;${s.score}&lt;/td&gt;
-                    &lt;td&gt;${new Date(s.timestamp).toLocaleDateString()}&lt;/td&gt;
-                 &lt;/tr&gt;`;
-    });
-
-    html += `&lt;/table&gt;`;
-
-    document.getElementById(&quot;resultat&quot;).innerHTML = html;
-
-})
-.catch(err =&gt; {
-    document.getElementById(&quot;resultat&quot;).innerHTML = &quot;&lt;b&gt;Erreur :&lt;/b&gt; &quot; + err;
-});
-
-&lt;&lt;/script&gt;&gt;
-
-[[Je recommence un entraînement|Passage 1]]</tw-passagedata><tw-passagedata pid="58" name="D_Surbooké" tags="" position="5575,400" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="57" name="D_Surbooké" tags="" position="5575,400" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Refuser une urgence traumatique chez l&#39;enfant sans évaluer la situation n&#39;est pas professionnel.
 
-&#39;&#39;[[Je reprends mes esprits et j&#39;accueille l&#39;enfant.|D_Accueil enfant]]&#39;&#39;</tw-passagedata><tw-passagedata pid="59" name="D_TTT1" tags="Choix-multiple-a-cocher Media-image-son" position="5525,1075" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je reprends mes esprits et j&#39;accueille l&#39;enfant.|D_Accueil enfant]]&#39;&#39;</tw-passagedata><tw-passagedata pid="58" name="D_TTT1" tags="Choix-multiple-a-cocher Media-image-son" position="5525,1075" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Rapidite to $Rapidite+$Timer&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
@@ -3163,7 +3139,7 @@ Refuser une urgence traumatique chez l&#39;enfant sans évaluer la situation n&#
         &lt;&lt;replace &quot;#checkbox-feedback&quot;&gt;&gt;
 Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 10.
 \&lt;&lt;if $tempScore is 10&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
-//Il y a seulement 2 bonnes réponses. Une anesthésie parapicale de 11 et un rappel palatin seront nécessaires. Le produit sera choisi de préférence SANS vasoconstricteur.//
+//Il y a seulement 2 bonnes réponses. Une anesthésie parapicale de 11 et un rappel palatin seront nécessaires.//
 &lt;&lt;/replace&gt;&gt;
 
         &lt;&lt;run $(&#39;#checkbox-feedback&#39;).css(&#39;opacity&#39;,1)&gt;&gt;
@@ -3178,12 +3154,11 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;elseif $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="60" name="D_TTT2" tags="Choix-multiple-a-cocher" position="5525,1200" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="59" name="D_TTT2" tags="Choix-multiple-a-cocher" position="5525,1200" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;four&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
 \Après l&#39;anesthésie et avoir replacé la dent à la main que faîtes vous ?
 \/*bonne réponse 4*/
 \&lt;&lt;set $desc = {}&gt;&gt;
@@ -3228,7 +3203,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;elseif $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="61" name="D_TTT3 (ordo)" tags="Choix-multiple-a-cocher Fonction-random" position="5525,1325" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="60" name="D_TTT3 (ordo)" tags="Choix-multiple-a-cocher Fonction-random" position="5525,1325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;three&quot;,&quot;six&quot;]&gt;&gt;
@@ -3286,7 +3261,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;elseif $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="62" name="D_TTT4 (prescription) poids A" tags="Choix-multiple-a-cocher" position="5475,1450" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="61" name="D_TTT4 (prescription) poids A" tags="Choix-multiple-a-cocher" position="5475,1450" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;four&quot;]&gt;&gt;
@@ -3344,7 +3319,7 @@ ou
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="63" name="D_TTT4 (prescription) poids B" tags="Choix-multiple-a-cocher" position="5600,1450" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="62" name="D_TTT4 (prescription) poids B" tags="Choix-multiple-a-cocher" position="5600,1450" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;four&quot;]&gt;&gt;
@@ -3401,7 +3376,7 @@ ou
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="64" name="D_TTT5 (CMI et suivi)" tags="Choix-multiple-a-cocher" position="5525,1575" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="63" name="D_TTT5 (CMI et suivi)" tags="Choix-multiple-a-cocher" position="5525,1575" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 60&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;five&quot;,&quot;six&quot;]&gt;&gt;
@@ -3456,7 +3431,7 @@ Je remets également un CMI et prévois de retirer la contention à 2 semaines s
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="65" name="D_URG CH Andre" tags="Chrono-simple" position="7400,325" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="64" name="D_URG CH Andre" tags="Chrono-simple" position="7400,325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous ne pouvez pas vous débiner à la première occasion venue.
@@ -3480,13 +3455,13 @@ Martine est d&#39;accord avec nous. Elle vous précise qu&#39;avec son praticien
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="66" name="D_Verif violence" tags="" position="5800,775" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="65" name="D_Verif violence" tags="" position="5800,775" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 
 Le dépistage de la violence infantile est un des points à vérifier lors d&#39;un trauma chez l&#39;enfant. L&#39;adulte accompagnant peut parler d&#39;une chute, d&#39;un accident, mais l&#39;enfant peut avoir subi des coups.
 
-&#39;&#39;[[Vous vérifiez si des marques de coups visibles sont présentes et vous faîtes reformuler à l&#39;enfant ce qui s&#39;est passé pour sa dent de façon simple.|D_echymoses ok]]&#39;&#39;</tw-passagedata><tw-passagedata pid="67" name="D_Vue extra orale Cas 4" tags="Choix-multiple-a-cocher Media-image-son" position="6275,400" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Vous vérifiez si des marques de coups visibles sont présentes et vous faîtes reformuler à l&#39;enfant ce qui s&#39;est passé pour sa dent de façon simple.|D_echymoses ok]]&#39;&#39;</tw-passagedata><tw-passagedata pid="66" name="D_Vue extra orale Cas 4" tags="Choix-multiple-a-cocher Media-image-son" position="6275,400" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;two&quot;,&quot;five&quot;,&quot;eight&quot;,&quot;nine&quot;]&gt;&gt;
@@ -3530,7 +3505,7 @@ Vous commencez à l&#39;examiner. La palpation ne révèle pas de problème part
 &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="68" name="D_cas4 morceau ok" tags="Chrono-simple" position="6275,775" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="67" name="D_cas4 morceau ok" tags="Chrono-simple" position="6275,775" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Le morceau est disponible et s&#39;adapte parfaitement bien et il n&#39;y a pas de hiatus.
@@ -3554,13 +3529,13 @@ Je peux faire une rainure interne sur la face du morceau qui sera en contact ave
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="69" name="D_echymoses ok" tags="" position="5800,900" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="68" name="D_echymoses ok" tags="" position="5800,900" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 L&#39;enfant confirme la version de l&#39;accident.
 Il n&#39;a pas d&#39;autres traces de chocs ou de coups ailleurs.
 
-&#39;&#39;[[Vous avez écarté le risque de violence infantile et pouvez continuez votre examen|D_Conduite cst]]&#39;&#39;</tw-passagedata><tw-passagedata pid="70" name="D_mauvaise pub" tags="Media-image-son" position="6800,475" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Vous avez écarté le risque de violence infantile et pouvez continuez votre examen|D_Conduite cst]]&#39;&#39;</tw-passagedata><tw-passagedata pid="69" name="D_mauvaise pub" tags="Media-image-son" position="6800,475" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 La maman est repartie furieuse promettant de ne pas vous louper dans les avis en ligne.
@@ -3568,7 +3543,7 @@ La maman est repartie furieuse promettant de ne pas vous louper dans les avis en
 Quelques jours après vous apprenez que c&#39;était la présidente de l&#39;association des parents d&#39;élèves de l&#39;école du village. La réputation du cabinet en a pris un sacré coup.
 &lt;img src=&quot;./Images/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
 
-&#39;&#39;[[Je vais consulter mon score final|D_Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="71" name="D_mauvaise pub2" tags="Media-image-son" position="7475,450" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je vais consulter mon score final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="70" name="D_mauvaise pub2" tags="Media-image-son" position="7475,450" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous n&#39;entendez plus parler de ce cas clinique pendant un moment...jusqu&#39;au jour où votre dossier d&#39;extension de cabinet dentaire est réfusé par la mairie. 
@@ -3576,7 +3551,7 @@ En consultant le dossier vous vous apercevez que le père du patient est le cons
 
 &lt;img src=&quot;./Images/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
 
-&#39;&#39;[[Je vais consulter mon score final|D_Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="72" name="D_no new patient" tags="Chrono-simple" position="6800,350" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je vais consulter mon score final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="71" name="D_no new patient" tags="Chrono-simple" position="6800,350" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous avez quelques minutes de libre devant vous pour analyser la situation. Il peut s&#39;agir d&#39;une vraie urgence dentaire. Martine l&#39;assistante marmonne qu&#39;avec le dentiste précédent, l&#39;enfant aurait été accueilli.
@@ -3597,7 +3572,7 @@ Vous avez quelques minutes de libre devant vous pour analyser la situation. Il p
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="73" name="D_noVerif violence" tags="Chrono-simple" position="5925,775" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="72" name="D_noVerif violence" tags="Chrono-simple" position="5925,775" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Le dépistage de la violence infantile est un des points à vérifier lors d&#39;un trauma chez l&#39;enfant. L&#39;adulte accompagnant peut parler d&#39;une chute, d&#39;un accident, mais l&#39;enfant peut avoir subi des coups.
@@ -3619,7 +3594,7 @@ Le dépistage de la violence infantile est un des points à vérifier lors d&#39
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="74" name="D_Rainure" tags="Media-image-son Question-ouverte" position="6275,900" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="73" name="D_Rainure" tags="Media-image-son Question-ouverte" position="6275,900" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 80&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -3677,7 +3652,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="75" name="D_question isolation" tags="Media-image-son Question-ouverte" position="6325,1050" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="74" name="D_question isolation" tags="Media-image-son Question-ouverte" position="6325,1050" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -3729,7 +3704,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="76" name="D_question teinte" tags="Choix-multiple-a-cocher Media-image-son" position="6325,1175" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="75" name="D_question teinte" tags="Choix-multiple-a-cocher Media-image-son" position="6325,1175" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 60&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;three&quot;]&gt;&gt;
@@ -3752,14 +3727,22 @@ Après collage voici le résultat : &lt;img src=&quot;./Cas_clinique4/Cas4_deshy
 &lt;&lt;run Array.from(document.querySelectorAll(&#39;input[type=&quot;checkbox&quot;]&#39;)).forEach(cb =&gt; cb.disabled = true)&gt;&gt;
 &lt;&lt;run $bonnesReponses.forEach(id =&gt; {const ligne = document.querySelector(&#39;[data-id=&quot;&#39;+id+&#39;&quot;]&#39;); if (ligne) ligne.classList.add(&quot;good-answer&quot;);})&gt;&gt;
 &lt;&lt;replace &quot;#checkbox-feedback&quot;&gt;&gt;Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 5.
-\&lt;&lt;if $tempScore is 5&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;//Si le fragment paraît plus clair, c’est en raison d&#39;une déshydratation probable. Ce phénomène peut être réversible après réhydratation sur plusieurs jours.//&lt;&lt;/replace&gt;&gt;
+\&lt;&lt;if $tempScore is 5&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
+//Si le fragment paraît plus clair, c’est en raison d&#39;une déshydratation probable. Ce phénomène peut être réversible après réhydratation sur plusieurs jours.//&lt;&lt;/replace&gt;&gt;
 &lt;&lt;run $(&#39;#checkbox-feedback&#39;).css(&#39;opacity&#39;,1)&gt;&gt;
-&lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;&#39;&#39;[[Je vais consulter mon résultat final|D_Resultat]]&#39;&#39;&lt;&lt;/replace&gt;&gt;
+&lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;&#39;&#39;[[Je vais consulter mon résultat final|Resultat]]&#39;&#39;&lt;&lt;/replace&gt;&gt;
 &lt;&lt;set $button = 1&gt;&gt;
 &lt;&lt;/button&gt;&gt;\
 &lt;/div&gt;
 
-&lt;&lt;silently&gt;&gt;&lt;&lt;repeat 1s&gt;&gt;&lt;&lt;set $Timer to $Timer-1&gt;&gt;&lt;&lt;if $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;&lt;&lt;/repeat&gt;&gt;&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="77" name="D_sortie_violence" tags="Chrono-simple" position="5800,650" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;silently&gt;&gt;
+&lt;&lt;repeat 1s&gt;&gt;
+&lt;&lt;set $Timer to $Timer-1&gt;&gt;
+&lt;&lt;if $Timer gt 0&gt;&gt;
+&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+&lt;&lt;/repeat&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="76" name="D_sortie_violence" tags="Chrono-simple" position="5800,650" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Une fois la mère sortie l&#39;enfant se calme un peu.
@@ -3785,7 +3768,7 @@ Mais quand vous approchez, et que vous faîtes des petits gestes avec les bras, 
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="78" name="Demande violence" tags="Chrono-simple" position="1000,950" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="77" name="Demande violence" tags="Chrono-simple" position="1000,950" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Demandez directement s&#39;il y a violence à l&#39;enfant peut le mettre mal à l&#39;aise et l&#39;empêcher de parler.
@@ -3807,12 +3790,12 @@ Demandez directement s&#39;il y a violence à l&#39;enfant peut le mettre mal à
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="79" name="Dent pas cassée" tags="" position="925,400" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="78" name="Dent pas cassée" tags="" position="925,400" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Attention, il ne faut pas prendre à la lettre ce qui vous est raporté sur un cas avant de l&#39;avoir observé cliniquement, surtout quand l&#39;observation est sujette à des erreurs par des non professionels.. Une dent annoncée comme non cassée peut l&#39;être. Elle peut aussi être félée ou fracturée,etc...et cela peut nécessiter votre intervention.
 
-&#39;&#39;[[Vous reprenez vos esprits et recevez l&#39;enfant et sa mère 3 minutes après.|Accueil enfant]]&#39;&#39;</tw-passagedata><tw-passagedata pid="80" name="Digue" tags="Media-image-son Question-ouverte-1variante" position="2675,1625" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Vous reprenez vos esprits et recevez l&#39;enfant et sa mère 3 minutes après.|Accueil enfant]]&#39;&#39;</tw-passagedata><tw-passagedata pid="79" name="Digue" tags="Media-image-son Question-ouverte-1variante" position="2675,1625" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -3892,7 +3875,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="81" name="Dispatch adaptation cas4" tags="Fonction-random" position="3125,950" size="100,100">&lt;&lt;set $random=random(1,3)&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="80" name="Dispatch adaptation cas4" tags="Fonction-random" position="3125,950" size="100,100">&lt;&lt;set $random=random(1,3)&gt;&gt;
 &lt;&lt;if $random is 1&gt;&gt;
 &lt;&lt;goto&quot;cas4 morceau ok&quot;&gt;&gt;
  	&lt;&lt;/if&gt;&gt;
@@ -3901,18 +3884,18 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
      &lt;&lt;/if&gt;&gt;
 &lt;&lt;if $random is 3&gt;&gt;
 	&lt;&lt;goto&quot;cas4 morceau no ok&quot;&gt;&gt;
-     &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="82" name="Dispatch enfant2 morceau" tags="Fonction-random" position="1900,850" size="100,100">&lt;&lt;set $random=random(1,2)&gt;&gt;
+     &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="81" name="Dispatch enfant2 morceau" tags="Fonction-random" position="1900,850" size="100,100">&lt;&lt;set $random=random(1,2)&gt;&gt;
 &lt;&lt;if $random is 1&gt;&gt;
 &lt;&lt;goto&quot;enfant2_morceau trouvé&quot;&gt;&gt;
  	&lt;&lt;/if&gt;&gt;
 &lt;&lt;if $random is 2&gt;&gt;
 	&lt;&lt;goto&quot;enfant2_morceau non trouvé&quot;&gt;&gt;
-     &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="83" name="Dispatch fracture" tags="Fonction-random" position="1375,2725" size="100,100">&lt;&lt;set $random=random(1,2)&gt;&gt;
+     &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="82" name="Dispatch fracture" tags="Fonction-random" position="1375,2725" size="100,100">&lt;&lt;set $random=random(1,2)&gt;&gt;
 &lt;&lt;if $random is 1&gt;&gt;
 &lt;&lt;goto&quot;TTT9&quot;&gt;&gt;
 &lt;&lt;elseif $random is 2&gt;&gt;
 &lt;&lt;goto&quot;Question fracture&quot;&gt;&gt;
-     &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="84" name="Dispatch niveau" tags="Fonction-random" position="1150,25" size="100,100">&lt;&lt;if $niveau.type is &quot;Débutant&quot;&gt;&gt;
+     &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="83" name="Dispatch niveau" tags="Fonction-random" position="1150,25" size="100,100">&lt;&lt;if $niveau.type is &quot;Débutant&quot;&gt;&gt;
     &lt;&lt;set $random = random(1,4)&gt;&gt;
 
     &lt;&lt;if $random is 1&gt;&gt;&lt;&lt;goto &quot;Scénario1_débutant&quot;&gt;&gt;&lt;&lt;/if&gt;&gt;
@@ -3931,7 +3914,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
     &lt;&lt;if $random is 5&gt;&gt;&lt;&lt;goto &quot;Scénario5_avancé&quot;&gt;&gt;&lt;&lt;/if&gt;&gt;
     &lt;&lt;if $random is 6&gt;&gt;&lt;&lt;goto &quot;Scénario6_avancé&quot;&gt;&gt;&lt;&lt;/if&gt;&gt;
 &lt;&lt;/if&gt;&gt;
-</tw-passagedata><tw-passagedata pid="85" name="Ecoute" tags="Chrono-simple Fonction-random" position="725,525" size="100,100">&lt;&lt;silently&gt;&gt;
+</tw-passagedata><tw-passagedata pid="84" name="Ecoute" tags="Chrono-simple Fonction-random" position="725,525" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 25&gt;&gt;
 &lt;&lt;set $random=random(1,2)&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -3956,12 +3939,12 @@ Elle n&#39;en finit pas de parler. Vous saviez que vous auriez dû couper court 
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="86" name="Ennervement" tags="" position="925,800" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="85" name="Ennervement" tags="" position="925,800" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Cela ne sert à rien de s&#39;ennerver. Soufflez un bon coup et ré-évaluer votre position
 
-&#39;&#39;[[Retour en arrière|Hasard sortie 2]]&#39;&#39;</tw-passagedata><tw-passagedata pid="87" name="Cas3_Erreur_restau" tags="Question-ouverte-1variante" position="2500,500" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Retour en arrière|Hasard sortie 2]]&#39;&#39;</tw-passagedata><tw-passagedata pid="86" name="Cas3_Erreur_restau" tags="Question-ouverte-1variante" position="2500,500" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -4042,7 +4025,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="88" name="Essai morceau" tags="Chrono-simple" position="2675,1250" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="87" name="Essai morceau" tags="Chrono-simple" position="2675,1250" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous pouvez désormais tester si le morceau s&#39;adapte bien sur la 11.
@@ -4068,7 +4051,7 @@ Vous paniquez ?
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="89" name="Fin Cas 1 débutant" tags="" position="5525,1700" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="88" name="Fin Cas 1 débutant" tags="" position="5525,1700" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Nous avons atteint la fin de ce cas. 
@@ -4079,7 +4062,7 @@ Pour votre information voici des photos de suivi de ce cas clinique [1] :
 \A 1 an 
 &lt;img src=&quot;./Cas_clinique1/exo_buc2.jpg&quot;&gt;
 
-&#39;&#39;[[Je vais consulter mon résultat final|D_Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="90" name="Hasard sortie 1" tags="Chrono-simple" position="675,675" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je vais consulter mon résultat final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="89" name="Hasard sortie 1" tags="Chrono-simple" position="675,675" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Une fois la mère sortie l&#39;enfant se calme un peu.
@@ -4105,7 +4088,7 @@ Mais quand vous approchez, et que vous faîtes des petits gestes avec les bras, 
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="91" name="Hasard sortie 2" tags="Chrono-simple" position="900,675" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="90" name="Hasard sortie 2" tags="Chrono-simple" position="900,675" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Une fois la mère sortie, l&#39;enfant devient encore plus anxieux et vous patinez.
@@ -4133,20 +4116,20 @@ Une fois la mère sortie, l&#39;enfant devient encore plus anxieux et vous patin
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="92" name="MEOPA" tags="" position="1250,1600" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="91" name="MEOPA" tags="" position="1250,1600" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Peut être que l&#39;enfant ne sera pas coopératif mais il faut essayer de réaliser le soin rapidement sans vous dérober. 
 
 Après 24h il serait quasi impossible de repositionner la dent convenablement car la force de compression nécessaire serait néfaste pour le ligament.
 
-&#39;&#39;[[Je ré-éavalue ma position|TTT1]]&#39;&#39;</tw-passagedata><tw-passagedata pid="93" name="Mauvais exobuccal" tags="" position="1175,975" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je ré-éavalue ma position|TTT1]]&#39;&#39;</tw-passagedata><tw-passagedata pid="92" name="Mauvais exobuccal" tags="" position="1175,975" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Non, désolé. 
 La percussion et le test de vitalité ne sont pas pertinents en exobuccal
 
-&#39;&#39;[[Poursuivre|Bon exobuccal]]&#39;&#39;</tw-passagedata><tw-passagedata pid="94" name="No RX" tags="" position="1300,1225" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Poursuivre|Bon exobuccal]]&#39;&#39;</tw-passagedata><tw-passagedata pid="93" name="No RX" tags="" position="1300,1225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Pour le trauma d&#39;une dent permanente il est recommandé de faire une rétro alvéolaire pour vérifier s&#39;il n&#39;y a pas de fracture sous jacente, d&#39;évaluer l&#39;état du desmodonte, de l&#39;os alvéolaire...
@@ -4155,7 +4138,7 @@ Pour des raisons médico-légal ou d&#39;assurance, cela est également nécessa
 C&#39;est bien d&#39;avoir en tête de limiter les rayons, ou de vouloir avancer vite, mais dans ce cas une rétro alvéolaire s&#39;avère nécessaire.
 
 Avant de passer à la radio, il y a aussi des points que vous auriez pu vérifier avant.
-&#39;&#39;[[D&#39;accord je vérifie quelques points avant de prendre ma rétro|Conduite cst4]]&#39;&#39;</tw-passagedata><tw-passagedata pid="95" name="Non solution hiatus" tags="Chrono-simple" position="3150,1200" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[D&#39;accord je vérifie quelques points avant de prendre ma rétro|Conduite cst4]]&#39;&#39;</tw-passagedata><tw-passagedata pid="94" name="Non solution hiatus" tags="Chrono-simple" position="3150,1200" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Non, avec le composite d&#39;assemblage vous pourriez combler ce léger hiatus.
@@ -4183,14 +4166,14 @@ Je peux faire une rainure interne sur la face du morceau qui sera en contact ave
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="96" name="Ordo seule" tags="" position="3925,775" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="95" name="Ordo seule" tags="" position="3925,775" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Décaler de plusieurs jours peut avoir un impact significatif sur le pronostic et n&#39;est pas recommandé (décaler de quelques heures pourrait être acceptable).
 
 Si vous ne pensez pas pouvoir bien faire immédiatement sous la pression, revoyez l&#39;enfant dans un nouveau créneau très rapidement pour appliquer la procédure.
 
-&#39;&#39;[[J&#39;accueille l&#39;enfant l&#39;après-midi pour les soins|PEC immediate 3]]&#39;&#39;</tw-passagedata><tw-passagedata pid="97" name="Oui solution hiatus" tags="Chrono-simple" position="3275,1200" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[J&#39;accueille l&#39;enfant l&#39;après-midi pour les soins|PEC immediate 3]]&#39;&#39;</tw-passagedata><tw-passagedata pid="96" name="Oui solution hiatus" tags="Chrono-simple" position="3275,1200" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Oui, avec le composite d&#39;assemblage vous pourriez combler ce léger hiatus.
@@ -4217,7 +4200,7 @@ Je peux faire une rainure interne sur la face du morceau qui sera en contact ave
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="98" name="Cas4 erreur teinte" tags="Media-image-son" position="3200,1725" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="97" name="Cas4 erreur teinte" tags="Media-image-son" position="3200,1725" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Non il n&#39;y a pas eu d&#39;étape oubliée pouvant expliquer la différence de teinte.
@@ -4229,7 +4212,7 @@ Le joint de collage est à peine discernable et la réhydratation du fragment of
 
 Le patient est libéré avec une prise de rendez-vous pour le suivi.
 
-&#39;&#39;[[Je vais consulter mon résultat final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="99" name="PEC aprem" tags="Question-ouverte" position="4450,325" size="100,100">&lt;&lt;silently&gt;&gt; 
+&#39;&#39;[[Je vais consulter mon résultat final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="98" name="PEC aprem" tags="Question-ouverte" position="4450,325" size="100,100">&lt;&lt;silently&gt;&gt; 
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt; 
@@ -4310,7 +4293,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
 &lt;&lt;stop&gt;&gt; 
 &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="100" name="PEC aprem 2" tags="Chrono-simple" position="4425,475" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="99" name="PEC aprem 2" tags="Chrono-simple" position="4425,475" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -4333,7 +4316,7 @@ Le patient d&#39;après, Mr Tartrax vient pour son contôle annuel et un détart
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="101" name="PEC aprem 3" tags="Choix-multiple-a-cocher Media-image-son" position="4275,650" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="100" name="PEC aprem 3" tags="Choix-multiple-a-cocher Media-image-son" position="4275,650" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 60&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;five&quot;,&quot;seven&quot;,&quot;eight&quot;,&quot;ten&quot;,&quot;eleven&quot;]&gt;&gt;
@@ -4405,7 +4388,7 @@ Je vérifie également si le fragment mésial de 21 est mobile. Il faut toujours
         &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;elseif $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="102" name="PEC aprem 4" tags="Media-image-son Choix-multiple-a-cocher" position="4375,800" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="101" name="PEC aprem 4" tags="Media-image-son Choix-multiple-a-cocher" position="4375,800" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 60&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;three&quot;,&quot;four&quot;]&gt;&gt;
@@ -4456,7 +4439,7 @@ Quelles autres informations ce cliché vous apporte-t-il ?
         &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;elseif $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="103" name="PEC aprem 5 decalage" tags="Choix-multiple-a-cocher" position="4525,925" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="102" name="PEC aprem 5 decalage" tags="Choix-multiple-a-cocher" position="4525,925" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 60&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;three&quot;]&gt;&gt;
@@ -4508,7 +4491,7 @@ Le parage canalaire et la temporisation à l&#39;hydroxyde de calcium sont envis
         &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;elseif $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="104" name="PEC aprem 5 no decalage" tags="Chrono-simple" position="4325,1000" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="103" name="PEC aprem 5 no decalage" tags="Chrono-simple" position="4325,1000" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous commencez à avoir en tête ce qui doit être fait tout de suite et ce qui sera entrepris plus tard pour ce cas. Un rapide coup d&#39;oeil au logiciel de rdv vous montre que Mr Tartrax (que vous n&#39;avez pas voulu décalé plus tôt), est déjà en salle d&#39;attente
@@ -4529,7 +4512,7 @@ Vous commencez à avoir en tête ce qui doit être fait tout de suite et ce qui 
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="105" name="PEC aprem 6" tags="Question-ouverte Media-image-son" position="4650,1100" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="104" name="PEC aprem 6" tags="Question-ouverte Media-image-son" position="4650,1100" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 140&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -4568,7 +4551,8 @@ Illustration du traitement de 21 [2]
 &lt;&lt;run $(&#39;#textbox-answer&#39;).attr(&#39;readonly&#39;, &#39;true&#39;).css(&#39;transition&#39;, &#39;background-color 0.5s&#39;).css(&#39;background-color&#39;,&#39;#eee&#39;);&gt;&gt;
 &lt;&lt;run $(&#39;#textbox-reply&#39;).css(&#39;opacity&#39;,1);&gt;&gt;
 &lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;
-\&lt;i&gt;Pour cette procédure on réduit la charge bactérienne en désinfectant le site,  on anesthésie, on extraie 21 et on la traite endodontiquement, on recolle les fragments, on réimplante 21, on met en place une contention passive, on donne une médication et les conseils post-op. On prévoit un rdv de suivi et on remet un CMI.&lt;/i&gt;
+\&lt;i&gt;Bonne réponse : 4/7/1/8/6/10/2/9/5/3
+Pour cette procédure on réduit la charge bactérienne en désinfectant le site,  on anesthésie, on extraie 21 et on la traite endodontiquement, on recolle les fragments, on réimplante 21, on met en place une contention passive, on donne une médication et les conseils post-op. On prévoit un rdv de suivi et on remet un CMI.&lt;/i&gt;
 Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 35.
 \&lt;&lt;if $tempScore is 35&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
 &#39;&#39;[[Je passe à la suite|PEC aprem 7]]&#39;&#39;
@@ -4585,7 +4569,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="106" name="PEC aprem 7" tags="Choix-multiple-a-cocher" position="4650,1225" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="105" name="PEC aprem 7" tags="Choix-multiple-a-cocher" position="4650,1225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;two&quot;,&quot;four&quot;,&quot;six&quot;]&gt;&gt;
@@ -4638,7 +4622,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;elseif $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="107" name="PEC aprem 8" tags="Choix-multiple-a-cocher Media-image-son" position="4600,1375" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="106" name="PEC aprem 8" tags="Choix-multiple-a-cocher Media-image-son" position="4600,1375" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;one&quot;]&gt;&gt;
@@ -4676,7 +4660,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
 &lt;&lt;/replace&gt;&gt;
         &lt;&lt;run $(&#39;#checkbox-feedback&#39;).css(&#39;opacity&#39;,1)&gt;&gt;
         &lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;
-        &#39;&#39;[[Je passe à la suite et je consulte mon score final|Resultat avance]]&#39;&#39;
+        &#39;&#39;[[Je passe à la suite et je consulte mon score final|Resultat]]&#39;&#39;
         &lt;&lt;/replace&gt;&gt;
         &lt;&lt;set $button = 1&gt;&gt;
     &lt;&lt;/button&gt;&gt;\
@@ -4688,7 +4672,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;elseif $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="108" name="PEC immediate" tags="Media-image-son Choix-multiple-a-cocher" position="3850,425" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="107" name="PEC immediate" tags="Media-image-son Choix-multiple-a-cocher" position="3850,425" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 60&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;three&quot;]&gt;&gt;
@@ -4742,7 +4726,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="109" name="PEC immediate 3" tags="Choix-multiple-a-cocher" position="3500,975" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="108" name="PEC immediate 3" tags="Choix-multiple-a-cocher" position="3500,975" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;three&quot;,&quot;six&quot;]&gt;&gt;
@@ -4797,13 +4781,13 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="110" name="PEC immediate 5" tags="Question-ouverte Media-image-son" position="3925,1050" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="109" name="PEC immediate 5" tags="Question-ouverte Media-image-son" position="3925,1050" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 70&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Illustration du traitement de 21 [5]
 &lt;img src=&quot;./Cas_clinique5/isabelle_gomes_pulpo21.jpg&quot; width=&quot;300vw&quot;&gt;
-\Remettez ces étapes dans le bon ordre (ex : 1/2/3/4/5/6/7 ou 5/3/4/1/2/6/7 ou 5341267)
+\Remettez ces étapes dans le bon ordre (ex : 5/3/4/1/2/6/7 ou 5341267)
 \&lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;
 1-Je patiente pendant le temps de prise du matériau de coiffage.
 2-J&#39;isole au mieux la dent à traiter
@@ -4835,7 +4819,8 @@ Illustration du traitement de 21 [5]
 &lt;&lt;run $(&#39;#textbox-reply&#39;).css(&#39;opacity&#39;,1);&gt;&gt;
  &lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 20.
 \&lt;&lt;if $tempScore is 20&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
-//Pour cette procédure on anesthésie, on isole, on fait une exérèse de la pulpe puis on cherche l&#39;hémostase. On met en place le matériau de coiffage et après sa prise on protège avec le CVI.//
+//Réponse : 4/2/6/7/3/1/5.
+Pour cette procédure on anesthésie, on isole, on fait une exérèse de la pulpe puis on cherche l&#39;hémostase. On met en place le matériau de coiffage et après sa prise on protège avec le CVI.//
 [[Je passe à la suite|PEC immediate 6]]&#39;&#39;\&lt;&lt;/replace&gt;&gt;
    &lt;&lt;set $button to 1&gt;&gt;
         &lt;&lt;/button&gt;&gt;\
@@ -4849,7 +4834,7 @@ Illustration du traitement de 21 [5]
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="111" name="PEC immediate 5 sans biodentine" tags="Choix-multiple-a-cocher" position="4075,925" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="110" name="PEC immediate 5 sans biodentine" tags="Choix-multiple-a-cocher" position="4075,925" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;]&gt;&gt;
@@ -4897,7 +4882,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="112" name="PEC immediate 6" tags="Choix-multiple-a-cocher" position="4075,1150" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="111" name="PEC immediate 6" tags="Choix-multiple-a-cocher" position="4075,1150" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;four&quot;,&quot;five&quot;,&quot;six&quot;,&quot;seven&quot;,&quot;eight&quot;,&quot;nine&quot;]&gt;&gt;
@@ -4944,7 +4929,7 @@ Lors des rdvs à venir vous pourriez remplacer le CVI par un composite direct, s
 &lt;&lt;/replace&gt;&gt;
 
         &lt;&lt;run $(&#39;#checkbox-feedback&#39;).css(&#39;opacity&#39;,1)&gt;&gt;
-        &lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;&#39;&#39;[[Je passe à la suite et je consulte mon score final|Resultat avance]]&#39;&#39;&lt;&lt;/replace&gt;&gt;
+        &lt;&lt;replace &quot;#checkbox-submit&quot;&gt;&gt;&#39;&#39;[[Je passe à la suite et je consulte mon score final|Resultat]]&#39;&#39;&lt;&lt;/replace&gt;&gt;
         &lt;&lt;set $button = 1&gt;&gt;
     &lt;&lt;/button&gt;&gt;\
 &lt;/div&gt;
@@ -4955,13 +4940,13 @@ Lors des rdvs à venir vous pourriez remplacer le CVI par un composite direct, s
         &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;elseif $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="113" name="PEC immediate rapide" tags="" position="3800,775" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="112" name="PEC immediate rapide" tags="" position="3800,775" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 La litérature scientifique n&#39;indique pas que décaler de quelques heures le traitement recommandé pour une pulpe déjà exposée change significativement le pronostic. 
 Néanmoins, si vous connaissez bien la procédure et qu&#39;elle peut être effectuée tout de suite, c&#39;est mieux pour le patient. Il est acceptable de procéder immédiatement et d&#39;expliquer au prochain patient que vous avez dû composer avec une urgence pour un enfant sur une dent permanente.
 
-&#39;&#39;[[Je passe à la suite|PEC immediate 3]]&#39;&#39;</tw-passagedata><tw-passagedata pid="114" name="PEC immediate2" tags="Choix-multiple-a-cocher Media-image-son" position="3850,550" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je passe à la suite|PEC immediate 3]]&#39;&#39;</tw-passagedata><tw-passagedata pid="113" name="PEC immediate2" tags="Choix-multiple-a-cocher Media-image-son" position="3850,550" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 60&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;one&quot;,&quot;two&quot;,&quot;five&quot;,&quot;six&quot;,&quot;seven&quot;,&quot;eight&quot;]&gt;&gt;
@@ -5025,7 +5010,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="115" name="PEC immediate2bis" tags="Chrono-simple" position="3825,675" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="114" name="PEC immediate2bis" tags="Chrono-simple" position="3825,675" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -5050,7 +5035,7 @@ Le patient n&#39;a pas ramené les bouts de dent manquants. Il semble coopérant
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="116" name="PEC immediate4" tags="Choix-multiple-a-cocher Media-image-son" position="3775,1025" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="115" name="PEC immediate4" tags="Choix-multiple-a-cocher Media-image-son" position="3775,1025" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;one&quot;]&gt;&gt;
@@ -5100,12 +5085,12 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="117" name="PEC immediate5 dispatch" tags="Fonction-random" position="3950,925" size="100,100">&lt;&lt;set $random=random(1,2)&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="116" name="PEC immediate5 dispatch" tags="Fonction-random" position="3950,925" size="100,100">&lt;&lt;set $random=random(1,2)&gt;&gt;
 &lt;&lt;if random is 1&gt;&gt;
 &lt;&lt;goto&quot;PEC immediate 5 sans biodentine&quot;&gt;&gt;
 &lt;&lt;else&gt;&gt;
 &lt;&lt;goto&quot;PEC immediate 5&quot;&gt;&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Palpation levre" tags="Question-ouverte-1variante" position="2550,625" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="117" name="Palpation levre" tags="Question-ouverte-1variante" position="2550,625" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -5184,20 +5169,22 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="119" name="Passage 0" tags="" position="900,25" size="100,100">Bienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Passage 0" tags="" position="900,25" size="100,100">Bienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
 
 Dans cette simulation vous aurez à prendre des décisions parmi plusieurs choix possibles. 
 
-Le temps de réflexion sera limité à certains moments qui vous seront indiqués (volet à gauche). Le délai accordé dépendra de la question (longueur et complexité). Prendre des décisions rapides vous fera gagner des bonus de vitesse.
+Le temps de réflexion sera limité à certains moments qui vous seront indiqués avec un compteur de temps. Le délai accordé dépendra de la complexité de la question. Prendre une décision rapidement vous fera gagner des bonus de vitesse, si la réponse est juste.
 
-Il peut être utile de se munir d&#39;un stylo et d&#39;une feuille blanche au préalable pour écrire quelques notes pour certaines questions complexes.
+Il peut être utile de se munir d&#39;un stylo et d&#39;une feuille blanche au préalable pour écrire quelques notes pour certaines questions complexes (protocole à remettre dans le bon ordre par exemple).
 
 Une bonne réponse rapporte des points, une mauvaise vous en fera perdre.
 Parfois, plusieurs réponses peuvent être valides.
 
+A la fin un Top10 des scores de votre cas pour le niveau choisi peut être affiché avec votre pseudo. Vous avez ainsi l&#39;occasion de marquer votre empreinte.
+
 Si vous avez compris et que vous êtes motivé(e) pour devenir un expert en clinique :
 &lt;&lt;link &quot;Cliquez-ici pour commencer&quot;&gt;&gt;
-       &lt;&lt;goto &quot;Passage 1&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="120" name="Passage 1" tags="Media-image-son" position="1025,25" size="100,100">&lt;&lt;silently&gt;&gt;
+       &lt;&lt;goto &quot;Passage 1&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="119" name="Passage 1" tags="Media-image-son" position="1025,25" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score=0&gt;&gt;
 &lt;&lt;set $Timer=0&gt;&gt;
 &lt;&lt;set $Rapidite=0&gt;&gt;
@@ -5208,7 +5195,7 @@ Vous venez de vous installer dans la commune de Rastignac-en-Jalles. C&#39;est u
 Vous pouvez compter sur Martine, l&#39;assistante dentaire historique du cabinet.
 
 Avant de commencer dîtes nous en plus sur vous :
-Quel est votre prénom ou votre pseudo ?
+Quel est votre pseudo (ou simplement votre prénom) ?
 &lt;&lt;textbox &quot;$Nom&quot; &quot;&quot;&gt;&gt;
 &lt;&lt;silently&gt;&gt;
 &lt;&lt;set $niveau = {type:&quot;&quot;}&gt;&gt;
@@ -5253,14 +5240,13 @@ A des fins statistiques, dans quelle promotion êtes-vous ?
 &lt;&lt;/replace&gt;&gt;&lt;&lt;stop&gt;&gt;
   &lt;&lt;else&gt;&gt;          
 	&lt;&lt;/if&gt;&gt;
-&lt;&lt;/repeat&gt;&gt;</tw-passagedata><tw-passagedata pid="121" name="Procedure dent levre1" tags="Media-image-son Chrono-simple" position="2575,875" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/repeat&gt;&gt;</tw-passagedata><tw-passagedata pid="120" name="Procedure dent levre1" tags="Media-image-son Chrono-simple" position="2575,875" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Voici la radio de la lèvre :
 &lt;img src=&quot;./Cas_clinique3/radio_levre.jpg&quot; width=&quot;300vw&quot;&gt;
 Et en bonus la rétro alvéolaire de la 21
 &lt;img src=&quot;./Cas_clinique3/retro_dent_levre.jpg&quot; width=&quot;300vw&quot;&gt;
-
 Que fait-on ensuite ?
 &lt;&lt;link &quot;J&#39;extraie dans la séance le morceau de dent qui gêne le patient. Et je recolle le morceau&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-20&gt;&gt;
@@ -5270,7 +5256,7 @@ Que fait-on ensuite ?
 &lt;&lt;set $Score to $Score-20&gt;&gt;
 &lt;&lt;goto &quot;extract_morceau2&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
-&lt;link &quot;Je fais programmer l&#39;extraction du morceau avec moi si je me sens, ou avec un confrère expérimenté en chirurgie des tissus mous, et je prévois la restauration en suivant&quot;&gt;&gt;
+&lt;&lt;link &quot;Je fais programmer l&#39;extraction du morceau avec moi si je me sens, ou avec un confrère expérimenté en chirurgie des tissus mous, et je prévois la restauration en suivant&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score+15&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
 &lt;&lt;goto &quot;extract_morceau_prog&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
@@ -5282,7 +5268,7 @@ Que fait-on ensuite ?
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="122" name="Programmation Aprem" tags="" position="3675,775" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="121" name="Programmation Aprem" tags="" position="3675,775" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 La litérature scientifique n&#39;indique pas que décaler de quelques heures le traitement recommandé pour une pulpe déjà exposée change significativement le pronostic. 
@@ -5290,7 +5276,7 @@ Si la procédure peut être faite dans de bonnes et meilleures conditions l&#39;
 
 Vous revoyez donc l&#39;enfant l&#39;après-midi dans l&#39;intention de faire les soins pertinents.
 
-&#39;&#39;[[Je passe à la suite|PEC immediate 3]]&#39;&#39;</tw-passagedata><tw-passagedata pid="123" name="Protocole mise en place" tags="Choix-multiple-a-cocher" position="2675,1875" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je passe à la suite|PEC immediate 3]]&#39;&#39;</tw-passagedata><tw-passagedata pid="122" name="Protocole mise en place" tags="Choix-multiple-a-cocher" position="2675,1875" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;two&quot;,&quot;four&quot;,&quot;six&quot;,&quot;seven&quot;]&gt;&gt;
@@ -5348,7 +5334,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="124" name="Précisions trauma" tags="Chrono-simple" position="800,400" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="123" name="Précisions trauma" tags="Chrono-simple" position="800,400" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 C&#39;est un bon réflexe de vouloir connaître quelques informations cruciales sur un cas d&#39;urgences 👍.
@@ -5371,7 +5357,7 @@ Il vous est précisé que l&#39;enfant a 9 ans. Il a vraiment mal et se plaint b
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="125" name="Question fracture" tags="Choix-multiple-a-cocher Media-image-son" position="1250,2850" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="124" name="Question fracture" tags="Choix-multiple-a-cocher Media-image-son" position="1250,2850" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;three&quot;]&gt;&gt; &lt;!-- LIGNE MISE À JOUR --&gt;
@@ -5421,19 +5407,19 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
     &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="126" name="Refus cas4 et bascule cas 3" tags="" position="2825,225" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="125" name="Refus cas4 et bascule cas 3" tags="" position="2825,225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous auriez pu gérer cette urgence, au moins établir un diagnostic et une conduite à tenir sans pour autant vous lancer dans un gros plan de traitement.
 
 2 semaines après vous recevrez une lettre de l&#39;Ordre vous indiquant que la patiente s&#39;est plaint de vous et selon ses termes de &quot;votre non-assistance à personne en danger&quot;.
 
-&#39;&#39;[[Je continue ma vacation|Scénario3_avancé]]&#39;&#39;</tw-passagedata><tw-passagedata pid="127" name="Reposition1" tags="" position="1625,1600" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je continue ma vacation|Scénario3_avancé]]&#39;&#39;</tw-passagedata><tw-passagedata pid="126" name="Reposition1" tags="" position="1625,1600" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Avant de repositionner la dent, vous allez effectivement devoir anesthésier mais auparavant, il est recommandé de nettoyer la plaie.
 
-&#39;&#39;[[C&#39;est propre. Je peux anesthésier|Reposition2]]&#39;&#39;</tw-passagedata><tw-passagedata pid="128" name="Reposition2" tags="Choix-multiple-a-cocher Media-image-son" position="1425,1725" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[C&#39;est propre. Je peux anesthésier|Reposition2]]&#39;&#39;</tw-passagedata><tw-passagedata pid="127" name="Reposition2" tags="Choix-multiple-a-cocher Media-image-son" position="1425,1725" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;three&quot;,&quot;four&quot;,&quot;seven&quot;]&gt;&gt;
@@ -5493,21 +5479,21 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
     &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="129" name="Resultat avance" tags="Media-image-son" position="2575,2975" size="100,100">&lt;div class=&quot;pulseTitle&quot;&gt;RÉSULTAT FINAL&lt;/div&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="128" name="Resultat" tags="Media-image-son" position="5075,2550" size="100,100">&lt;div class=&quot;pulseTitle&quot;&gt;RÉSULTAT FINAL&lt;/div&gt;
 Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span style=&quot;color: purple;&quot;&gt;&#39;&#39;$Score&#39;&#39;&lt;/span&gt;&lt;/span&gt; et un score de rapidité de &lt;span id=&quot;Score_rapid&quot;&gt;&lt;span style=&quot;color: green;&quot;&gt;&#39;&#39;$Rapidite&#39;&#39;&lt;/span&gt;&lt;/span&gt;.
 &lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Total = Math.round($Score + $Rapidite/3)&gt;&gt;
 /* Définition des seuils selon le scénario */
 &lt;&lt;switch $Scenario&gt;&gt;
   &lt;&lt;case &quot;Scénario1_avancé&quot;&gt;&gt;
-    &lt;&lt;set $SeuilBronze = 100&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 200&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 150&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 300&gt;&gt;
   &lt;&lt;case &quot;Scénario2_avancé&quot;&gt;&gt;
     &lt;&lt;set $SeuilBronze = 60&gt;&gt;
     &lt;&lt;set $SeuilArgent = 110&gt;&gt;
   &lt;&lt;case &quot;Scénario3_avancé&quot;&gt;&gt;
     &lt;&lt;set $SeuilBronze = 70&gt;&gt;
-    &lt;&lt;set $SeuilArgent = 150&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 200&gt;&gt;
      &lt;&lt;case &quot;Scénario4_avancé&quot;&gt;&gt;
     &lt;&lt;set $SeuilBronze = 60&gt;&gt;
     &lt;&lt;set $SeuilArgent = 140&gt;&gt;
@@ -5517,7 +5503,19 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
          &lt;&lt;case &quot;Scénario6_avancé&quot;&gt;&gt;
     &lt;&lt;set $SeuilBronze = 90&gt;&gt;
     &lt;&lt;set $SeuilArgent = 160&gt;&gt;
-  &lt;&lt;default&gt;&gt;
+    &lt;&lt;case &quot;Scénario1_débutant&quot;&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 100&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 200&gt;&gt;
+   &lt;&lt;case &quot;Scénario4_débutant&quot;&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 80&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 145&gt;&gt;
+         &lt;&lt;case &quot;Scénario5_débutant&quot;&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 90&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 180&gt;&gt;
+         &lt;&lt;case &quot;Scénario6_débutant&quot;&gt;&gt;
+    &lt;&lt;set $SeuilBronze = 100&gt;&gt;
+    &lt;&lt;set $SeuilArgent = 200&gt;&gt;
+    &lt;&lt;default&gt;&gt;
     &lt;&lt;set $SeuilBronze = 50&gt;&gt;
     &lt;&lt;set $SeuilArgent = 150&gt;&gt;
 &lt;&lt;/switch&gt;&gt;
@@ -5542,7 +5540,7 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
     \🥉
   &lt;/span&gt;
 &lt;/div&gt;
-\Recommencez un ou plusieurs entraînement pour progresser et viser plus haut !
+\Recommencez un ou plusieurs entraînements pour progresser et viser plus haut !
   &lt;&lt;elseif $Total &gt;= $SeuilBronze and $Total &lt; $SeuilArgent&gt;&gt;
     &#39;&#39;Votre score global est entre $SeuilBronze points et $SeuilArgent points.&#39;&#39;
     Très bien — vous avez franchi un premier palier !
@@ -5556,7 +5554,7 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
     \🥈
   &lt;/span&gt;
 &lt;/div&gt;
-\Recommencez un ou plusieurs entraînement pour viser l&#39;excellence !
+\Recommencez un ou plusieurs entraînements pour viser l&#39;excellence !
 &lt;&lt;else&gt;&gt;  /* $Total &gt;= $SeuilArgent */
     &#39;&#39;Votre score global est au dessus de $SeuilArgent points.&#39;&#39;
     Bravo $Nom — excellente performance !
@@ -5571,7 +5569,7 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
    \🥇
   &lt;/span&gt;
 &lt;/div&gt;
-\Recommencez un ou plusieurs entraînement pour vérifier que ce n&#39;est pas un coup de chance 😉ou bien testez-vous sur d&#39;autres cas cliniques!
+\Recommencez un ou plusieurs entraînement pour vérifier que ce n&#39;est pas un coup de chance 😉ou bien testez-vous sur d&#39;autres cas cliniques&lt;&lt;if $niveau.type is &quot;Débutant&quot;&gt;&gt;, ou encore passez au niveau avancé&gt;&gt;&lt;&lt;/if&gt;&gt;!
 \&lt;&lt;/if&gt;&gt;
 \&lt;&lt;/if&gt;&gt;
 
@@ -5580,7 +5578,8 @@ Vous avez obtenu un score clinique de &lt;span id=&quot;score&quot;&gt;&lt;span 
 🥈 Argent ≥ $SeuilBronze et &lt; $SeuilArgent points
 🥇 Or ≥ $SeuilArgent points
 
-\&lt;div id=&quot;resultat&quot;&gt;Chargement du Top 10...&lt;/div&gt;
+&lt;div id=&quot;resultat&quot;&gt;Chargement du Top 10...&lt;/div&gt;
+
 &lt;&lt;script&gt;&gt;
 $(document).one(&#39;:passagedisplay&#39;, function () {
 
@@ -5593,8 +5592,6 @@ $(document).one(&#39;:passagedisplay&#39;, function () {
         timestamp: Date.now()
     };
 
-    console.log(&quot;SCORE ENVOYÉ :&quot;, player);
-
     fetch(url, {
         method: &quot;POST&quot;,
         headers: {&quot;Content-Type&quot;: &quot;application/json&quot;},
@@ -5603,42 +5600,51 @@ $(document).one(&#39;:passagedisplay&#39;, function () {
     .then(() =&gt; fetch(url))
     .then(res =&gt; res.json())
     .then(scores =&gt; {
-        console.log(&quot;TOUS LES SCORES :&quot;, scores);
 
-        let scoresScenario = scores.filter(
-            s =&gt; s.scenario === player.scenario
-        );
-
+        let scoresScenario = scores.filter(s =&gt; s.scenario === player.scenario);
         scoresScenario.sort((a, b) =&gt; b.score - a.score);
         let top10 = scoresScenario.slice(0, 10);
 
-        let html = `&lt;h3&gt;Voici le Top 10 – &lt;i&gt;${getScenarioTitre(player.scenario)}&lt;/i&gt;&lt;/h3&gt;`;
-        html += `&lt;table style=&quot;width:100%; text-align:center;&quot;&gt;`;
+        // --- Construire le HTML du tableau ---
+        let html = `&lt;h3&gt;Voici le Top 10 des scores sur le &lt;i&gt;${getScenarioTitre(player.scenario)}&lt;/i&gt;&lt;/h3&gt;`;
+        html += `&lt;table style=&quot;
+                        width:100%; 
+                        border-collapse: collapse; 
+                        font-family: Arial, sans-serif;
+                        text-align: center;
+                        margin-top: 10px;&quot;&gt;`;
 
+        // Entête
         html += `
-            &lt;tr&gt;
+            &lt;tr style=&quot;background-color:#333; color:white;&quot;&gt;
                 &lt;th&gt;Rang&lt;/th&gt;
                 &lt;th&gt;Nom&lt;/th&gt;
                 &lt;th&gt;Score&lt;/th&gt;
                 &lt;th&gt;Date&lt;/th&gt;
             &lt;/tr&gt;`;
 
+        // Lignes
         top10.forEach((s, i) =&gt; {
+            // Zebra striping
+            let bgColor = i % 2 === 0 ? &quot;#FFFDF5&quot; : &quot;#F6F2E8&quot;;
+            // Joueur actuel en violet doux
+            if(s.nom === player.nom) bgColor = &quot;#eee9f9&quot;;
             html += `
-            &lt;tr class=&quot;${s.nom === player.nom ? &#39;is-player&#39; : &#39;&#39;}&quot;&gt;
-                    &lt;td&gt;${i + 1}&lt;/td&gt;
-                    &lt;td&gt;${s.nom}&lt;/td&gt;
-                    &lt;td&gt;${s.score}&lt;/td&gt;
-                    &lt;td&gt;${new Date(s.timestamp).toLocaleDateString()}&lt;/td&gt;
-                &lt;/tr&gt;`;
+            &lt;tr style=&quot;background-color:${bgColor}; font-weight:${s.nom === player.nom ? &#39;bold&#39; : &#39;normal&#39;};&quot;&gt;
+                &lt;td&gt;${i + 1}&lt;/td&gt;
+                &lt;td&gt;${s.nom}&lt;/td&gt;
+                &lt;td&gt;${s.score}&lt;/td&gt;
+                &lt;td&gt;${new Date(s.timestamp).toLocaleDateString()}&lt;/td&gt;
+            &lt;/tr&gt;`;
         });
 
         html += `&lt;/table&gt;`;
+
         document.getElementById(&quot;resultat&quot;).innerHTML = html;
+
     })
     .catch(err =&gt; {
-        document.getElementById(&quot;resultat&quot;).innerHTML =
-            &quot;&lt;b&gt;Erreur :&lt;/b&gt; &quot; + err;
+        document.getElementById(&quot;resultat&quot;).innerHTML = &quot;&lt;b&gt;Erreur :&lt;/b&gt; &quot; + err;
     });
 
 });
@@ -5661,7 +5667,8 @@ function getScenarioTitre(scenario) {
 }
 &lt;&lt;/script&gt;&gt;
 
-\[[Je recommence un entraînement|Passage 1]]</tw-passagedata><tw-passagedata pid="130" name="Retro 11" tags="" position="1175,1225" size="100,100">&lt;&lt;silently&gt;&gt;
+
+\[[Je recommence un entraînement|Passage 1]]</tw-passagedata><tw-passagedata pid="129" name="Retro 11" tags="" position="1175,1225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;if $gainRapidite&gt;&gt;
   &lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
 &lt;&lt;/if&gt;&gt;
@@ -5672,16 +5679,14 @@ Oui une rétro alvéolaire de la 11 et des dents adjacentes semble indiquée dan
 
 Néanmoins, avant de passer à la radio, il y a aussi des points que vous auriez pu vérifier.
 
-&#39;&#39;[[D&#39;accord je vérifie quelques points avant de prendre ma rétro|Conduite cst4]]&#39;&#39;</tw-passagedata><tw-passagedata pid="131" name="Sans contention" tags="" position="1525,1975" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[D&#39;accord je vérifie quelques points avant de prendre ma rétro|Conduite cst4]]&#39;&#39;</tw-passagedata><tw-passagedata pid="130" name="Sans contention" tags="" position="1525,1975" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Avec la mobilité de la dent, la cicatrisation ne va pas pouvoir se faire dans des conditions optimales. Et la position de la dent ne va pas se maintenir.
 
-&#39;&#39;[[J&#39;ajoute un dispositif|Contention1]]&#39;&#39;</tw-passagedata><tw-passagedata pid="132" name="Story Init" tags="" position="150,150" size="100,100">Score=$Score
+&#39;&#39;[[J&#39;ajoute un dispositif|Contention1]]&#39;&#39;</tw-passagedata><tw-passagedata pid="131" name="Story Init" tags="" position="150,150" size="100,100">Score=$Score
 Timer=$Timer
 Rapidite=$Rapidite
-gainRapidite = $gainRapidite
-&lt;&lt;set $gainRapidite to false&gt;&gt;
 Total=$Total
 Decalage=$Decalage
 Scenario=$Scenario
@@ -5702,12 +5707,12 @@ setup.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|
 
 &lt;div id=&quot;mobileHUD&quot;&gt;HUD TEST&lt;/div&gt;
 
-</tw-passagedata><tw-passagedata pid="133" name="StoryCaption" tags="" position="150,375" size="100,100">&#39;&#39;[[Credits et références|Credits Ref]]&#39;&#39;</tw-passagedata><tw-passagedata pid="134" name="Surbooké" tags="" position="550,400" size="100,100">&lt;&lt;silently&gt;&gt;
+</tw-passagedata><tw-passagedata pid="132" name="StoryCaption" tags="" position="150,375" size="100,100">&#39;&#39;[[Credits et références|Credits Ref]]&#39;&#39;</tw-passagedata><tw-passagedata pid="133" name="Surbooké" tags="" position="550,400" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Refuser une urgence traumatique chez l&#39;enfant sans évaluer la situation n&#39;est pas professionnel.
 
-&#39;&#39;[[Je reprends mes esprits et j&#39;accueille l&#39;enfant|Accueil enfant]]&#39;&#39;</tw-passagedata><tw-passagedata pid="135" name="TTT1" tags="Chrono-simple" position="1425,1475" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je reprends mes esprits et j&#39;accueille l&#39;enfant|Accueil enfant]]&#39;&#39;</tw-passagedata><tw-passagedata pid="134" name="TTT1" tags="Chrono-simple" position="1425,1475" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Pour le reste de la séance que faîtes-vous d&#39;abord?
@@ -5735,7 +5740,7 @@ Pour le reste de la séance que faîtes-vous d&#39;abord?
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="136" name="TTT2 (radio)" tags="Question-ouverte-1variante" position="1575,1725" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="135" name="TTT2 (radio)" tags="Question-ouverte-1variante" position="1575,1725" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -5815,7 +5820,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
   &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
   &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="137" name="TTT3 (contention)" tags="Chrono-simple" position="1575,1850" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="136" name="TTT3 (contention)" tags="Chrono-simple" position="1575,1850" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 La dent est remise en place dans l&#39;alévole et la radio de contrôle est bonne.
@@ -5836,7 +5841,7 @@ La dent est remise en place dans l&#39;alévole et la radio de contrôle est bon
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="138" name="TTT4 (ordo)" tags="Chrono-simple" position="1650,2100" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="137" name="TTT4 (ordo)" tags="Chrono-simple" position="1650,2100" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Désormais vous devez décider s&#39;il faut préparer une ordonnance pour ce cas.
@@ -5865,7 +5870,7 @@ Désormais vous devez décider s&#39;il faut préparer une ordonnance pour ce ca
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="139" name="TTT5 (prescription) poids A" tags="Choix-multiple-a-cocher" position="1250,2350" size="100,100">\&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="138" name="TTT5 (prescription) poids A" tags="Choix-multiple-a-cocher" position="1250,2350" size="100,100">\&lt;&lt;silently&gt;&gt;
 \&lt;&lt;set $Timer to 40&gt;&gt;
 \&lt;&lt;set $button to 0&gt;&gt;
 \&lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;four&quot;]&gt;&gt; &lt;!-- LIGNE MISE À JOUR --&gt;
@@ -5922,7 +5927,7 @@ ou
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="140" name="TTT5 (prescription) poids B" tags="Choix-multiple-a-cocher" position="1375,2350" size="100,100">\&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="139" name="TTT5 (prescription) poids B" tags="Choix-multiple-a-cocher" position="1375,2350" size="100,100">\&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;four&quot;]&gt;&gt; &lt;!-- LIGNE MISE À JOUR --&gt;
@@ -5981,7 +5986,7 @@ ou
     &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="141" name="TTT6 (CMI?)" tags="Question-ouverte-1variante" position="1300,2475" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="140" name="TTT6 (CMI?)" tags="Question-ouverte-1variante" position="1300,2475" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -6063,7 +6068,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
   &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
   &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="142" name="TTT7 (suivi)" tags="Choix-multiple-a-cocher" position="1300,2600" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="141" name="TTT7 (suivi)" tags="Choix-multiple-a-cocher" position="1300,2600" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;two&quot;]&gt;&gt; &lt;!-- LIGNE MISE À JOUR --&gt;
@@ -6114,7 +6119,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
     &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="143" name="TTT8 (depose contention)" tags="Choix-multiple-a-cocher" position="1250,2725" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="142" name="TTT8 (depose contention)" tags="Choix-multiple-a-cocher" position="1250,2725" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;]&gt;&gt; &lt;!-- LIGNE MISE À JOUR --&gt;
@@ -6167,7 +6172,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
     &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="144" name="TTT9" tags="Media-image-son" position="1375,2850" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="143" name="TTT9" tags="Media-image-son" position="1375,2850" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Nous avons atteint la fin de ce cas. 
@@ -6178,7 +6183,7 @@ Pour votre information voici des photos de suivi de ce cas clinique [1] :
 \A 1 an 
 &lt;img src=&quot;./Cas_clinique1/exo_buc3.jpg&quot; width=&quot;300vw&quot;&gt;
 
-&#39;&#39;[[Je vais consulter mon résultat final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="145" name="URG CH Andre" tags="Chrono-simple" position="4275,325" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je vais consulter mon résultat final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="144" name="URG CH Andre" tags="Chrono-simple" position="4275,325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous ne pouvez pas vous débiner à la première occasion venue.
@@ -6202,7 +6207,7 @@ Martine est d&#39;accord avec nous. Elle vous précise qu&#39;avec son praticien
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="146" name="Verif violence" tags="Chrono-simple Fonction-random" position="575,800" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="145" name="Verif violence" tags="Chrono-simple Fonction-random" position="575,800" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;if $gainRapidite&gt;&gt;
   &lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;
 &lt;&lt;/if&gt;&gt;
@@ -6232,7 +6237,7 @@ Le dépistage de la violence infantile est un des points à vérifier lors d&#39
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="147" name="Voyage futur" tags="Choix-multiple-a-cocher" position="2675,1125" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="146" name="Voyage futur" tags="Choix-multiple-a-cocher" position="2675,1125" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;four&quot;,&quot;five&quot;]&gt;&gt;
@@ -6288,7 +6293,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="148" name="Vue extra orale Cas 4" tags="Choix-multiple-a-cocher Media-image-son" position="3125,450" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="147" name="Vue extra orale Cas 4" tags="Choix-multiple-a-cocher Media-image-son" position="3125,450" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;two&quot;,&quot;three&quot;,&quot;four&quot;,&quot;five&quot;,&quot;seven&quot;,&quot;eight&quot;,&quot;nine&quot;]&gt;&gt;
@@ -6352,12 +6357,12 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="149" name="atb_pas_auto" tags="" position="1775,2225" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="148" name="atb_pas_auto" tags="" position="1775,2225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous ne devez pas prendre vos décisions sur la base de campagne de prévention grand public, mais plutôt en raisonnant sur le contexte de votre cas. Ce n&#39;est pas la bonne réponse.
 
-&#39;&#39;[[Je retente ma chance|TTT4 (ordo)]]&#39;&#39;</tw-passagedata><tw-passagedata pid="150" name="cas4 morceau moyen" tags="Chrono-simple" position="3250,1075" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je retente ma chance|TTT4 (ordo)]]&#39;&#39;</tw-passagedata><tw-passagedata pid="149" name="cas4 morceau moyen" tags="Chrono-simple" position="3250,1075" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Le morceau est disponible et s&#39;adapte assez bien mais il y a un petit hiatus notamment en palatin où la sonde n°6 accroche..
@@ -6378,7 +6383,7 @@ Le morceau est disponible et s&#39;adapte assez bien mais il y a un petit hiatus
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="151" name="cherche dent" tags="Question-ouverte-1variante" position="2625,500" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="150" name="cherche dent" tags="Question-ouverte-1variante" position="2625,500" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -6456,7 +6461,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="152" name="creneau URG" tags="Chrono-simple" position="3725,425" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="151" name="creneau URG" tags="Chrono-simple" position="3725,425" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Une dent cassée est un vrai motif d&#39;urgence dentaire. Même si la litérature scientifique rapporte que le pronostic ne change pas significativement à quelques heures près, recevoir l&#39;enfant alors que vous avez quelques minutes devant vous vous permettrez de déblayer le cas.
@@ -6477,7 +6482,7 @@ Une dent cassée est un vrai motif d&#39;urgence dentaire. Même si la litératu
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="153" name="cst1_cas3" tags="Media-image-son Chrono-simple" position="2550,375" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="152" name="cst1_cas3" tags="Media-image-son Chrono-simple" position="2550,375" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous installez le patient et commencez l&#39;examen. 
@@ -6509,13 +6514,13 @@ Vous vous dîtes :
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="154" name="decalage patient" tags="" position="4550,600" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="153" name="decalage patient" tags="" position="4550,600" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Mr Tartrax accepte de décaler son contrôle.
 Vous vous notez de lui glisser quelques échantillons de dentifrice gratuits à son futur rdv pour le remercier et lui redire que cela a été déterminant pour l&#39;enfant.
 
-&#39;&#39;[[Je passe à la suite|PEC aprem 3]]&#39;&#39;</tw-passagedata><tw-passagedata pid="155" name="decalage secondaire" tags="Choix-multiple-a-cocher" position="4475,1075" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je passe à la suite|PEC aprem 3]]&#39;&#39;</tw-passagedata><tw-passagedata pid="154" name="decalage secondaire" tags="Choix-multiple-a-cocher" position="4475,1075" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 60&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;three&quot;]&gt;&gt;
@@ -6567,7 +6572,7 @@ Le parage canalaire et la temporisation à l&#39;hydroxyde de calcium sont envis
         &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;elseif $Timer gt 0&gt;&gt;&lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;&lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="156" name="echymoses" tags="Chrono-simple" position="475,950" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="155" name="echymoses" tags="Chrono-simple" position="475,950" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 L&#39;enfant présente des marques d&#39;hématomes et d&#39;échymoses sur les bras.
@@ -6589,7 +6594,7 @@ Il n&#39;arrive pas à décrire ce qui s&#39;est passé pour sa dent mis à part
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="157" name="enfant2_demande morceau" tags="Question-ouverte-1variante" position="1825,725" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="156" name="enfant2_demande morceau" tags="Question-ouverte-1variante" position="1825,725" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 35&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -6669,12 +6674,12 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="158" name="enfant2_morceau non trouvé" tags="Chrono-simple" position="1825,975" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="157" name="enfant2_morceau non trouvé" tags="Chrono-simple" position="1825,975" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 20&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 L&#39;enfant et les parents n&#39;ont pas pensé à ramasser le bout de dent.
 
-&lt;&lt;link &quot;Je leur demande d&#39;aller le chercher.&quot;&gt;&gt;
+&lt;&lt;link &quot;Je leur demande d&#39;aller le chercher&quot;&gt;&gt;
 &lt;&lt;set $Score to $Score-25&gt;&gt;
 &lt;&lt;goto &quot;erreur cherche morceau&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;
 
@@ -6690,7 +6695,7 @@ L&#39;enfant et les parents n&#39;ont pas pensé à ramasser le bout de dent.
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="159" name="enfant2_morceau trouvé" tags="Media-image-son Question-ouverte" position="2000,975" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="158" name="enfant2_morceau trouvé" tags="Media-image-son Question-ouverte" position="2000,975" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 70&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -6744,19 +6749,19 @@ Ecrivez la séquence de collage dans le bon ordre ( ex1 : 1/9/7/5, ex2 : 8/2/5/1
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="160" name="enfant2_oubli morceau" tags="" position="1975,725" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="159" name="enfant2_oubli morceau" tags="" position="1975,725" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous devez vérifier si le morceau de dent manquant n&#39;a pas été retrouvé et rapporté.
 
-&#39;&#39;[[Je pars à la cherche du morceau|Dispatch enfant2 morceau]]&#39;&#39;</tw-passagedata><tw-passagedata pid="161" name="erreur cherche morceau" tags="" position="1775,1100" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je pars à la cherche du morceau|Dispatch enfant2 morceau]]&#39;&#39;</tw-passagedata><tw-passagedata pid="160" name="erreur cherche morceau" tags="" position="1775,1100" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Non, dans un contexte d&#39;urgence, on a pas le loisir de demander aux parents de retourner sur les lieux du trauma. Il peuvent toujours le faire après une fois après avoir mis un CVI sur la dent.
 
 Après avoir mis en place un CVI, vous reprogrammez un rdv plus tard avec l&#39;enfant pour réaliser la restauration au composite. Qui sait, les parents retrouveront peut-être le morceau d&#39;ici là
 
-&#39;&#39;[[Je vais consulter mon score final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="162" name="erreur collage fragment enfant2" tags="Chrono-simple" position="2300,1225" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je vais consulter mon score final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="161" name="erreur collage fragment enfant2" tags="Chrono-simple" position="2300,1225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 20&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Si le positionnement n&#39;est pas bon, que l&#39;adaptation marginale n&#39;est pas satisfaisante et qu&#39;il manque un morceau signigicatif il n&#39;est pas conseillé de recoller. Une reconstruction directe est pertinente.
@@ -6777,14 +6782,14 @@ Si le positionnement n&#39;est pas bon, que l&#39;adaptation marginale n&#39;est
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="163" name="Cas2 erreur reconstruction au composite" tags="" position="2250,1350" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="162" name="Cas2 erreur reconstruction au composite" tags="" position="2250,1350" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Non, dans un contexte d&#39;urgence, on ne privilégie pas la reconstruction directe au composite. On préfèrera temporiser au CVI, qui est rapide et facile à mettre à place.
 
 Vous reprogrammez ensuite de voir l&#39;enfant pour le suivi et pour réaliser une restauration directe au composite.
 
-&#39;&#39;[[Je vais consulter mon score final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="164" name="exam clinique cas 2" tags="Choix-multiple-a-cocher Media-image-son" position="1900,350" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je vais consulter mon score final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="163" name="exam clinique cas 2" tags="Choix-multiple-a-cocher Media-image-son" position="1900,350" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;four&quot;,&quot;five&quot;,&quot;seven&quot;,&quot;eight&quot;]&gt;&gt;
@@ -6850,7 +6855,7 @@ Les résultats de vos tests sont les suivants : 12,11,21 ne sont pas particuliè
     &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="165" name="extract_morceau1" tags="" position="2550,1000" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="164" name="extract_morceau1" tags="" position="2550,1000" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous êtes dans un contexte d&#39;urgence et vous avez aussi d&#39;autres patient à gérer.
@@ -6858,7 +6863,7 @@ Ne vous lancez pas dans l&#39;extraction du morceau de dent dans les tissus mous
 
 Le fragment est retenu dans les tissus mous depuis un mois, une durée assez longue. Une infection à ce stade est peu probable, et la dent fracturée peut rester quelques jours de plus dans cet état vu le contexte.
 
-&#39;&#39;[[Vous programmez l&#39;extraction du fragment quelques jours après en laissant du temps à la suite pour le collage|Voyage futur]]&#39;&#39;</tw-passagedata><tw-passagedata pid="166" name="extract_morceau2" tags="" position="2675,1000" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Vous programmez l&#39;extraction du fragment quelques jours après en laissant du temps à la suite pour le collage|Voyage futur]]&#39;&#39;</tw-passagedata><tw-passagedata pid="165" name="extract_morceau2" tags="" position="2675,1000" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous êtes dans un contexte d&#39;urgence et vous avez aussi d&#39;autres patient à gérer.
@@ -6868,7 +6873,7 @@ Le fragment est retenu dans les tissus mous depuis un mois, une durée assez lon
 
 La pulpe n&#39;étant pas exposée, et le fragment étant stocké dans un milieu aseptique, il est raisonnable de penser que le collage du fragment peut être une bonne solution pour restaurer cette dent.
 
-&#39;&#39;[[Vous programmez l&#39;extraction du fragment quelques jours après en laissant du temps à la suite pour le collage|Voyage futur]]&#39;&#39;</tw-passagedata><tw-passagedata pid="167" name="extract_morceau_prog" tags="" position="2800,1000" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Vous programmez l&#39;extraction du fragment quelques jours après en laissant du temps à la suite pour le collage|Voyage futur]]&#39;&#39;</tw-passagedata><tw-passagedata pid="166" name="extract_morceau_prog" tags="" position="2800,1000" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Oui, vous êtes dans un contexte d&#39;urgence et vous avez aussi d&#39;autres patient à gérer. Vous avez raison de ne pas vous lancez dans l&#39;extraction du morceau de dent dans les tissus mous sans l&#39;avoir programmé.
@@ -6876,13 +6881,13 @@ Oui, vous êtes dans un contexte d&#39;urgence et vous avez aussi d&#39;autres p
 Le fragment est retenu dans les tissus mous depuis un mois, une durée assez longue. Une infection à ce stade est peu probable, et la dent fracturée peut rester quelques jours de plus dans cet état vu le contexte.
 
 👽👽👽 Des petits hommes verts débarquent tout à coup et vous proposent une expérience extraordinaire 👽👽👽
-&#39;&#39;[[Je voyage dans le futur jusqu&#39;au jour de l&#39;extraction programmée|Voyage futur]]&#39;&#39;</tw-passagedata><tw-passagedata pid="168" name="laisse assistante" tags="" position="1050,800" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je voyage dans le futur jusqu&#39;au jour de l&#39;extraction programmée|Voyage futur]]&#39;&#39;</tw-passagedata><tw-passagedata pid="167" name="laisse assistante" tags="" position="1050,800" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 C&#39;est utile de savoir déléguer mais dans votre carrière de dentiste, quand vous serez en charge vous ne pourrez pas vous dérober à chaque difficulté.
 Désolé, mais c&#39;est à vous de gérer la situation d&#39;une façon ou d&#39;une autre.
 
-&#39;&#39;[[Retour en arrière|Hasard sortie 2]]&#39;&#39;</tw-passagedata><tw-passagedata pid="169" name="mauvaise pub" tags="Media-image-son" position="3450,575" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Retour en arrière|Hasard sortie 2]]&#39;&#39;</tw-passagedata><tw-passagedata pid="168" name="mauvaise pub" tags="Media-image-son" position="3450,575" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 La maman est repartie furieuse promettant de ne pas vous louper dans les avis en ligne.
@@ -6890,7 +6895,7 @@ La maman est repartie furieuse promettant de ne pas vous louper dans les avis en
 Quelques jours après vous apprenez que c&#39;était la présidente de l&#39;association des parents d&#39;élèves de l&#39;école du village. La réputation du cabinet en a pris un sacré coup.
 &lt;img src=&quot;./Images/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
 
-&#39;&#39;[[Je vais consulter mon score final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="170" name="mauvaise pub2" tags="Media-image-son" position="4250,475" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je vais consulter mon score final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="169" name="mauvaise pub2" tags="Media-image-son" position="4250,475" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous n&#39;entendez plus parler de ce cas clinique pendant un moment...jusqu&#39;au jour où votre dossier d&#39;extension de cabinet dentaire est réfusé par la mairie. 
@@ -6898,7 +6903,7 @@ En consultant le dossier vous vous apercevez que le père du patient est le cons
 
 &lt;img src=&quot;./Images/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
 
-&#39;&#39;[[Je vais consulter mon score final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="171" name="morceau no ok cas2" tags="Chrono-simple" position="2225,1100" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je vais consulter mon score final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="170" name="morceau no ok cas2" tags="Chrono-simple" position="2225,1100" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 20&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 En fait, pendant votre protocole vous vous apercevez que le morceau ne s&#39;adapte pas bien et qu&#39;il manque un morceau significatif.
@@ -6919,24 +6924,24 @@ En fait, pendant votre protocole vous vous apercevez que le morceau ne s&#39;ada
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="172" name="nettoyage" tags="" position="1500,1600" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="171" name="nettoyage" tags="" position="1500,1600" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Oui c&#39;est exact, il faut penser à nettoyer la plaie avant une anesthésie et un geste sur la dent.
 
-&#39;&#39;[[C&#39;est propre. Je peux anesthésier|Reposition2]]&#39;&#39;</tw-passagedata><tw-passagedata pid="173" name="no decalage patient" tags="" position="4425,600" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[C&#39;est propre. Je peux anesthésier|Reposition2]]&#39;&#39;</tw-passagedata><tw-passagedata pid="172" name="no decalage patient" tags="" position="4425,600" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Certaines informations font penser que le cas va être assez complexe. 
 Espérons que vous ayiez assez de temps cet après-midi sans ce décalage.
 
-&#39;&#39;[[Je passe à la suite|PEC aprem 3]]&#39;&#39;</tw-passagedata><tw-passagedata pid="174" name="no echymoses" tags="" position="600,950" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je passe à la suite|PEC aprem 3]]&#39;&#39;</tw-passagedata><tw-passagedata pid="173" name="no echymoses" tags="" position="600,950" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0 &gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 L&#39;enfant n&#39;a pas d&#39;autres traces de chocs ou de coups ailleurs.
 Vous lui demandez par ailleurs de reformuler ce qui s&#39;est passé et il confirme la version de l&#39;accident.
 
-&#39;&#39;[[Vous avez écarté le risque de violence infantile et pouvez continuez votre examen|Conduite cst]]&#39;&#39;</tw-passagedata><tw-passagedata pid="175" name="no new patient" tags="Chrono-simple" position="3600,425" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Vous avez écarté le risque de violence infantile et pouvez continuez votre examen|Conduite cst]]&#39;&#39;</tw-passagedata><tw-passagedata pid="174" name="no new patient" tags="Chrono-simple" position="3600,425" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous avez quelques minutes de libre devant vous pour analyser la situation. Il peut s&#39;agir d&#39;une vraie urgence dentaire. Martine l&#39;assistante marmonne qu&#39;avec le dentiste précédent, l&#39;enfant aurait été accueilli très vite.
@@ -6957,7 +6962,7 @@ Vous avez quelques minutes de libre devant vous pour analyser la situation. Il p
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="176" name="no soins aprem" tags="Media-image-son" position="4275,1125" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="175" name="no soins aprem" tags="Media-image-son" position="4275,1125" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 A ce stade vous ne pouvez pas simplement libérer votre patient et attendre 24h de plus.
@@ -6970,7 +6975,7 @@ D&#39;après Martine il était un peu &quot;ennervé&quot;, encore un qui ne vas
 
 &lt;img src=&quot;./Images/Dentrainement3/medecin_depite.jpg&quot; width=&quot;250vw&quot;&gt;
 
-&#39;&#39;[[Je passe à la suite|decalage secondaire]]&#39;&#39;</tw-passagedata><tw-passagedata pid="177" name="noVerif violence" tags="Chrono-simple Fonction-random" position="775,800" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je passe à la suite|decalage secondaire]]&#39;&#39;</tw-passagedata><tw-passagedata pid="176" name="noVerif violence" tags="Chrono-simple Fonction-random" position="775,800" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Le dépistage de la violence infantile est un des points à vérifier lors d&#39;un trauma chez l&#39;enfant. L&#39;adulte accompagnant peut parler d&#39;une chute, d&#39;un accident, mais l&#39;enfant peut avoir subi des coups.
@@ -6998,7 +7003,7 @@ Le dépistage de la violence infantile est un des points à vérifier lors d&#39
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="178" name="no_ordo" tags="" position="1650,2225" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="177" name="no_ordo" tags="" position="1650,2225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Il n&#39;y a peut-être pas que du bain de bouche à prescrire ?
@@ -7006,12 +7011,12 @@ Ou peut-être que l&#39;enfant n&#39;en a pas à la maison ?
 
 C&#39;est donc une mauvaise réponse.
 
-&#39;&#39;[[Je retente ma chance|TTT4 (ordo)]]&#39;&#39;</tw-passagedata><tw-passagedata pid="179" name="Cas3 Normal" tags="" position="2600,1375" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je retente ma chance|TTT4 (ordo)]]&#39;&#39;</tw-passagedata><tw-passagedata pid="178" name="Cas3 Normal" tags="" position="2600,1375" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Oui c&#39;est normal, la dent à tester est la 21, pas la 11. Nous nous sommes trompés, de numéro de dent mais vous avez été très vigilant(e).
 
-&#39;&#39;[[Reprenons où on en était|prep surf dent]]&#39;&#39;</tw-passagedata><tw-passagedata pid="180" name="ordo sans atb" tags="Choix-multiple-a-cocher Fonction-random" position="1350,2225" size="100,100">\&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Reprenons où on en était|prep surf dent]]&#39;&#39;</tw-passagedata><tw-passagedata pid="179" name="ordo sans atb" tags="Choix-multiple-a-cocher Fonction-random" position="1350,2225" size="100,100">\&lt;&lt;silently&gt;&gt;
 \&lt;&lt;set $Timer to 40&gt;&gt;
 \&lt;&lt;set $button to 0&gt;&gt;
 \&lt;&lt;set $bonnesReponses to [&quot;three&quot;,&quot;five&quot;,&quot;six&quot;]&gt;&gt; &lt;!-- LIGNE A MODIFIER POUR CHAQUE PASSAGE --&gt;
@@ -7072,20 +7077,20 @@ Que prescrivez-vous maintenant que nous avons écarté les antibiotiques ?
     &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="181" name="ordo_atb" tags="" position="1500,2225" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="180" name="ordo_atb" tags="" position="1500,2225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Il n&#39;y a pas de risque particulier d&#39;infection chez cet enfant. 
 La dent n&#39;a pas été expulsée. Vous avez nettoyé la plaie cela est suffisant.
 Ce n&#39;est pas parce qu&#39;on cite une source, bonne ou mauvaise, que l&#39;assertion est vraie.
 
-&#39;&#39;[[Je rédige mon ordonnance|ordo sans atb]]&#39;&#39;</tw-passagedata><tw-passagedata pid="182" name="oui cvi enfant2" tags="" position="1925,1100" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je rédige mon ordonnance|ordo sans atb]]&#39;&#39;</tw-passagedata><tw-passagedata pid="181" name="oui cvi enfant2" tags="" position="1925,1100" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Oui dans un contexte d&#39;urgence, vous faîtes bien de temporiser au CVI, qui est rapide et facile à mettre à place.
 Vous reprogrammez ensuite de voir l&#39;enfant pour le suivi et pour réaliser une restauration directe au composite.
 
-&#39;&#39;[[Je vais consulter mon score final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="183" name="Rainure" tags="Media-image-son Question-ouverte" position="3150,1350" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je vais consulter mon score final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="182" name="Rainure" tags="Media-image-son Question-ouverte" position="3150,1350" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 70&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -7143,7 +7148,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="184" name="oui reco directe enfant2" tags="Chrono-simple" position="2175,1225" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="183" name="oui reco directe enfant2" tags="Chrono-simple" position="2175,1225" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 20&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Oui, si le positionnement n&#39;est pas bon, que l&#39;adaptation marginale n&#39;est pas satisfaisante et qu&#39;il manque un morceau signigicatif il n&#39;est pas conseillé de recoller. Une reconstruction directe est pertinente.
@@ -7164,25 +7169,25 @@ Oui, si le positionnement n&#39;est pas bon, que l&#39;adaptation marginale n&#3
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="185" name="Cas3 Panique" tags="" position="2725,1375" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="184" name="Cas3 Panique" tags="" position="2725,1375" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Attention ceci est tout à fait normal. 
 Le morceau ne s&#39;adapte pas à la 11. La dent fracturée est la 21.
 Il faut donc tester le morceau sur la 21. Désolé de vous avoir piégé(e).
-&#39;&#39;[[Reprenons où on en était|prep surf dent]]&#39;&#39;</tw-passagedata><tw-passagedata pid="186" name="photo finale cas 3" tags="Media-image-son" position="2675,2000" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Reprenons où on en était|prep surf dent]]&#39;&#39;</tw-passagedata><tw-passagedata pid="185" name="photo finale cas 3" tags="Media-image-son" position="2675,2000" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Voici le résultat final sur ce cas clinique [3] :
 &lt;img src=&quot;./Cas_clinique3/levre_dent_final.jpg&quot; width=&quot;300vw&quot;&gt;
 
-&#39;&#39;[[Je vais consulter mon score final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="187" name="piege IADT" tags="" position="1375,1600" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je vais consulter mon score final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="186" name="piege IADT" tags="" position="1375,1600" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Ce n&#39;est pas parce que nous citons le nom de recommandations officielles, qu&#39;il faut foncer tête baissée sans prendre le temps de vérifier que nous ne faisons pas d&#39;erreur.
 Le protocole IADT dans ce cas est plus complexe que de repositionner directement la dent et surveiller. Il commence par un nettoyage et une anesthésie locale.
 
-&#39;&#39;[[Je suis le bon protocole IADT avec un nettoyage préalable à une anesthésie|Reposition2]]&#39;&#39;</tw-passagedata><tw-passagedata pid="188" name="prep surf dent" tags="Choix-multiple-a-cocher" position="2675,1500" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je suis le bon protocole IADT avec un nettoyage préalable à une anesthésie|Reposition2]]&#39;&#39;</tw-passagedata><tw-passagedata pid="187" name="prep surf dent" tags="Choix-multiple-a-cocher" position="2675,1500" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;]&gt;&gt;
@@ -7232,7 +7237,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="189" name="protocole morceau" tags="Choix-multiple-a-cocher" position="2675,1750" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="188" name="protocole morceau" tags="Choix-multiple-a-cocher" position="2675,1750" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;four&quot;,&quot;five&quot;]&gt;&gt;
@@ -7286,7 +7291,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
     &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="190" name="question isolation" tags="Question-ouverte Media-image-son" position="3150,1475" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="189" name="question isolation" tags="Question-ouverte Media-image-son" position="3150,1475" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -7301,7 +7306,7 @@ Classez dans l&#39;ordre de la solution la mieux isolante à la moins isolante (
 4-Cotons salivaires et aspiration continue près de la dent concernée
 5-Isolation avec la digue simplifiée, stabilisée par des crampons ou des wedgets et aspiration continue
 &lt;/span&gt;
-\/*réponses : 2/5/4/1/3 */
+\/*Réponse : 2/5/4/1/3 */
  \&lt;&lt;textbox &#39;$answer&#39; &#39;&#39; id=&quot;textbox-answer&quot; autofocus&gt;&gt;
 \&lt;div id=&quot;textbox-reply&quot; style=&quot;opacity:0; transition: opacity 0.5s;&quot;&gt;&lt;/div&gt;
 &lt;div id=&quot;textbox-submit&quot;&gt;\
@@ -7338,7 +7343,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="191" name="question teinte" tags="Media-image-son Chrono-simple" position="3150,1600" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="190" name="question teinte" tags="Media-image-son Chrono-simple" position="3150,1600" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Après collage voici le résultat :
@@ -7361,7 +7366,7 @@ Vous observez une nette différence de teinte entre votre fragment et le reste d
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="192" name="radio levre" tags="Question-ouverte-1variante" position="2550,750" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="191" name="radio levre" tags="Question-ouverte-1variante" position="2550,750" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -7440,13 +7445,13 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="193" name="reformulation violence no" tags="" position="875,950" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="192" name="reformulation violence no" tags="" position="875,950" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 L&#39;enfant confirme la version de l&#39;accident.
 Il n&#39;a pas d&#39;autres traces de chocs ou de coups ailleurs.
 
-&#39;&#39;[[Vous avez écarté le risque de violence infantile et pouvez continuez votre examen|Conduite cst]]&#39;&#39;</tw-passagedata><tw-passagedata pid="194" name="reformulation violence oui" tags="Chrono-simple" position="725,950" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Vous avez écarté le risque de violence infantile et pouvez continuez votre examen|Conduite cst]]&#39;&#39;</tw-passagedata><tw-passagedata pid="193" name="reformulation violence oui" tags="Chrono-simple" position="725,950" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 L&#39;enfant n&#39;arrive pas à décrire ce qui s&#39;est passé pour sa dent mis à part dire &quot;accident&quot;, &quot;accident&quot;.
@@ -7468,7 +7473,7 @@ Il présente par ailleurs des marques d&#39;hématomes et d&#39;échymoses sur l
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="195" name="retro cas2" tags="Choix-multiple-a-cocher Media-image-son" position="1900,475" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="194" name="retro cas2" tags="Choix-multiple-a-cocher Media-image-son" position="1900,475" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;one&quot;,&quot;three&quot;]&gt;&gt;
@@ -7524,7 +7529,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
     &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="196" name="Code sauvegarde resultat a la main" tags="" position="2700,2975" size="100,100">&lt;&lt;script&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="195" name="Code sauvegarde resultat a la main" tags="" position="5225,2550" size="100,100">&lt;&lt;script&gt;&gt;
 (function () {
 
     let parties = JSON.parse(localStorage.getItem(&quot;partiesTwine&quot;) || &quot;[]&quot;);
@@ -7584,8 +7589,8 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
 
 })();
 &lt;&lt;/script&gt;&gt;
-</tw-passagedata><tw-passagedata pid="197" name="StoryHeader" tags="" position="325,150" size="100,100">&lt;div id=&quot;mobileHUD&quot;&gt;HUD TEST&lt;/div&gt;
-</tw-passagedata><tw-passagedata pid="198" name="cas4 morceau no ok" tags="Chrono-simple" position="3400,1200" size="100,100">&lt;&lt;silently&gt;&gt;
+</tw-passagedata><tw-passagedata pid="196" name="StoryHeader" tags="" position="325,150" size="100,100">&lt;div id=&quot;mobileHUD&quot;&gt;HUD TEST&lt;/div&gt;
+</tw-passagedata><tw-passagedata pid="197" name="cas4 morceau no ok" tags="Chrono-simple" position="3400,1200" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 20&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Le morceau est disponible. Mais pendant votre protocole vous vous apercevez qu&#39;il ne s&#39;adapte pas bien et qu&#39;il manque un morceau significatif.
@@ -7606,7 +7611,7 @@ Le morceau est disponible. Mais pendant votre protocole vous vous apercevez qu&#
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="199" name="Cas4 oui reco directe" tags="Chrono-simple" position="3350,1325" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="198" name="Cas4 oui reco directe" tags="Chrono-simple" position="3350,1325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 20&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Oui, si le positionnement n&#39;est pas bon, que l&#39;adaptation marginale n&#39;est pas satisfaisante et qu&#39;il manque un morceau significatif il n&#39;est pas conseillé de le recoller. Une reconstruction directe est pertinente.
@@ -7627,7 +7632,7 @@ Oui, si le positionnement n&#39;est pas bon, que l&#39;adaptation marginale n&#3
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="200" name="Cas4 non recollage" tags="Chrono-simple" position="3475,1325" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="199" name="Cas4 non recollage" tags="Chrono-simple" position="3475,1325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 20&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Si le positionnement n&#39;est pas bon, que l&#39;adaptation marginale n&#39;est pas satisfaisante et qu&#39;il manque un morceau signigicatif il n&#39;est pas conseillé de recoller. Une reconstruction directe est pertinente.
@@ -7648,20 +7653,20 @@ Si le positionnement n&#39;est pas bon, que l&#39;adaptation marginale n&#39;est
         &lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="201" name="Cas4 erreur recons au compo" tags="" position="3475,1450" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="200" name="Cas4 erreur recons au compo" tags="" position="3475,1450" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Non, dans un contexte d&#39;urgence, on ne privilégie pas la reconstruction directe au composite. On préfèrera temporiser au CVI, qui est rapide et facile à mettre à place.
 
 Vous reprogrammez ensuite de voir l&#39;enfant pour le suivi et pour réaliser une restauration directe au composite.
 
-&#39;&#39;[[Je vais consulter mon score final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="202" name="Cas4 oui cvi" tags="" position="3600,1325" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je vais consulter mon score final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="201" name="Cas4 oui cvi" tags="" position="3600,1325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Oui dans un contexte d&#39;urgence, vous faîtes bien de temporiser au CVI, qui est rapide et facile à mettre à place.
 Vous reprogrammez ensuite de voir l&#39;enfant pour le suivi et pour réaliser une restauration directe au composite.
 
-&#39;&#39;[[Je vais consulter mon score final|Resultat avance]]&#39;&#39;</tw-passagedata><tw-passagedata pid="203" name="cas4 morceau ok" tags="Chrono-simple" position="3025,1200" size="100,100">&lt;&lt;silently&gt;&gt;
+&#39;&#39;[[Je vais consulter mon score final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="202" name="cas4 morceau ok" tags="Chrono-simple" position="3025,1200" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Le morceau est disponible et s&#39;adapte parfaitement bien et il n&#39;y a pas de hiatus.
@@ -7687,6 +7692,63 @@ Je peux faire une rainure interne sur la face du morceau qui sera en contact ave
         &lt;&lt;if $Timer gt 0&gt;&gt;
         &lt;&lt;else&gt;&gt;
         &lt;&lt;stop&gt;&gt;
+        &lt;&lt;/if&gt;&gt;
+          &lt;&lt;/repeat&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="203" name="Passage sans titre" tags="" position="7775,925" size="100,100">&lt;&lt;silently&gt;&gt;
+&lt;&lt;set $button to 0&gt;&gt;
+&lt;&lt;set $Timer to 140&gt;&gt;
+&lt;&lt;/silently&gt;&gt;
+Illustration du traitement de 21 [2]
+&lt;img src=&quot;./Cas_clinique6/Vignesh_treatment1.jpg&quot; width=&quot;600vw&quot;&gt;
+\Remettez les étapes du traitement dans le bon ordre (ex : 1/2/3/4/5/6/7 ou 5/3/4/1/2/6/7 ou 1234567)
+\&lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;
+1- J&#39;extraie la dent 21 de manière la plus atraumatique possible, je la nettoie au sérum physiologique en touchant le moins possible la racine dans mes futures manipulations
+2- Je réimplante la dent
+3- Je donne un rendez-vous de suivi pour la contention et je remets un CMI au responsable légal
+4- Je désinfecte le site à l&#39;aide d&#39;une compresse et de la bétadine buccale
+5- Je donne les conseils post-opératoires
+6- Je mets en place un tenon fibré avec un composite dual
+7- J&#39;anesthésie localement la dent à traiter
+8- Je réalise le traitement endodontique puis une désobturation pour laisser environ 4 mm de gutta à l&#39;apex
+9- Je mets en place une contention passive
+10- Je recolle les morceaux de dents à l&#39;aide d&#39;adhésif et de composite d&#39;assemblage&lt;/span&gt;
+&lt;&lt;set $answer to &#39;&#39;&gt;&gt;
+&lt;&lt;textbox &#39;$answer&#39; &#39;&#39; id=&quot;textbox-answer&quot; autofocus&gt;&gt;
+&lt;div id=&quot;textbox-reply&quot; style=&quot;opacity:0; transition: opacity 0.5s;&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;textbox-submit&quot;&gt;
+\&lt;&lt;button &#39;Soumettre ma séquence&#39;&gt;&gt;
+\&lt;&lt;set $tempScore = 0&gt;&gt;
+       &lt;&lt;set $answer to $answer.trim().toLowerCase().replace(/\s+/g, &#39;&#39;).split(&quot;/&quot;).join(&quot;&quot;)&gt;&gt;
+        &lt;&lt;if [
+	&quot;4/7/1/8/6/10/2/9/5/3&quot;,
+    &quot;47186102953&quot;,    
+].includes($answer)&gt;&gt;
+&lt;&lt;silently&gt;&gt;&lt;&lt;set $tempScore += 45&gt;&gt;&lt;&lt;/silently&gt;&gt;
+&lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;//Correct!//&lt;&lt;/replace&gt;&gt;
+&lt;&lt;else&gt;&gt;
+&lt;&lt;silently&gt;&gt;&lt;&lt;set $tempScore -=20&gt;&gt;&lt;&lt;/silently&gt;&gt;
+&lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;//Incorrect!//&lt;&lt;/replace&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+&lt;&lt;set $Score += $tempScore&gt;&gt;
+&lt;&lt;run $(&#39;#textbox-answer&#39;).attr(&#39;readonly&#39;, &#39;true&#39;).css(&#39;transition&#39;, &#39;background-color 0.5s&#39;).css(&#39;background-color&#39;,&#39;#eee&#39;);&gt;&gt;
+&lt;&lt;run $(&#39;#textbox-reply&#39;).css(&#39;opacity&#39;,1);&gt;&gt;
+&lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;
+\&lt;i&gt;Bonne réponse : 4/7/1/8/6/10/2/9/5/3.
+Pour cette procédure on réduit la charge bactérienne en désinfectant le site,  on anesthésie, on extraie 21 et on la traite endodontiquement, on recolle les fragments, on réimplante 21, on met en place une contention passive, on donne une médication et les conseils post-op. On prévoit un rdv de suivi et on remet un CMI.&lt;/i&gt;
+Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 45.
+\&lt;&lt;if $tempScore is 45&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
+&#39;&#39;[[Je passe à la suite|D_PEC aprem 7]]&#39;&#39;
+&lt;&lt;/replace&gt;&gt;
+&lt;&lt;set $button to 1&gt;&gt;
+&lt;&lt;/button&gt;&gt;
+&lt;/div&gt;
+
+&lt;&lt;silently&gt;&gt;
+    &lt;&lt;repeat 1s&gt;&gt;
+        &lt;&lt;set $Timer to $Timer-1&gt;&gt;
+         &lt;&lt;if $button is 1&gt;&gt;&lt;&lt;stop&gt;&gt;
+        &lt;&lt;elseif $Timer gt 0&gt;&gt;
+        &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
 &lt;&lt;/silently&gt;&gt;</tw-passagedata></tw-storydata>
