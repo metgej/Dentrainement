@@ -105,6 +105,17 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
 	<tw-storydata name="Dentrainement_beta" startnode="118" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="0981FC2D-D35B-4648-B502-5E96F427D51E" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
+
+
+
+
+
+
+
+
+
+
+
   #story {
     margin-top: 0;
     margin-left: 300;
@@ -629,25 +640,27 @@ window.LastScore = null;
 }
 
 #mobileHUD {
-    position: fixed;       /* reste collé en bas de l’écran */
-    bottom: 0;             /* en bas */
+    position: fixed;       /* reste collé à l'écran */
+    bottom: 0;             /* en bas de l'écran */
     right: 0;              /* à droite */
-    background-color: rgba(255,255,255,0.95);
+    left: 0;               /* étire sur toute la largeur si besoin */
+    z-index: 10000;        /* toujours au-dessus du contenu */
+    background-color: rgba(255, 255, 255, 0.95); /* fond semi-transparent */
     padding: 10px 15px;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.3);
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+    font-size: 14px;
+    text-align: right;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    text-align: right;
-    font-size: 14px;
-    z-index: 10000;
 }
-
 .value-score { color: purple; font-weight: bold; }
 .timer-warning { color: red; font-weight: bold; }
+
+.passage {
+    padding-bottom: 70px; /* correspond à la hauteur du HUD */
+}
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
 function unlockAudio() {
-
-    // ✅ Attendre que l'audio existe vraiment
     if (!window.BeepSound) return;
 
     window.BeepSound.volume = 0;
@@ -657,17 +670,16 @@ function unlockAudio() {
             window.BeepSound.pause();
             window.BeepSound.currentTime = 0;
 
-            // ✅ On enlève les listeners uniquement si succès
             document.removeEventListener("keydown", unlockAudio);
             document.removeEventListener("click", unlockAudio);
         })
         .catch(()=>{});
 }
 
-// écoute les premières vraies actions utilisateur
 document.addEventListener("keydown", unlockAudio);
 document.addEventListener("click", unlockAudio);
 
+/* Gestion du Enter sur textbox */
 document.addEventListener("keydown", function(e) {
     if (e.key === "Enter") {
         e.preventDefault();
@@ -678,20 +690,16 @@ document.addEventListener("keydown", function(e) {
         }
 
         const btn = document.querySelector(".passage .macro-button");
-        if (btn) {
-            btn.click();
-        }
+        if (btn) btn.click();
     }
 });
 
-
-/* Chargement du fichier son stocke en ligne */
+/* Chargement du fichier son */
 window.BeepSound = new Audio("Son/beepu.mp3");
 window.BeepSound.preload = "auto";
 window.TimerBeepPlayed = false;
 
-
-/* --- Création de l'encart dans la barre UI (une seule fois) --- */
+/* --- StatsBox Desktop --- */
 $(document).on(':storyready', function () {
     if ($("#statsBox").length === 0) {
         $("#ui-bar-body").append(`
@@ -699,11 +707,9 @@ $(document).on(':storyready', function () {
                 <div id="scoreCliniqueLine" class="hidden">
                     Score clinique : <span id="scoreClinique" class="value-score"></span>
                 </div>
-
                 <div id="scoreRapideLine" class="hidden">
                     Score de Rapidité : <span id="scoreRapide" class="value-rapid"></span>
                 </div>
-
                 <div id="timerLine" class="hidden">
                     <br><strong>Passage chronométré</strong><br>
                     Vous disposez de <span id="countdownNumber" class="value-timer"></span> sec pour marquer des points de rapidité.
@@ -713,44 +719,29 @@ $(document).on(':storyready', function () {
     }
 });
 
-/* --- Rafraîchissement toutes les secondes (ne modifie PAS $Timer) --- */
+/* --- Rafraîchissement des scores et timer --- */
 setInterval(function () {
-
-    /* ----- Score clinique ----- */
+    // Score clinique
     if (typeof State.variables.Score !== "undefined" && State.variables.Score !== null) {
         $("#scoreClinique").text(State.variables.Score);
         $("#scoreCliniqueLine").removeClass("hidden");
     } else {
         $("#scoreCliniqueLine").addClass("hidden");
     }
-  
-    /* ----- Effet variation du score ----- */
-    if (window.LastScore !== null) {
 
-        // Augmentation
+    // Effet variation score
+    if (window.LastScore !== null) {
         if (State.variables.Score > window.LastScore) {
             $("#statsBox, #statsBoxMobile").removeClass("flash-bad").addClass("flash-good");
-
-            setTimeout(() => {
-                $("#statsBox, #statsBoxMobile").removeClass("flash-good");
-            }, 600);
-        }
-
-        // Diminution
-        else if (State.variables.Score < window.LastScore) {
+            setTimeout(() => { $("#statsBox, #statsBoxMobile").removeClass("flash-good"); }, 600);
+        } else if (State.variables.Score < window.LastScore) {
             $("#statsBox, #statsBoxMobile").removeClass("flash-good").addClass("flash-bad");
-
-            setTimeout(() => {
-                $("#statsBox, #statsBoxMobile").removeClass("flash-bad");
-            }, 600);
+            setTimeout(() => { $("#statsBox, #statsBoxMobile").removeClass("flash-bad"); }, 600);
         }
-
     }
-
     window.LastScore = State.variables.Score;
 
-
-    /* ----- Score de rapidité ----- */
+    // Score rapidité
     if (typeof State.variables.Rapidite !== "undefined" && State.variables.Rapidite !== null) {
         $("#scoreRapide").text(State.variables.Rapidite);
         $("#scoreRapideLine").removeClass("hidden");
@@ -758,92 +749,58 @@ setInterval(function () {
         $("#scoreRapideLine").addClass("hidden");
     }
 
-    /* ----- Timer (affiche seulement si > 0) ----- */
-    if (typeof State.variables.Timer !== "undefined"
-     && State.variables.Timer !== null
-     && State.variables.Timer > 0) {
-
-        $("#countdownNumber")
-            .text(State.variables.Timer)
-            .removeClass("timer-warning");
-
+    // Timer
+    if (typeof State.variables.Timer !== "undefined" && State.variables.Timer !== null && State.variables.Timer > 0) {
+        $("#countdownNumber").text(State.variables.Timer).removeClass("timer-warning");
         $("#timerLine").removeClass("hidden");
 
-        /* ⚠️ Rouge à partir de 5 secondes */
-        if (State.variables.Timer <= 5) {
-            $("#countdownNumber").addClass("timer-warning");
-        }
+        if (State.variables.Timer <= 5) $("#countdownNumber").addClass("timer-warning");
 
-        /* 🔊 Bip doux UNIQUE à 5 secondes */
         if (State.variables.Timer === 5 && !window.TimerBeepPlayed) {
-            try {
-                window.BeepSound.currentTime = 0;
-                window.BeepSound.play();
-            } catch (e) {}
-
+            try { window.BeepSound.currentTime = 0; window.BeepSound.play(); } catch(e){}
             window.TimerBeepPlayed = true;
         }
+        if (State.variables.Timer > 5) window.TimerBeepPlayed = false;
 
-        /* Réarme si reset ou remontée */
-        if (State.variables.Timer > 5) {
-            window.TimerBeepPlayed = false;
-        }
-
-    }
-    else {
-
-        /* Cache la ligne si pas de timer */
+    } else {
         $("#timerLine").addClass("hidden");
-
-        /* Réarme le bip pour le prochain cycle */
         window.TimerBeepPlayed = false;
     }
 
-  
 }, 1000);
 
-/ ===== HUD MOBILE UNIFIÉ (Score + Rapidité + Timer) =====
+// ===== HUD MOBILE UNIFIÉ =====
 $(document).one(":storyready", function() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i.test(navigator.userAgent);
+    if (!isMobile) return;
 
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i
-        .test(navigator.userAgent);
-
-    if (!isMobile) return; // mobile/tablette uniquement
-
-    // Crée le HUD et ajoute au body
     const hud = $('<div id="mobileHUD"></div>');
     $('body').append(hud);
 
-    // ---- FONCTION UNIQUE DE RAFRAÎCHISSEMENT ----
     function updateHUD() {
+        const score = State.variables.Score || 0;
+        const rapidite = State.variables.Rapidite || 0;
+        const timer = State.variables.Timer || 0;
 
-        const score     = State.variables.Score    || 0;
-        const rapidite  = State.variables.Rapidite || 0;
-        const timer     = State.variables.Timer    || 0;
-
-        // Timer en rouge si <=5
-        const timerClass =
-            (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
+        const timerClass = (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
 
         hud.html(`
             <div id="statsBoxMobile">
-
-                🦷 <span class="value-score">${score}</span>
-                &nbsp;&nbsp;
-
-                🏃‍♂️ <span class="value-rapid">${rapidite}</span>
-                &nbsp;&nbsp;
-
+                🦷 <span class="value-score">${score}</span> &nbsp;&nbsp;
+                🏃‍♂️ <span class="value-rapid">${rapidite}</span> &nbsp;&nbsp;
                 ⏱ <span class="${timerClass}">${timer}s</span>
-
             </div>
         `);
+
+        // Ajuste le positionnement si le clavier est ouvert (viewport réduit)
+        const vh = window.innerHeight;
+        hud.css({ bottom: '10px', maxWidth: '95%' });
     }
 
-    // 🔁 RAFRAÎCHISSEMENT SYNCHRO AVEC LA STATSBOX
     updateHUD();
-    setInterval(updateHUD, 1000);
-});</script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-tag name="question-ouverte-ordre" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
+    setInterval(updateHUD, 500); // refresh plus fréquent pour clavier
+});
+</script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-tag name="question-ouverte-ordre" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -2658,7 +2615,9 @@ setTimeout(function() {
     });
 
     document.getElementById(&#39;soumettre&#39;).addEventListener(&#39;click&#39;, function() {
-        // stop timer
+         // désactiver le bouton pour éviter plusieurs clics
+    this.disabled = true;
+    // stop timer
         if (typeof State !== &#39;undefined&#39;) State.variables.button = 1;
 
         const currentOrder = Array.from(container.children)
@@ -2918,7 +2877,9 @@ setTimeout(function() {
     });
 
     document.getElementById(&#39;soumettre&#39;).addEventListener(&#39;click&#39;, function() {
-        // stop timer
+          // désactiver le bouton pour éviter plusieurs clics
+    this.disabled = true;
+    // stop timer
         if (typeof State !== &#39;undefined&#39;) State.variables.button = 1;
 
         const currentOrder = Array.from(container.children)
@@ -3732,7 +3693,9 @@ setTimeout(function() {
     });
 
     document.getElementById(&#39;soumettre&#39;).addEventListener(&#39;click&#39;, function() {
-        // stop timer
+         // désactiver le bouton pour éviter plusieurs clics
+    this.disabled = true;
+    // stop timer
         if (typeof State !== &#39;undefined&#39;) State.variables.button = 1;
 
         const currentOrder = Array.from(container.children)
@@ -3844,7 +3807,9 @@ setTimeout(function() {
     });
 
     document.getElementById(&#39;soumettre&#39;).addEventListener(&#39;click&#39;, function() {
-        // stop timer
+           // désactiver le bouton pour éviter plusieurs clics
+    this.disabled = true;
+    // stop timer
         if (typeof State !== &#39;undefined&#39;) State.variables.button = 1;
 
         const currentOrder = Array.from(container.children)
@@ -4768,7 +4733,9 @@ setTimeout(function() {
     });
 
     document.getElementById(&#39;soumettre&#39;).addEventListener(&#39;click&#39;, function() {
-        // stop timer
+           // désactiver le bouton pour éviter plusieurs clics
+    this.disabled = true;
+    // stop timer
         if (typeof State !== &#39;undefined&#39;) State.variables.button = 1;
 
         const currentOrder = Array.from(container.children)
@@ -5099,7 +5066,9 @@ setTimeout(function() {
     });
 
     document.getElementById(&#39;soumettre&#39;).addEventListener(&#39;click&#39;, function() {
-        // stop timer
+           // désactiver le bouton pour éviter plusieurs clics
+    this.disabled = true;
+    // stop timer
         if (typeof State !== &#39;undefined&#39;) State.variables.button = 1;
 
         const currentOrder = Array.from(container.children)
@@ -7015,45 +6984,106 @@ L&#39;enfant et les parents n&#39;ont pas pensé à ramasser le bout de dent.
 &lt;&lt;set $Timer to 70&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
-Ecrivez la séquence de collage dans le bon ordre ( ex1 : 1/9/7/5, ex2 : 8/2/5/1, ex3 : 8251)
-\&lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;
-1 - Etching à l&#39;acide orthophosphorique, séchage doux, adhésif MR2, séchage, photopolymérisation sur la dent et sur le fragment
-2 - Retrait de l&#39;exces de composite à la microbrush puis photopolymérisation des 2 faces
-3 - Nettoyage complet à la chlorhexidine et rinçage au sérum physiologique du fragment et de la dent
-4 - Nettoyage simple du fragment et vérification de l&#39;adaptation marginale, du manque ou non de morceau, de hiatus, et de la reproductibilité du repositionnement
-5 - Polissage du joint à la fraise bague rouge
-6 - Isolation de la dent
-7 - Application de composite d&#39;assemblage sur le fragment puis mise en place du fragment 
-&lt;/span&gt;
-\/*reponse :  4/6/3/1/7/2/5*/
-\&lt;&lt;set $answer to &#39;&#39;&gt;&gt;
-\&lt;&lt;textbox &#39;$answer&#39; &#39;&#39; id=&quot;textbox-answer&quot; autofocus&gt;&gt;
-\&lt;div id=&quot;textbox-reply&quot; style=&quot;opacity:0; transition: opacity 0.5s;&quot;&gt;&lt;/div&gt;
-&lt;div id=&quot;textbox-submit&quot;&gt;\
-    &lt;&lt;button &#39;Soumettre ma séquence de protocole&#39;&gt;&gt;
-     \&lt;&lt;set $tempScore = 0&gt;&gt;
-        &lt;&lt;set $answer to $answer.trim().toLowerCase().replace(/\s+/g, &#39;&#39;).split(&quot;/&quot;).join(&quot;&quot;)&gt;&gt;
-        &lt;&lt;if [
-	&quot;4/6/3/1/7/2/5&quot;,
-    &quot;4631725&quot;,
-    ].includes($answer)&gt;&gt;
-&lt;&lt;silently&gt;&gt;&lt;&lt;set $tempScore += 30&gt;&gt;&lt;&lt;/silently&gt;&gt;
-&lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;//Correct!//&lt;&lt;/replace&gt;&gt;
-&lt;&lt;else&gt;&gt;
-&lt;&lt;silently&gt;&gt;&lt;&lt;set $tempScore -=20&gt;&gt;&lt;&lt;/silently&gt;&gt;
-&lt;&lt;replace &#39;#textbox-reply&#39;&gt;&gt;//Incorrect!//&lt;&lt;/replace&gt;&gt;
-&lt;&lt;/if&gt;&gt;
-\&lt;&lt;set $Score += $tempScore&gt;&gt;
-\&lt;&lt;run $(&#39;#textbox-answer&#39;).attr(&#39;readonly&#39;, &#39;true&#39;).css(&#39;transition&#39;, &#39;background-color 0.5s&#39;).css(&#39;background-color&#39;,&#39;#eee&#39;);&gt;&gt;
-\&lt;&lt;run $(&#39;#textbox-reply&#39;).css(&#39;opacity&#39;,1);&gt;&gt;
-\&lt;&lt;replace &#39;#textbox-submit&#39;&gt;&gt;Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 30.
-\&lt;&lt;if $tempScore is 30&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
-&lt;i&gt;Solution : 4/6/3/1/7/2/5. On nettoie une 1ere fois le fragment, on vérifie l&#39;adaptation marginale du fragment, (si ok) on isole la dent, on nettoie de façon approfondie, on fait le traitement des surfaces, on ajoute du composite d&#39;assemblage et on repositionne le fragment. On retire les excès puis on photopolymérise. On polit les joints.&lt;/i&gt;
-&#39;&#39;[[La suite|morceau no ok cas2]]&#39;&#39;\&lt;&lt;/replace&gt;&gt;
-&lt;&lt;set $button to 1&gt;&gt;
-    &lt;&lt;/button&gt;&gt;\
+L&#39;enfant et les parents ont pensé à ramasser le bout de dent.
+Ecrivez la séquence de collage dans le bon ordre si vous recollez le morceau.
+\&lt;div id=&quot;dalle-wrapper&quot;&gt;
+ \ &lt;div id=&quot;dalle-container&quot;&gt; 
+\  &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;1&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;1- Etching à l&#39;acide orthophosphorique, séchage doux, adhésif MR2, séchage, photopolymérisation sur la dent et sur le fragment&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;2&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;2-Retrait de l&#39;exces de composite à la microbrush puis photopolymérisation des 2 faces&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;3&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;3-Nettoyage complet à la chlorhexidine et rinçage au sérum physiologique du fragment et de la dent&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;4&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;4-Nettoyage simple du fragment et vérification de l&#39;adaptation marginale, du manque ou non de morceau, de hiatus, et de la reproductibilité du repositionnement&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;5&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;5-Polissage du joint à la fraise bague rouge&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;6&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;6-Isolation de la dentt&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;7&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;7-Application de composite d&#39;assemblage sur le fragment puis mise en place du fragment&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+ &lt;button id=&quot;soumettre&quot; class=&quot;macro-button&quot;&gt;Soumettre ma séquence&lt;/button&gt;
+  &lt;div id=&quot;feedback&quot;&gt;&lt;/div&gt;
+   &lt;div id=&quot;feedback2&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
+
+&lt;&lt;script&gt;&gt;
+setTimeout(function() {
+    const container = document.getElementById(&#39;dalle-container&#39;);
+    if (!container) return;
+
+    let dragSrcEl = null;
+
+    function handleDragStart(e) {
+        dragSrcEl = this;
+        e.dataTransfer.effectAllowed = &#39;move&#39;;
+        e.dataTransfer.setData(&#39;text/html&#39;, this.innerHTML);
+    }
+
+    function handleDragOver(e) {
+        if (e.preventDefault) e.preventDefault();
+        return false;
+    }
+
+    function handleDrop(e) {
+        if (e.stopPropagation) e.stopPropagation();
+        if (dragSrcEl !== this) {
+            const temp = this.innerHTML;
+            this.innerHTML = dragSrcEl.innerHTML;
+            dragSrcEl.innerHTML = temp;
+
+            const tempId = this.dataset.id;
+            this.dataset.id = dragSrcEl.dataset.id;
+            dragSrcEl.dataset.id = tempId;
+        }
+        return false;
+    }
+
+    const dalles = container.querySelectorAll(&#39;.dalle&#39;);
+    dalles.forEach(function(dalle) {
+        dalle.addEventListener(&#39;dragstart&#39;, handleDragStart, false);
+        dalle.addEventListener(&#39;dragover&#39;, handleDragOver, false);
+        dalle.addEventListener(&#39;drop&#39;, handleDrop, false);
+    });
+
+    document.getElementById(&#39;soumettre&#39;).addEventListener(&#39;click&#39;, function() {
+           // désactiver le bouton pour éviter plusieurs clics
+    this.disabled = true;
+    // stop timer
+        if (typeof State !== &#39;undefined&#39;) State.variables.button = 1;
+
+        const currentOrder = Array.from(container.children)
+            .filter(d =&gt; d.classList.contains(&#39;dalle&#39;))
+            .map(d =&gt; d.dataset.id);
+
+        const correctOrder = [&quot;4&quot;,&quot;6&quot;,&quot;3&quot;,&quot;1&quot;,&quot;7&quot;,&quot;2&quot;,&quot;5&quot;];
+        let tempScore = 0;
+const dalles = Array.from(container.children).filter(d =&gt; d.classList.contains(&#39;dalle&#39;));
+for (let i = 0; i &lt; correctOrder.length; i++) {
+    if (currentOrder[i] === correctOrder[i]) {
+        tempScore += 5;
+        dalles[i].style.backgroundColor = &quot;rgba(0,128,0,0.2)&quot;; // vert discret
+        } else {
+        tempScore -=10;
+        dalles[i].style.backgroundColor = &quot;rgba(255,0,0,0.2)&quot;; // rouge discret
+    }
+}
+        if (currentOrder.join(&quot;,&quot;) === correctOrder.join(&quot;,&quot;)) {
+                       document.getElementById(&#39;feedback&#39;).innerHTML = &quot;Correct !&quot;;
+        } else {
+                       document.getElementById(&#39;feedback&#39;).innerHTML = &quot;Incorrect !&quot;;
+                   }
+document.getElementById(&#39;feedback2&#39;).innerHTML = &quot;&lt;i&gt;Bonne réponse : 4/6/3/1/7/2/5.&lt;br&gt;On nettoie une 1ere fois le fragment, on vérifie l&#39;adaptation marginale du fragment, (si ok) on isole la dent, on nettoie de façon approfondie, on fait le traitement des surfaces, on ajoute du composite d&#39;assemblage et on repositionne le fragment. On retire les excès puis on photopolymérise. On polit les joints.&lt;/i&gt;&lt;br&gt;&lt;br&gt;&quot; +
+
+&quot;Votre score clinique pour ce passage est de &lt;span style=&#39;color:purple; font-weight:bold;&#39;&gt;&quot; + tempScore + &quot;&lt;/span&gt; sur un maximum de 35.&quot;
++ &quot;&lt;br&gt;&lt;a href=&#39;#&#39; onclick=&#39;SugarCube.Engine.play(\&quot;morceau no ok cas2\&quot;)&#39;&gt;Je passe à la suite&lt;/a&gt;&quot;;
+      document.getElementById(&#39;feedback&#39;).style.opacity = 1;
+        dalles.forEach(d =&gt; d.setAttribute(&#39;draggable&#39;, false));
+
+        if (typeof State !== &#39;undefined&#39;) {
+            State.variables.tempScore = tempScore;
+            State.variables.Score = (State.variables.Score || 0) + tempScore;
+        }
+        if (State.variables.tempScore === 35) {
+    State.variables.Rapidite = State.variables.Rapidite + State.variables.Timer;
+}
+    });
+}, 50);
+&lt;&lt;/script&gt;&gt;
 
 &lt;&lt;silently&gt;&gt;
     &lt;&lt;repeat 1s&gt;&gt;
@@ -7470,7 +7500,9 @@ setTimeout(function() {
     });
 
     document.getElementById(&#39;soumettre&#39;).addEventListener(&#39;click&#39;, function() {
-        // stop timer
+           // désactiver le bouton pour éviter plusieurs clics
+    this.disabled = true;
+    // stop timer
         if (typeof State !== &#39;undefined&#39;) State.variables.button = 1;
 
         const currentOrder = Array.from(container.children)
@@ -7725,7 +7757,9 @@ setTimeout(function() {
     });
 
     document.getElementById(&#39;soumettre&#39;).addEventListener(&#39;click&#39;, function() {
-        // stop timer
+          // désactiver le bouton pour éviter plusieurs clics
+    this.disabled = true;
+    // stop timer
         if (typeof State !== &#39;undefined&#39;) State.variables.button = 1;
 
         const currentOrder = Array.from(container.children)
