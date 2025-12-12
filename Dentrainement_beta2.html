@@ -661,8 +661,6 @@ window.LastScore = null;
 }
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
 function unlockAudio() {
-
-    // ✅ Attendre que l'audio existe vraiment
     if (!window.BeepSound) return;
 
     window.BeepSound.volume = 0;
@@ -672,17 +670,16 @@ function unlockAudio() {
             window.BeepSound.pause();
             window.BeepSound.currentTime = 0;
 
-            // ✅ On enlève les listeners uniquement si succès
             document.removeEventListener("keydown", unlockAudio);
             document.removeEventListener("click", unlockAudio);
         })
         .catch(()=>{});
 }
 
-// écoute les premières vraies actions utilisateur
 document.addEventListener("keydown", unlockAudio);
 document.addEventListener("click", unlockAudio);
 
+/* Gestion du Enter sur textbox */
 document.addEventListener("keydown", function(e) {
     if (e.key === "Enter") {
         e.preventDefault();
@@ -693,20 +690,16 @@ document.addEventListener("keydown", function(e) {
         }
 
         const btn = document.querySelector(".passage .macro-button");
-        if (btn) {
-            btn.click();
-        }
+        if (btn) btn.click();
     }
 });
 
-
-/* Chargement du fichier son stocke en ligne */
+/* Chargement du fichier son */
 window.BeepSound = new Audio("Son/beepu.mp3");
 window.BeepSound.preload = "auto";
 window.TimerBeepPlayed = false;
 
-
-/* --- Création de l'encart dans la barre UI (une seule fois) --- */
+/* --- StatsBox Desktop --- */
 $(document).on(':storyready', function () {
     if ($("#statsBox").length === 0) {
         $("#ui-bar-body").append(`
@@ -714,11 +707,9 @@ $(document).on(':storyready', function () {
                 <div id="scoreCliniqueLine" class="hidden">
                     Score clinique : <span id="scoreClinique" class="value-score"></span>
                 </div>
-
                 <div id="scoreRapideLine" class="hidden">
                     Score de Rapidité : <span id="scoreRapide" class="value-rapid"></span>
                 </div>
-
                 <div id="timerLine" class="hidden">
                     <br><strong>Passage chronométré</strong><br>
                     Vous disposez de <span id="countdownNumber" class="value-timer"></span> sec pour marquer des points de rapidité.
@@ -728,44 +719,29 @@ $(document).on(':storyready', function () {
     }
 });
 
-/* --- Rafraîchissement toutes les secondes (ne modifie PAS $Timer) --- */
+/* --- Rafraîchissement des scores et timer --- */
 setInterval(function () {
-
-    /* ----- Score clinique ----- */
+    // Score clinique
     if (typeof State.variables.Score !== "undefined" && State.variables.Score !== null) {
         $("#scoreClinique").text(State.variables.Score);
         $("#scoreCliniqueLine").removeClass("hidden");
     } else {
         $("#scoreCliniqueLine").addClass("hidden");
     }
-  
-    /* ----- Effet variation du score ----- */
-    if (window.LastScore !== null) {
 
-        // Augmentation
+    // Effet variation score
+    if (window.LastScore !== null) {
         if (State.variables.Score > window.LastScore) {
             $("#statsBox, #statsBoxMobile").removeClass("flash-bad").addClass("flash-good");
-
-            setTimeout(() => {
-                $("#statsBox, #statsBoxMobile").removeClass("flash-good");
-            }, 600);
-        }
-
-        // Diminution
-        else if (State.variables.Score < window.LastScore) {
+            setTimeout(() => { $("#statsBox, #statsBoxMobile").removeClass("flash-good"); }, 600);
+        } else if (State.variables.Score < window.LastScore) {
             $("#statsBox, #statsBoxMobile").removeClass("flash-good").addClass("flash-bad");
-
-            setTimeout(() => {
-                $("#statsBox, #statsBoxMobile").removeClass("flash-bad");
-            }, 600);
+            setTimeout(() => { $("#statsBox, #statsBoxMobile").removeClass("flash-bad"); }, 600);
         }
-
     }
-
     window.LastScore = State.variables.Score;
 
-
-    /* ----- Score de rapidité ----- */
+    // Score rapidité
     if (typeof State.variables.Rapidite !== "undefined" && State.variables.Rapidite !== null) {
         $("#scoreRapide").text(State.variables.Rapidite);
         $("#scoreRapideLine").removeClass("hidden");
@@ -773,93 +749,56 @@ setInterval(function () {
         $("#scoreRapideLine").addClass("hidden");
     }
 
-    /* ----- Timer (affiche seulement si > 0) ----- */
-    if (typeof State.variables.Timer !== "undefined"
-     && State.variables.Timer !== null
-     && State.variables.Timer > 0) {
-
-        $("#countdownNumber")
-            .text(State.variables.Timer)
-            .removeClass("timer-warning");
-
+    // Timer
+    if (typeof State.variables.Timer !== "undefined" && State.variables.Timer !== null && State.variables.Timer > 0) {
+        $("#countdownNumber").text(State.variables.Timer).removeClass("timer-warning");
         $("#timerLine").removeClass("hidden");
 
-        /* ⚠️ Rouge à partir de 5 secondes */
-        if (State.variables.Timer <= 5) {
-            $("#countdownNumber").addClass("timer-warning");
-        }
+        if (State.variables.Timer <= 5) $("#countdownNumber").addClass("timer-warning");
 
-        /* 🔊 Bip doux UNIQUE à 5 secondes */
         if (State.variables.Timer === 5 && !window.TimerBeepPlayed) {
-            try {
-                window.BeepSound.currentTime = 0;
-                window.BeepSound.play();
-            } catch (e) {}
-
+            try { window.BeepSound.currentTime = 0; window.BeepSound.play(); } catch(e){}
             window.TimerBeepPlayed = true;
         }
+        if (State.variables.Timer > 5) window.TimerBeepPlayed = false;
 
-        /* Réarme si reset ou remontée */
-        if (State.variables.Timer > 5) {
-            window.TimerBeepPlayed = false;
-        }
-
-    }
-    else {
-
-        /* Cache la ligne si pas de timer */
+    } else {
         $("#timerLine").addClass("hidden");
-
-        /* Réarme le bip pour le prochain cycle */
         window.TimerBeepPlayed = false;
     }
 
-  
 }, 1000);
 
-// ===== HUD MOBILE UNIFIÉ (Score + Rapidité + Timer) =====
-
-// Crée le HUD dès que le jeu est prêt
+// ===== HUD MOBILE UNIFIÉ =====
 $(document).one(":storyready", function() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i.test(navigator.userAgent);
+    if (!isMobile) return;
 
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i
-        .test(navigator.userAgent);
-
-    if (!isMobile) return; // mobile/tablette uniquement
-
-    // Crée le HUD et ajoute au body
     const hud = $('<div id="mobileHUD"></div>');
     $('body').append(hud);
 
-    // ---- FONCTION UNIQUE DE RAFRAICHISSEMENT ----
     function updateHUD() {
+        const score = State.variables.Score || 0;
+        const rapidite = State.variables.Rapidite || 0;
+        const timer = State.variables.Timer || 0;
 
-        const score     = State.variables.Score    || 0;
-        const rapidite  = State.variables.Rapidite || 0;
-        const timer     = State.variables.Timer    || 0;
-
-        // Timer en rouge si <=5
-        const timerClass =
-            (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
+        const timerClass = (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
 
         hud.html(`
             <div id="statsBoxMobile">
-
-                🦷 <span class="value-score">${score}</span>
-                &nbsp;&nbsp;
-
-                🏃‍♂️ <span class="value-rapid">${rapidite}</span>
-                &nbsp;&nbsp;
-
+                🦷 <span class="value-score">${score}</span> &nbsp;&nbsp;
+                🏃‍♂️ <span class="value-rapid">${rapidite}</span> &nbsp;&nbsp;
                 ⏱ <span class="${timerClass}">${timer}s</span>
-
             </div>
         `);
+
+        // Ajuste le positionnement si le clavier est ouvert (viewport réduit)
+        const vh = window.innerHeight;
+        hud.css({ bottom: '10px', maxWidth: '95%' });
     }
 
-    // 🔁 RAFRAICHISSEMENT SYNCHRO AVEC LA STATSBOX
     updateHUD();
-    setInterval(updateHUD, 1000);
+    setInterval(updateHUD, 500); // refresh plus fréquent pour clavier
 });
 </script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-tag name="question-ouverte-ordre" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
