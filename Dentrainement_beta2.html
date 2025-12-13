@@ -605,13 +605,10 @@ window.LastScore = null;
 /* HUD mobile : n’existe QUE sur mobile */
 #mobileHUD {
     position: fixed;
-    bottom: 10px;
+    top: 10px;
     right: 10px;
-    z-index: 9999;
-
-    display: inline-block;      /* s’adapte au contenu */
-    width: auto;
-    height: auto;
+    bottom: auto;   /* sécurité absolue */
+    left: auto;
 
     padding: 6px 10px;          /* padding minimal */
     line-height: 1.2;           /* hauteur très maîtrisée */
@@ -640,14 +637,6 @@ window.LastScore = null;
 /* Masqué sur desktop */
 @media (min-width: 769px) {
     #mobileHUD { display: none; }
-}
-
-/* Ajuste iOS / Android safe area */
-@media (max-width: 768px) {
-    #mobileHUD {
-        top: env(safe-area-inset-top);
-        right: env(safe-area-inset-right);
-    }
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
 function unlockAudio() {
     if (!window.BeepSound) return;
@@ -789,7 +778,14 @@ $(document).one(":storyready", function() {
         }
     });
 });
-</script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-tag name="question-ouverte-ordre" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
+
+@media (max-width: 768px) {
+    #mobileHUD {
+        top: calc(10px + env(safe-area-inset-top));
+        right: calc(10px + env(safe-area-inset-right));
+        bottom: auto;
+    }
+}</script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-tag name="question-ouverte-ordre" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
@@ -5443,7 +5439,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Passage 0" tags="" position="900,25" size="100,100">Bienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Passage 0" tags="" position="900,25" size="100,100">NouveauHUD3Bienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
 
 Dans cette simulation vous aurez à prendre des décisions parmi plusieurs choix possibles. 
 
@@ -5463,9 +5459,7 @@ Si vous avez compris et que vous êtes motivé(e) pour devenir un expert en clin
 &lt;&lt;set $Timer=0&gt;&gt;
 &lt;&lt;set $Rapidite=0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
-&lt;img src=&quot;./Images/pixabay_shohmelian_cabinet.jpg&quot; width=&quot;300vw&quot;&gt;
-
+/&lt;img src=&quot;./Images/pixabay_shohmelian_cabinet.jpg&quot; width=&quot;300vw&quot;&gt;
 Vous venez de vous installer dans la commune de Rastignac-en-Jalles. C&#39;est une reprise de cabinet. Vous avez à coeur de bien vous occuper des anciens patients de votre confrère. Le bouche à oreille fonctionne fort dans le coin. Votre réputation va dépendre des retours des tous premiers patients. 
 
 Vous pouvez compter sur Martine, l&#39;assistante dentaire historique du cabinet.
