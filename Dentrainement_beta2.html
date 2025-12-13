@@ -604,41 +604,54 @@ window.LastScore = null;
 
 /* HUD mobile : n’existe QUE sur mobile */
 #mobileHUD {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    bottom: auto;   /* sécurité absolue */
-    left: auto;
+    position: fixed;           /* reste collé à l'écran */
+    top: 8px;                  /* par défaut en haut */
+    right: 8px;
+    z-index: 10000;
 
-    padding: 6px 10px;          /* padding minimal */
-    line-height: 1.2;           /* hauteur très maîtrisée */
-
-    font-size: 0.85em;
-    font-family: Arial, sans-serif;
-    text-align: right;
-
-    background: #eaf4ff;
+    background: rgba(234, 244, 255, 0.97); /* bleu très clair semi-transparent */
     border-left: 4px solid #4a90e2;
-    border-radius: 8px;
-  
-     display: inline-block;   /* s’adapte uniquement au contenu */
-    width: auto;             /* pas de largeur forcée */
-    height: auto;            /* pas de hauteur forcée */
-    max-height: none;        /* annule toute hauteur héritée */
+    border-radius: 12px;
+    padding: 8px 12px;
+
+    font-family: Arial, sans-serif;
+    font-size: 0.85em;
+    line-height: 1.4em;
 
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-    pointer-events: none;       /* ne bloque jamais l’UI */
+
+    max-width: 95%;
+    pointer-events: none; /* évite de bloquer le focus sur les champs texte */
 }
 
-#mobileHUD { outline: 2px solid red; }
-#statsBoxMobile { outline: 2px solid blue; }
+/* Contenu intérieur du HUD */
+#mobileHUD #statsBoxMobile {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    pointer-events: auto; /* laisse cliquable si nécessaire */
+}
 
-#statsBoxMobile {
-    display: inline-block;   /* aussi pour s’adapter au contenu */
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: 0;
+#mobileHUD .value-score { color: purple; font-weight: bold; }
+#mobileHUD .value-rapid { color: green; font-weight: bold; }
+#mobileHUD .value-timer { color: blue; font-weight: bold; }
+#mobileHUD .timer-warning { color: red; font-weight: bold; }
+
+/* Flash feedback */
+#mobileHUD.flash-good { animation: flashGreen 0.6s ease; }
+#mobileHUD.flash-bad  { animation: flashRed 0.6s ease; }
+
+/* Masqué sur desktop */
+@media (min-width: 769px) {
+    #mobileHUD { display: none; }
+}
+
+/* Sécurité mobile notch + clavier */
+@media (max-width: 768px) {
+    #mobileHUD {
+        top: env(safe-area-inset-top, 8px);
+        right: env(safe-area-inset-right, 8px);
+    }
 }
 
 #mobileHUD .value-score { color: purple; font-weight: bold; }
@@ -774,11 +787,11 @@ $(document).one(":storyready", function() {
         const timerClass = (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
 
         hud.html(`
-            <div id="statsBoxMobile">
+            <span id="statsBoxMobile">
                 🦷 <span class="value-score">${score}</span>&nbsp;&nbsp;
                 🏃‍♂️ <span class="value-rapid">${rapidite}</span>&nbsp;&nbsp;
                 ⏱ <span class="${timerClass}">${timer}s</span>
-            </div>
+            </span>
         `);
     }
 
@@ -5448,7 +5461,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Passage 0" tags="" position="900,25" size="100,100">NouveauHUD5Bienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Passage 0" tags="" position="900,25" size="100,100">NouveauHUD6Bienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
 
 Dans cette simulation vous aurez à prendre des décisions parmi plusieurs choix possibles. 
 
