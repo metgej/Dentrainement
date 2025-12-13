@@ -795,6 +795,38 @@ function refreshUI() {
 /* Hooks SugarCube */
 $(document).on(':storyready :passagerender', refreshUI);
 setInterval(refreshUI, 1000);
+
+// ==== HUD MOBILE – ajustement dynamique avec clavier ====
+$(document).one(":storyready", function() {
+    const hud = $("#mobileHUD");
+    if (!hud.length) return;
+
+    let initialHeight = window.innerHeight;
+
+    function adjustHUD() {
+        const vh = window.innerHeight;
+        const delta = initialHeight - vh;
+
+        if (delta > 150) { // seuil arbitraire pour détecter le clavier
+            // clavier ouvert → descendre le HUD juste au-dessus du clavier
+            hud.css({
+                top: 'auto',
+                bottom: (delta + 10) + 'px', // 10px au-dessus du clavier
+                right: '8px'
+            });
+        } else {
+            // clavier fermé → HUD en haut
+            hud.css({
+                top: '8px',
+                bottom: 'auto',
+                right: '8px'
+            });
+        }
+    }
+
+    // écoute les resize (mobile keyboard, rotation, etc.)
+    window.addEventListener('resize', adjustHUD);
+});
 </script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-tag name="question-ouverte-ordre" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
@@ -5464,7 +5496,7 @@ A la fin un Top 10 des scores (même niveau et cas clinique) sera affiché avec 
 
 Si vous avez compris et que vous êtes motivé(e) pour devenir un expert en clinique :
 &lt;&lt;link &quot;Cliquez-ici pour commencer&quot;&gt;&gt;
-       &lt;&lt;goto &quot;Passage 1&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="119" name="Passage 1" tags="Media-image-son" position="1025,25" size="100,100">&lt;&lt;silently&gt;&gt;
+       &lt;&lt;goto &quot;Passage 1&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="119" name="Passage 1" tags="Media-image-son Question-ouverte" position="1025,25" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score=0&gt;&gt;
 &lt;&lt;set $Timer=0&gt;&gt;
 &lt;&lt;set $Rapidite=0&gt;&gt;
@@ -5478,7 +5510,7 @@ Vous pouvez compter sur Martine, l&#39;assistante dentaire historique du cabinet
 
 Avant de commencer dîtes nous en plus sur vous :
 Quel est votre pseudo (ou simplement votre prénom) ?
-&lt;&lt;textbox &quot;$Nom&quot; &quot;&quot;&gt;&gt;
+&lt;&lt;textbox &quot;$Nom&quot; &quot;&quot; id=&quot;textbox-nom&quot; autofocus&gt;&gt;
 &lt;&lt;silently&gt;&gt;
 &lt;&lt;set $niveau = {type:&quot;&quot;}&gt;&gt;
 &lt;&lt;set $promo = {type:&quot;&quot;}&gt;&gt;
@@ -5503,7 +5535,7 @@ A des fins statistiques, dans quelle promotion êtes-vous ?
     \&lt;&lt;replace &quot;#nom_niveau&quot;&gt;&gt;
 \Pour les beta-testeurs (choix manuel du scénario, évite la distribution aléatoire)
 \&lt;&lt;if $niveau.type is &quot;Débutant&quot;&gt;&gt;
-\[[Scénario1_débutant]]
+[[Scénario1_débutant]]
 [[Scénario4_débutant]]
 [[Scénario5_débutant]]
 [[Scénario6_débutant]]
