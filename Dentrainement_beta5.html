@@ -116,7 +116,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 }
 
 #passages {
-     padding-top: 60px;   /* ajuste selon la hauteur réelle du HUD */
+     padding-top: 40px;   /* ajuste selon la hauteur réelle du HUD */
     margin-left: 0 !important;
 }
 
@@ -630,13 +630,14 @@ window.LastScore = null;
     pointer-events: none;       /* ne bloque jamais l’UI */
 }
 
+#mobileHUD { outline: 2px solid red; }
+#statsBoxMobile { outline: 2px solid blue; }
 
 #statsBoxMobile {
-    display: inline-block;   /* aussi pour s’adapter au contenu */
-    width: auto;
-    height: auto;
+    display: inline;
     margin: 0;
     padding: 0;
+  line-height: 1.2;
 }
 
 #mobileHUD .value-score { color: purple; font-weight: bold; }
@@ -772,11 +773,11 @@ $(document).one(":storyready", function() {
         const timerClass = (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
 
         hud.html(`
-            <div id="statsBoxMobile">
+            <span id="statsBoxMobile">
                 🦷 <span class="value-score">${score}</span>&nbsp;&nbsp;
                 🏃‍♂️ <span class="value-rapid">${rapidite}</span>&nbsp;&nbsp;
                 ⏱ <span class="${timerClass}">${timer}s</span>
-            </div>
+            </span>
         `);
     }
 
@@ -5446,7 +5447,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Passage 0" tags="" position="900,25" size="100,100">NouveauHUD5Bienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Passage 0" tags="" position="900,25" size="100,100">NouveauHUD6Bienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
 
 Dans cette simulation vous aurez à prendre des décisions parmi plusieurs choix possibles. 
 
