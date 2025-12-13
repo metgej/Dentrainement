@@ -795,6 +795,64 @@ function refreshUI() {
 /* Hooks SugarCube */
 $(document).on(':storyready :passagerender', refreshUI);
 setInterval(refreshUI, 1000);
+
+// ===== HUD MOBILE UNIFIÉ + ADAPTATION FOCUS TEXTBOX =====
+$(document).one(":storyready", function() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i.test(navigator.userAgent);
+    if (!isMobile) return;
+
+    // Création du HUD
+    const hud = $('<div id="mobileHUD"></div>');
+    $('body').append(hud);
+
+    // Fonction pour mettre à jour le HUD
+    function updateHUD() {
+        const score = State.variables.Score || 0;
+        const rapidite = State.variables.Rapidite || 0;
+        const timer = State.variables.Timer || 0;
+
+        const timerClass = (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
+
+        hud.html(`
+            <div id="statsBoxMobile">
+                🦷 <span class="value-score">${score}</span> &nbsp;&nbsp;
+                🏃‍♂️ <span class="value-rapid">${rapidite}</span> &nbsp;&nbsp;
+                ⏱ <span class="${timerClass}">${timer}s</span>
+            </div>
+        `);
+    }
+
+    // Initialisation
+    updateHUD();
+    const hudInterval = setInterval(updateHUD, 500); // rafraîchissement fréquent
+
+    // ===== GESTION DU FOCUS DES TEXTBOX =====
+    $(document).on('focus', 'input[type="text"], textarea', function() {
+        // Déplace le HUD en bas pour éviter d'être masqué par le clavier
+        hud.css({
+            top: 'auto',
+            bottom: '10px',
+            right: '10px',
+            left: 'auto'
+        });
+    });
+
+    $(document).on('blur', 'input[type="text"], textarea', function() {
+        // Remet le HUD en haut
+        hud.css({
+            top: '8px',
+            bottom: 'auto',
+            right: '8px',
+            left: 'auto'
+        });
+    });
+
+    // Ajuste automatiquement la largeur si le clavier réduit le viewport
+    $(window).on('resize', function() {
+        const vh = window.innerHeight;
+        hud.css({ maxWidth: '95%' });
+    });
+});
 </script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-tag name="question-ouverte-ordre" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
@@ -5464,7 +5522,7 @@ A la fin un Top 10 des scores (même niveau et cas clinique) sera affiché avec 
 
 Si vous avez compris et que vous êtes motivé(e) pour devenir un expert en clinique :
 &lt;&lt;link &quot;Cliquez-ici pour commencer&quot;&gt;&gt;
-       &lt;&lt;goto &quot;Passage 1&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="119" name="Passage 1" tags="Media-image-son" position="1025,25" size="100,100">&lt;&lt;silently&gt;&gt;
+       &lt;&lt;goto &quot;Passage 1&quot;&gt;&gt;&lt;&lt;/link&gt;&gt;</tw-passagedata><tw-passagedata pid="119" name="Passage 1" tags="Media-image-son Question-ouverte" position="1025,25" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Score=0&gt;&gt;
 &lt;&lt;set $Timer=0&gt;&gt;
 &lt;&lt;set $Rapidite=0&gt;&gt;
@@ -5478,7 +5536,7 @@ Vous pouvez compter sur Martine, l&#39;assistante dentaire historique du cabinet
 
 Avant de commencer dîtes nous en plus sur vous :
 Quel est votre pseudo (ou simplement votre prénom) ?
-&lt;&lt;textbox &quot;$Nom&quot; &quot;&quot; id=&quot;textbox-nom&quot; autofocus&gt;&gt;
+&lt;&lt;textbox &quot;$Nom&quot; &quot;&quot;&gt;&gt;
 &lt;&lt;silently&gt;&gt;
 &lt;&lt;set $niveau = {type:&quot;&quot;}&gt;&gt;
 &lt;&lt;set $promo = {type:&quot;&quot;}&gt;&gt;
