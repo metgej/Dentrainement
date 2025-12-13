@@ -106,7 +106,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 	</div>
 	<tw-storydata name="Dentrainement_beta 1" startnode="118" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="86ab0db4-51fb-4eb0-a37e-9aaa36cbcd30" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">  #story {
     margin-top: 0;
-    margin-left: 300;
+    margin-left: 300px;
     padding-top: 0;
     padding-left: 0;
 }
@@ -116,7 +116,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 }
 
 #passages {
-    margin-top: 0 !important;
+     padding-top: 60px;   /* ajuste selon la hauteur réelle du HUD */
     margin-left: 0 !important;
 }
 
@@ -605,25 +605,28 @@ window.LastScore = null;
 /* HUD mobile : n’existe QUE sur mobile */
 #mobileHUD {
     position: fixed;
-    top: 8px;
-    right: 8px;
-    z-index: 10000;
+    bottom: 10px;
+    right: 10px;
+    z-index: 9999;
 
-    background: rgba(234, 244, 255, 0.97);
-    border-left: 4px solid #4a90e2;
-    border-radius: 12px;
-    padding: 8px 12px;
+    display: inline-block;      /* s’adapte au contenu */
+    width: auto;
+    height: auto;
 
-    font-family: Arial, sans-serif;
+    padding: 6px 10px;          /* padding minimal */
+    line-height: 1.2;           /* hauteur très maîtrisée */
+
     font-size: 0.85em;
-    line-height: 1.4em;
+    font-family: Arial, sans-serif;
+    text-align: right;
+
+    background: #eaf4ff;
+    border-left: 4px solid #4a90e2;
+    border-radius: 8px;
 
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-
-    /* Important : ne perturbe jamais le scroll */
-    pointer-events: none;
+    pointer-events: none;       /* ne bloque jamais l’UI */
 }
-
 
 #mobileHUD .value-score { color: purple; font-weight: bold; }
 #mobileHUD .value-rapid { color: green; font-weight: bold; }
@@ -637,14 +640,6 @@ window.LastScore = null;
 /* Masqué sur desktop */
 @media (min-width: 769px) {
     #mobileHUD { display: none; }
-}
-
-/* Ajuste iOS / Android safe area */
-@media (max-width: 768px) {
-    #mobileHUD {
-        top: env(safe-area-inset-top);
-        right: env(safe-area-inset-right);
-    }
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
 function unlockAudio() {
     if (!window.BeepSound) return;
@@ -5440,7 +5435,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Passage 0" tags="" position="900,25" size="100,100">Bienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Passage 0" tags="" position="900,25" size="100,100">NouveauHUD2Bienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
 
 Dans cette simulation vous aurez à prendre des décisions parmi plusieurs choix possibles. 
 
