@@ -604,25 +604,22 @@ window.LastScore = null;
 
 /* HUD mobile : n’existe QUE sur mobile */
 #mobileHUD {
-    position: fixed;
-    top: 8px;
-    right: 8px;
-    z-index: 10000;
-
-    background: rgba(234, 244, 255, 0.97);
-    border-left: 4px solid #4a90e2;
-    border-radius: 12px;
-    padding: 8px 12px;
-
-    font-family: Arial, sans-serif;
-    font-size: 0.85em;
-    line-height: 1.4em;
-
-    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-    max-width: 95%;
+    background-color: rgba(255,255,255,0.95);
+    padding: 10px 15px;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.3);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    text-align: right;
+    font-size: 14px;
+}
 
     /* Important : ne perturbe jamais le scroll */
     pointer-events: none;
+}
+
+/* ajoute un padding bottom pour que le contenu ne soit jamais caché par le HUD */
+.passage {
+    padding-bottom: 90px; /* ajuste selon la hauteur réelle du HUD */
 }
 
 #mobileHUD #statsBoxMobile {
@@ -758,40 +755,65 @@ setInterval(function () {
 
 }, 1000);
 
-/* ===== HUD MOBILE UNIFIÉ ===== */
+// ===== HUD MOBILE UNIFIÉ (Score + Rapidité + Timer) =====
 $(document).one(":storyready", function() {
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i.test(navigator.userAgent);
-    if (!isMobile) return;
 
+    // Détecte mobile / tablette
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i
+        .test(navigator.userAgent);
+
+    if (!isMobile) return; // exécute seulement sur mobile/tablette
+
+    // Crée le HUD et l'ajoute au conteneur #story pour gérer scroll
     const hud = $('<div id="mobileHUD"></div>');
-    $('body').append(hud);
+    $('#story').append(hud);
 
-    function updateHUD() {
-        const score = State.variables.Score || 0;
+    // ---- Fonction de mise à jour du contenu du HUD ----
+    function updateHUDContent() {
+        const score    = State.variables.Score || 0;
         const rapidite = State.variables.Rapidite || 0;
-        const timer = State.variables.Timer || 0;
-        const timerClass = (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
+        const timer    = State.variables.Timer || 0;
+
+        const timerClass = (timer > 0 && timer <= 5) ? 'timer-warning' : 'value-timer';
 
         hud.html(`
             <div id="statsBoxMobile">
-                🦷 <span class="value-score">${score}</span>&nbsp;&nbsp;
-                🏃‍♂️ <span class="value-rapid">${rapidite}</span>&nbsp;&nbsp;
+                🦷 <span class="value-score">${score}</span>
+                &nbsp;&nbsp;
+                🏃‍♂️ <span class="value-rapid">${rapidite}</span>
+                &nbsp;&nbsp;
                 ⏱ <span class="${timerClass}">${timer}s</span>
             </div>
         `);
     }
 
-    updateHUD();
-    setInterval(updateHUD, 1000);
+    // ---- Fonction de positionnement dynamique ----
+    function updateHUDPosition() {
+        const storyRect = $('#story')[0].getBoundingClientRect();
+        hud.css({
+            position: 'absolute', // évite les problèmes avec scrollable #story
+            top: window.scrollY + window.innerHeight - hud.outerHeight() - storyRect.top + 'px',
+            left: 0,
+            width: '100%',
+            'z-index': 10000
+        });
+    }
 
-    // Ajuste la position si clavier visible sur mobile
-    window.addEventListener('resize', () => {
-        if (window.innerHeight < 500) {  // heuristique clavier visible
-            hud.css('bottom', '10px'); // reste visible au-dessus clavier
-        } else {
-            hud.css('bottom', '10px');
-        }
+    // ---- Gestion du clavier virtuel (input / textarea) ----
+    $('input, textarea').on('focus', function() {
+        hud.hide(); // cache le HUD pour ne pas être masqué par le clavier
+    }).on('blur', function() {
+        updateHUDPosition();
+        hud.show();
     });
+
+    // ---- Initialisation ----
+    updateHUDContent();
+    updateHUDPosition();
+
+    // ---- Rafraîchissement automatique ----
+    setInterval(updateHUDContent, 1000);
+    $(window).on('scroll resize', updateHUDPosition);
 });
 </script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-tag name="question-ouverte-ordre" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
