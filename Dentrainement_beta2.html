@@ -463,13 +463,16 @@ span.checkligne {
 }
 
 #mobileHUD {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    z-index: 9999;
-    pointer-events: none;
-    font-size: 0.85em;
-    font-family: Arial, sans-serif;
+    position: fixed;       /* reste collé à l'écran */
+    top: 10px;             /* légèrement en dessous du bord supérieur */
+    right: 10px;           /* aligné à droite */
+    width: auto;           /* seulement la largeur du contenu */
+    height: auto;          /* seulement la hauteur du contenu */
+    z-index: 10000;        /* toujours au-dessus du contenu */
+    background: none;      /* plus de rectangle blanc */
+    padding: 0;            /* pas de padding inutile */
+    font-size: 14px;
+    text-align: right;
 }
 
 /* Reprend le style de ta statbox desktop */
@@ -627,22 +630,6 @@ window.LastScore = null;
     transition: opacity 0.5s;
 }
 
-#mobileHUD {
-    position: fixed;       /* reste collé à l'écran */
-    top: 0;             /* en bas de l'écran */
-    right: 0;              /* à droite */
-    left: 0;               /* étire sur toute la largeur si besoin */
-    z-index: 10000;        /* toujours au-dessus du contenu */
-    background-color: rgba(255, 255, 255, 0.95); /* fond semi-transparent */
-    padding: 10px 15px;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
-    font-size: 14px;
-    text-align: right;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-.value-score { color: purple; font-weight: bold; }
-.timer-warning { color: red; font-weight: bold; }
 
 .passage {
     padding-bottom: 70px; /* correspond à la hauteur du HUD */
@@ -782,7 +769,7 @@ $(document).one(":storyready", function() {
 
         // Ajuste le positionnement si le clavier est ouvert (viewport réduit)
         const vh = window.innerHeight;
-        hud.css({ bottom: '10px', maxWidth: '95%' });
+        hud.css({ top: '10px', right: '10px' });
     }
 
     updateHUD();
@@ -1637,12 +1624,12 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-&lt;img src=&quot;./Images/interrogatoire2.jpg&quot; width=&quot;200vw&quot;&gt;
 Vous commencez la consultation. 
 Que devez-vous vérifier rapidement concernant l&#39;état général de l&#39;enfant juste après l&#39;accident ?
 Ecrivez un ou des mots clés, ci-dessous (Ex : traitement iatrogene).
 &lt;&lt;set $answer to &#39;&#39;&gt;&gt;
 &lt;&lt;textbox &#39;$answer&#39; &#39;&#39; id=&#39;textbox-answer&#39; autofocus&gt;&gt;
+&lt;img src=&quot;./Images/interrogatoire2.jpg&quot; width=&quot;200vw&quot;&gt;
 &lt;span id=&#39;textbox-reply&#39;&gt;&lt;/span&gt;
 &lt;span id=&#39;textbox-submit&#39;&gt;
 \&lt;&lt;button &quot;Soumettre mon/mes mot(s) clé(s)&quot;&gt;&gt;
