@@ -605,13 +605,10 @@ window.LastScore = null;
 /* HUD mobile : n’existe QUE sur mobile */
 #mobileHUD {
     position: fixed;
-    bottom: 10px;
+    top: 10px;
     right: 10px;
-    z-index: 9999;
-
-    display: inline-block;      /* s’adapte au contenu */
-    width: auto;
-    height: auto;
+    bottom: auto;   /* sécurité absolue */
+    left: auto;
 
     padding: 6px 10px;          /* padding minimal */
     line-height: 1.2;           /* hauteur très maîtrisée */
@@ -623,9 +620,23 @@ window.LastScore = null;
     background: #eaf4ff;
     border-left: 4px solid #4a90e2;
     border-radius: 8px;
+  
+     display: inline-block;   /* s’adapte uniquement au contenu */
+    width: auto;             /* pas de largeur forcée */
+    height: auto;            /* pas de hauteur forcée */
+    max-height: none;        /* annule toute hauteur héritée */
 
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
     pointer-events: none;       /* ne bloque jamais l’UI */
+}
+
+
+#statsBoxMobile {
+    display: inline-block;   /* aussi pour s’adapter au contenu */
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
 }
 
 #mobileHUD .value-score { color: purple; font-weight: bold; }
@@ -5435,7 +5446,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Passage 0" tags="" position="900,25" size="100,100">NouveauHUD2Bienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Passage 0" tags="" position="900,25" size="100,100">NouveauHUD5Bienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
 
 Dans cette simulation vous aurez à prendre des décisions parmi plusieurs choix possibles. 
 
@@ -5455,9 +5466,7 @@ Si vous avez compris et que vous êtes motivé(e) pour devenir un expert en clin
 &lt;&lt;set $Timer=0&gt;&gt;
 &lt;&lt;set $Rapidite=0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-
-&lt;img src=&quot;./Images/pixabay_shohmelian_cabinet.jpg&quot; width=&quot;300vw&quot;&gt;
-
+/&lt;img src=&quot;./Images/pixabay_shohmelian_cabinet.jpg&quot; width=&quot;300vw&quot;&gt;
 Vous venez de vous installer dans la commune de Rastignac-en-Jalles. C&#39;est une reprise de cabinet. Vous avez à coeur de bien vous occuper des anciens patients de votre confrère. Le bouche à oreille fonctionne fort dans le coin. Votre réputation va dépendre des retours des tous premiers patients. 
 
 Vous pouvez compter sur Martine, l&#39;assistante dentaire historique du cabinet.
