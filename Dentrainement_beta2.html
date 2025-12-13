@@ -632,7 +632,7 @@ window.LastScore = null;
 
 
 .passage {
-    padding-top: 50px; /* correspond à la hauteur du HUD */
+    padding-top: 40px; /* correspond à la hauteur du HUD */
 }
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
 function unlockAudio() {
@@ -1137,7 +1137,7 @@ Vous dîtes à Martine :
 &lt;&lt;set $Scenario to &quot;Scénario6_avancé&quot;&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 \&lt;audio id=&quot;telephone&quot; src=&quot;https://lasonotheque.org/UPLOAD/mp3/1699.mp3&quot; \autoplay&gt;&lt;/audio&gt;
-&lt;script&gt;
+\&lt;script&gt;
 var audio = document.getElementById(&quot;telephone&quot;);
 // Régle le volume
 audio.volume = 0.03;
@@ -1265,8 +1265,7 @@ Une mère et un enfant se présentent pour un trauma à l&#39;accueil. L&#39;enf
 &lt;&lt;/silently&gt;&gt;
 &lt;&lt;/timed&gt;&gt;</tw-passagedata><tw-passagedata pid="16" name="Scénario4_débutant" tags="Question-ouverte Media-image-son" position="6275,275" size="100,100">&lt;&lt;silently&gt;&gt;&lt;&lt;if $Nom is &quot;&quot;&gt;&gt;&lt;&lt;set $Nom to &quot;Anonymous&quot;&gt;&gt;&lt;&lt;/if&gt;&gt;&lt;&lt;set $Score to 0&gt;&gt;&lt;&lt;set $Rapidite to 0&gt;&gt;&lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;&lt;&lt;set $Scenario to &quot;Scénario4_débutant&quot;&gt;&gt;&lt;&lt;/silently&gt;&gt;
-Très bien &#39;&#39;$Nom&#39;&#39; vous recevez sur votre créneau d&#39;urgence une maman qui habite dans la rue. L&#39;école l&#39;a appelé car son fils de 8 ans a fait une chute dans la cour de l’école. Martine a demandé s&#39;il avait perdu connaissance ou s&#39;il avait vomi juste après et la réponse a été négative. 
-Vous démarrez la consultation. Par quoi commencez vous avant toute chose ?
+\Très bien &#39;&#39;$Nom&#39;&#39; vous recevez sur votre créneau d&#39;urgence une maman qui habite dans la rue. Son fils de 8 ans a fait une chute dans la cour de l’école. Martine a demandé s&#39;il avait perdu connaissance ou s&#39;il avait vomi juste après et la réponse a été négative. Vous démarrez la consultation. Par quoi commencez vous avant toute chose ?
 \&lt;&lt;set $answer to &#39;&#39;&gt;&gt;
 &lt;&lt;textbox &#39;$answer&#39; &#39;&#39; id=&quot;textbox-answer&quot; autofocus&gt;&gt;
 &lt;img src=&quot;./Images/interrogatoire2.jpg&quot; width=&quot;150vw&quot;&gt;
@@ -1996,8 +1995,8 @@ Vous accueillez l&#39;enfant. La maman commence à vous expliquer comment l&#39;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;four&quot;,&quot;five&quot;,&quot;six&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Voici la rétro alvéolaire : 
-&lt;img src=&quot;./Cas_clinique4/Cas4_retro_init.jpg&quot; width=&quot;300vw&quot;&gt;
+\Voici la rétro alvéolaire : 
+&lt;img src=&quot;./Cas_clinique4/Cas4_retro_init.jpg&quot; width=&quot;250vw&quot;&gt;
 Quelles sont vos conclusions en observant cette radio et en prenant en compte les données cliniques précédentes ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; La dent 11 est fracturée au niveau de l&#39;émail et de la dentine sans atteinte de la pulpe&lt;/span&gt;
@@ -2039,7 +2038,7 @@ Quelles sont vos conclusions en observant cette radio et en prenant en compte le
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;two&quot;,&quot;three&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Comme solution, je propose :
+\Comme solution, je propose :
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Une reconstruction directe au composite, c&#39;est le plus conservateur&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; De recoller le morceau manquant s&#39;il est disponible et s&#39;adapte bien&lt;/span&gt;
@@ -2787,7 +2786,7 @@ Et ensuite (solution préférable) ?
 &lt;&lt;/silently&gt;&gt;
 \Illustration du traitement de 21 [1]
 &lt;img src=&quot;./Cas_clinique5/isabelle_gomes_pulpo.jpg&quot; width=&quot;300vw&quot;&gt;
-&lt;p&gt;Remettez les étapes du traitement dans le bon ordre :&lt;/p&gt;
+Remettez les étapes du traitement dans le bon ordre :
 \&lt;div id=&quot;dalle-wrapper&quot;&gt;
  \ &lt;div id=&quot;dalle-container&quot;&gt;
    \&lt;div class=&quot;dalle&quot; draggable=&quot;true&quot; data-id=&quot;1&quot;&gt;&lt;span class=&quot;dalle-text&quot;&gt;1- Je patiente pendant le temps de prise du matériau de coiffage.&lt;/span&gt;&lt;/div&gt;
@@ -2931,7 +2930,7 @@ document.getElementById(&#39;feedback2&#39;).innerHTML = &quot;&lt;i&gt;Bonne r�
 &lt;&lt;set $Timer = 40&gt;&gt;
 &lt;&lt;set $bonnesReponses = [&quot;two&quot;,&quot;three&quot;,&quot;four&quot;,&quot;five&quot;,&quot;six&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Vous libérez le patient. Que planifiez vous pour la suite ? 
+\Vous libérez le patient. Que planifiez vous pour la suite ? 
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Je le revois pour contrôle à 1 semaine et 1 an&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Je le revois pour contrôle à 1 semaine, 8 semaines et 1 an&lt;/span&gt;
@@ -3464,7 +3463,7 @@ Le dépistage de la violence infantile est un des points à vérifier lors d&#39
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;two&quot;,&quot;five&quot;,&quot;eight&quot;,&quot;nine&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Vous commencez à l&#39;examiner. La palpation ne révèle pas de problème particulier. 
+\Vous commencez à l&#39;examiner. La palpation ne révèle pas de problème particulier. 
 Voici une vue intra orale [4] : 
 &lt;img src=&quot;./Cas_clinique4/Cas4_vue_init_extra.jpg&quot; width=&quot;400vw&quot;&gt; 
 Cocher les affirmations justes :
@@ -3509,7 +3508,7 @@ Cocher les affirmations justes :
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="67" name="D_cas4 morceau ok" tags="Chrono-simple" position="6275,775" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Le morceau est disponible et s&#39;adapte parfaitement bien et il n&#39;y a pas de hiatus.
+\Le morceau est disponible et s&#39;adapte parfaitement bien et il n&#39;y a pas de hiatus.
 Vous décidez de remettre le morceau sur la dent de façon pérenne et en attendant vous immergez le morceau dans du sérum physiologique.
 
 Je peux faire une rainure interne sur la face du morceau qui sera en contact avec le reste de la dent.
@@ -3599,7 +3598,7 @@ Le dépistage de la violence infantile est un des points à vérifier lors d&#39
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 140&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Oui c&#39;est une bonne idée (si bien exécutée, bien entendu).
+\C&#39;est une bonne idée (si bien exécutée, bien entendu).
 La rainure peut créer un réservoir pour le matériau d’assemblage, évitant alors une surépaisseur de joint. En plus d’un rôle rétentif, elle laisse apparaître une plus large plage d’émail sur ses bords qui potentialiseront l’adhésion.
 Voici un exemple de création de rainure [4]:
 &lt;img src=&quot;./Cas_clinique4/Cas4_rainure.jpg&quot; width=&quot;250vw&quot;&gt;
@@ -3718,9 +3717,8 @@ document.getElementById(&#39;feedback2&#39;).innerHTML = &quot;&lt;i&gt;Bonne r�
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 50&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-&lt;img src=&quot;./Cas_clinique4/Cas4_digue_wedget.jpg&quot; width=&quot;300vw&quot;&gt;
+\&lt;img src=&quot;./Cas_clinique4/Cas4_digue_wedget.jpg&quot; width=&quot;300vw&quot;&gt;
 L&#39;isolation idéale peut être délicate dans certains contextes, surtout en pédiatrie.
-
 Classez dans l&#39;ordre de la solution la mieux isolante à la moins isolante 
 \&lt;div id=&quot;dalle-wrapper&quot;&gt;
  \ &lt;div id=&quot;dalle-container&quot;&gt;
@@ -3833,7 +3831,7 @@ document.getElementById(&#39;feedback2&#39;).innerHTML = &quot;&lt;i&gt;Bonne r�
 &lt;&lt;set $Timer to 60&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;three&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Après collage voici le résultat : &lt;img src=&quot;./Cas_clinique4/Cas4_deshydratation.jpg&quot; width=&quot;300vw&quot;&gt; Vous observez une nette différence de teinte entre votre fragment et le reste de la dent. Quelle peut en être la raison ?
+\Après collage voici le résultat : &lt;img src=&quot;./Cas_clinique4/Cas4_deshydratation.jpg&quot; width=&quot;300vw&quot;&gt; Vous observez une nette différence de teinte entre votre fragment et le reste de la dent. Quelle peut en être la raison ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; Une coloration alimentaire de la dent depuis le trauma&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;two&quot;&gt;&lt;&lt;checkbox &quot;$desc.two&quot; false true&gt;&gt; Un éclaircissement du fragment dû à l&#39;etching réalisé juste avant&lt;/span&gt;
@@ -4419,7 +4417,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Le créneau d&#39;urgences de l&#39;après-midi dure 20 min.
+\Le créneau d&#39;urgences de l&#39;après-midi dure 20 min.
 Le patient d&#39;après, Mr Tartrax vient pour son contôle annuel et un détartrage.
 
 &lt;&lt;link &quot;Vous ne décalez pas Mr Tartrax car il a pris rendez-vous il y a longtemps, ce ne serait pas correct. Le soin de l&#39;enfant devra durer 20 min, 30min au maximum&quot;&gt;&gt;
@@ -4804,7 +4802,7 @@ Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&q
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;one&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Voici une vue de suivi à un an du patient :
+\Voici une vue de suivi à un an du patient :
 &lt;img src=&quot;./Cas_clinique6/Vignesh_followup.jpg&quot; width=&quot;500vw&quot;&gt;
 A quel intervalle de temps revoyez-vous le patient pour déposer la contention ?
 \&lt;&lt;set $desc = {}&gt;&gt;
@@ -6754,7 +6752,7 @@ Vous vous dîtes :
 &lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="153" name="decalage patient" tags="" position="4550,600" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Mr Tartrax accepte de décaler son contrôle.
+\Mr Tartrax accepte de décaler son contrôle.
 Vous vous notez de lui glisser quelques échantillons de dentifrice gratuits à son futur rdv pour le remercier et lui redire que cela a été déterminant pour l&#39;enfant.
 
 &#39;&#39;[[Je passe à la suite|PEC aprem 3]]&#39;&#39;</tw-passagedata><tw-passagedata pid="154" name="decalage secondaire" tags="Choix-multiple-a-cocher" position="4475,1075" size="100,100">&lt;&lt;silently&gt;&gt;
