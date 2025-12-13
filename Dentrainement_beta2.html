@@ -116,7 +116,8 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 }
 
 #passages {
-    margin-top: 0 !important;
+    padding-bottom: 70px;
+}
     margin-left: 0 !important;
 }
 
@@ -605,31 +606,27 @@ window.LastScore = null;
 /* HUD mobile : n’existe QUE sur mobile */
 #mobileHUD {
     position: fixed;
-    top: 8px;
-    right: 8px;
-    z-index: 10000;
+    bottom: 10px;
+    right: 10px;
+    z-index: 9999;
 
-    background: rgba(234, 244, 255, 0.97);
-    border-left: 4px solid #4a90e2;
-    border-radius: 12px;
-    padding: 8px 12px;
+    display: inline-block;      /* s’adapte au contenu */
+    width: auto;
+    height: auto;
 
-    font-family: Arial, sans-serif;
+    padding: 6px 10px;          /* padding minimal */
+    line-height: 1.2;           /* hauteur très maîtrisée */
+
     font-size: 0.85em;
-    line-height: 1.4em;
+    font-family: Arial, sans-serif;
+    text-align: right;
+
+    background: #eaf4ff;
+    border-left: 4px solid #4a90e2;
+    border-radius: 8px;
 
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-    max-width: 95%;
-
-    /* Important : ne perturbe jamais le scroll */
-    pointer-events: none;
-}
-
-#mobileHUD #statsBoxMobile {
-    display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-    pointer-events: auto; /* laisse cliquable si nécessaire */
+    pointer-events: none;       /* ne bloque jamais l’UI */
 }
 
 #mobileHUD .value-score { color: purple; font-weight: bold; }
@@ -646,51 +643,49 @@ window.LastScore = null;
     #mobileHUD { display: none; }
 }
 
-/* Sécurité mobile notch + clavier */
+/* Ajuste iOS / Android safe area */
 @media (max-width: 768px) {
     #mobileHUD {
-        top: env(safe-area-inset-top, 8px);
-        right: env(safe-area-inset-right, 8px);
+        top: env(safe-area-inset-top);
+        right: env(safe-area-inset-right);
     }
-}</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* ================= AUDIO ================= */
-
+}</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
 function unlockAudio() {
     if (!window.BeepSound) return;
 
     window.BeepSound.volume = 0;
-    window.BeepSound.play().then(() => {
-        window.BeepSound.pause();
-        window.BeepSound.currentTime = 0;
-        document.removeEventListener("keydown", unlockAudio);
-        document.removeEventListener("click", unlockAudio);
-    }).catch(()=>{});
+
+    window.BeepSound.play()
+        .then(() => {
+            window.BeepSound.pause();
+            window.BeepSound.currentTime = 0;
+            document.removeEventListener("keydown", unlockAudio);
+            document.removeEventListener("click", unlockAudio);
+        })
+        .catch(()=>{});
 }
 
 document.addEventListener("keydown", unlockAudio);
 document.addEventListener("click", unlockAudio);
 
-window.BeepSound = new Audio("Son/beepu.mp3");
-window.BeepSound.preload = "auto";
-window.TimerBeepPlayed = false;
-window.LastScore = null;
-
-/* ================= ENTER SUR TEXTBOX ================= */
-
+/* Enter pour valider textbox */
 document.addEventListener("keydown", function(e) {
     if (e.key === "Enter") {
-        const textbox = document.querySelector('#textbox-answer');
-        if (!textbox) return;
-
         e.preventDefault();
-        State.variables.answer = textbox.value || '';
+        const textbox = document.querySelector('#textbox-answer');
+        if (textbox) State.variables.answer = textbox.value || '';
 
         const btn = document.querySelector(".passage .macro-button");
         if (btn) btn.click();
     }
 });
 
-/* ================= STATSBOX DESKTOP ================= */
+/* Chargement du fichier son */
+window.BeepSound = new Audio("Son/beepu.mp3");
+window.BeepSound.preload = "auto";
+window.TimerBeepPlayed = false;
 
+/* ===== Création de la statbox desktop ===== */
 $(document).on(':storyready', function () {
     if ($("#statsBox").length === 0) {
         $("#ui-bar-body").append(`
@@ -710,124 +705,92 @@ $(document).on(':storyready', function () {
     }
 });
 
-/* ================= HUD MOBILE ================= */
+/* ===== Rafraîchissement toutes les secondes ===== */
+window.LastScore = null;
+setInterval(function () {
 
-function isMobile() {
-    return window.matchMedia("(max-width: 768px)").matches;
-}
+    const Score = State.variables.Score || 0;
+    const Rapidite = State.variables.Rapidite || 0;
+    const Timer = State.variables.Timer || 0;
 
-function createMobileHUD() {
-    if (!isMobile()) return;
-    if ($("#mobileHUD").length) return;
+    /* Score clinique */
+    $("#scoreClinique").text(Score);
+    if (typeof State.variables.Score !== "undefined") $("#scoreCliniqueLine").removeClass("hidden");
 
-    $("body").append(`
-        <div id="mobileHUD">
-            🦷 <span id="hudScore" class="value-score">0</span>
-            &nbsp;🏃‍♂️ <span id="hudRapid" class="value-rapid">0</span>
-            &nbsp;⏱ <span id="hudTimer" class="value-timer">0</span>
-        </div>
-    `);
-}
+    /* Flash score */
+    if (window.LastScore !== null) {
+        if (Score > window.LastScore) {
+            $("#statsBox, #statsBoxMobile").removeClass("flash-bad").addClass("flash-good");
+            setTimeout(() => { $("#statsBox, #statsBoxMobile").removeClass("flash-good"); }, 600);
+        } else if (Score < window.LastScore) {
+            $("#statsBox, #statsBoxMobile").removeClass("flash-good").addClass("flash-bad");
+            setTimeout(() => { $("#statsBox, #statsBoxMobile").removeClass("flash-bad"); }, 600);
+        }
+    }
+    window.LastScore = Score;
 
-/* ================= RAFRAÎCHISSEMENT UNIQUE ================= */
-
-function refreshUI() {
-    if (typeof State === "undefined") return;
-
-    const v = State.variables;
-    const score = v.Score ?? null;
-    const rapid = v.Rapidite ?? null;
-    const timer = v.Timer ?? null;
-
-    /* ---- StatsBox desktop ---- */
-
-    if (score !== null) {
-        $("#scoreClinique").text(score);
-        $("#scoreCliniqueLine").removeClass("hidden");
-    } else $("#scoreCliniqueLine").addClass("hidden");
-
-    if (rapid !== null) {
-        $("#scoreRapide").text(rapid);
+    /* Score rapidité */
+    if (typeof State.variables.Rapidite !== "undefined") {
+        $("#scoreRapide").text(Rapidite);
         $("#scoreRapideLine").removeClass("hidden");
-    } else $("#scoreRapideLine").addClass("hidden");
+    }
 
-    if (timer !== null && timer > 0) {
-        $("#countdownNumber").text(timer).removeClass("timer-warning");
+    /* Timer */
+    if (typeof State.variables.Timer !== "undefined" && State.variables.Timer > 0) {
+        $("#countdownNumber").text(Timer).removeClass("timer-warning");
         $("#timerLine").removeClass("hidden");
 
-        if (timer <= 5) $("#countdownNumber").addClass("timer-warning");
+        if (Timer <= 5) $("#countdownNumber").addClass("timer-warning");
 
-        if (timer === 5 && !window.TimerBeepPlayed) {
+        /* Bip unique à 5s */
+        if (Timer === 5 && !window.TimerBeepPlayed) {
             try { window.BeepSound.currentTime = 0; window.BeepSound.play(); } catch(e){}
             window.TimerBeepPlayed = true;
         }
-        if (timer > 5) window.TimerBeepPlayed = false;
+        if (Timer > 5) window.TimerBeepPlayed = false;
     } else {
         $("#timerLine").addClass("hidden");
         window.TimerBeepPlayed = false;
     }
 
-  // ===== HUD MOBILE UNIFIÉ + ADAPTATION FOCUS TEXTBOX =====
+}, 1000);
+
+/* ===== HUD MOBILE UNIFIÉ ===== */
 $(document).one(":storyready", function() {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i.test(navigator.userAgent);
     if (!isMobile) return;
 
-    // Création du HUD
-    let hud = $('#mobileHUD');
-if (hud.length === 0) {
-    hud = $('<div id="mobileHUD"></div>');
+    const hud = $('<div id="mobileHUD"></div>');
     $('body').append(hud);
-}
 
-
-    // Fonction pour mettre à jour le HUD
     function updateHUD() {
         const score = State.variables.Score || 0;
         const rapidite = State.variables.Rapidite || 0;
         const timer = State.variables.Timer || 0;
-
         const timerClass = (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
 
         hud.html(`
             <div id="statsBoxMobile">
-                🦷 <span class="value-score">${score}</span> &nbsp;&nbsp;
-                🏃‍♂️ <span class="value-rapid">${rapidite}</span> &nbsp;&nbsp;
+                🦷 <span class="value-score">${score}</span>&nbsp;&nbsp;
+                🏃‍♂️ <span class="value-rapid">${rapidite}</span>&nbsp;&nbsp;
                 ⏱ <span class="${timerClass}">${timer}s</span>
             </div>
         `);
     }
 
-    // Initialisation
     updateHUD();
-    const hudInterval = setInterval(updateHUD, 500); // rafraîchissement fréquent
+    setInterval(updateHUD, 1000);
 
-    // ===== GESTION DU FOCUS DES TEXTBOX =====
-    $(document).on('focus', 'input[type="text"], textarea', function() {
-        // Déplace le HUD en bas pour éviter d'être masqué par le clavier
-        hud.css({
-            top: 'auto',
-            bottom: '10px',
-            right: '10px',
-            left: 'auto'
-        });
+    // Ajuste la position si clavier visible sur mobile
+    window.addEventListener('resize', () => {
+        if (window.innerHeight < 500) {  // heuristique clavier visible
+            hud.css('bottom', '10px'); // reste visible au-dessus clavier
+        } else {
+            hud.css('bottom', '10px');
+        }
     });
-
-    $(document).on('blur', 'input[type="text"], textarea', function() {
-        // Remet le HUD en haut
-        hud.css({
-            top: '8px',
-            bottom: 'auto',
-            right: '8px',
-            left: 'auto'
-        });
-    });
-
-    // Ajuste automatiquement la largeur si le clavier réduit le viewport
-    $(window).on('resize', function() {
-        const vh = window.innerHeight;
-        hud.css({ maxWidth: '95%' });
-    });
-});</script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-tag name="question-ouverte-ordre" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
+});
+</script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-tag name="question-ouverte-ordre" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
