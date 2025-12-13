@@ -106,7 +106,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 	</div>
 	<tw-storydata name="Dentrainement_beta 1" startnode="118" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="86ab0db4-51fb-4eb0-a37e-9aaa36cbcd30" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">  #story {
     margin-top: 0;
-    margin-left: 300;
+    margin-left: 300px;
     padding-top: 0;
     padding-left: 0;
 }
@@ -116,7 +116,7 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 }
 
 #passages {
-    margin-top: 0 !important;
+     padding-top: 60px;   /* ajuste selon la hauteur réelle du HUD */
     margin-left: 0 !important;
 }
 
@@ -604,29 +604,28 @@ window.LastScore = null;
 
 /* HUD mobile : n’existe QUE sur mobile */
 #mobileHUD {
-    background-color: rgba(255,255,255,0.95);
-    padding: 10px 15px;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.3);
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 9999;
+
+    display: inline-block;      /* s’adapte au contenu */
+    width: auto;
+    height: auto;
+
+    padding: 6px 10px;          /* padding minimal */
+    line-height: 1.2;           /* hauteur très maîtrisée */
+
+    font-size: 0.85em;
+    font-family: Arial, sans-serif;
     text-align: right;
-    font-size: 14px;
-}
 
-    /* Important : ne perturbe jamais le scroll */
-    pointer-events: none;
-}
+    background: #eaf4ff;
+    border-left: 4px solid #4a90e2;
+    border-radius: 8px;
 
-/* ajoute un padding bottom pour que le contenu ne soit jamais caché par le HUD */
-.passage {
-    padding-bottom: 90px; /* ajuste selon la hauteur réelle du HUD */
-}
-
-#mobileHUD #statsBoxMobile {
-    display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-    pointer-events: auto; /* laisse cliquable si nécessaire */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    pointer-events: none;       /* ne bloque jamais l’UI */
 }
 
 #mobileHUD .value-score { color: purple; font-weight: bold; }
@@ -643,11 +642,11 @@ window.LastScore = null;
     #mobileHUD { display: none; }
 }
 
-/* Sécurité mobile notch + clavier */
+/* Ajuste iOS / Android safe area */
 @media (max-width: 768px) {
     #mobileHUD {
-        top: env(safe-area-inset-top, 8px);
-        right: env(safe-area-inset-right, 8px);
+        top: env(safe-area-inset-top);
+        right: env(safe-area-inset-right);
     }
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* 🔊 Déverrouillage audio à la première action utilisateur */
 function unlockAudio() {
@@ -755,65 +754,40 @@ setInterval(function () {
 
 }, 1000);
 
-// ===== HUD MOBILE UNIFIÉ (Score + Rapidité + Timer) =====
+/* ===== HUD MOBILE UNIFIÉ ===== */
 $(document).one(":storyready", function() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i.test(navigator.userAgent);
+    if (!isMobile) return;
 
-    // Détecte mobile / tablette
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Tablet/i
-        .test(navigator.userAgent);
-
-    if (!isMobile) return; // exécute seulement sur mobile/tablette
-
-    // Crée le HUD et l'ajoute au conteneur #story pour gérer scroll
     const hud = $('<div id="mobileHUD"></div>');
-    $('#story').append(hud);
+    $('body').append(hud);
 
-    // ---- Fonction de mise à jour du contenu du HUD ----
-    function updateHUDContent() {
-        const score    = State.variables.Score || 0;
+    function updateHUD() {
+        const score = State.variables.Score || 0;
         const rapidite = State.variables.Rapidite || 0;
-        const timer    = State.variables.Timer || 0;
-
-        const timerClass = (timer > 0 && timer <= 5) ? 'timer-warning' : 'value-timer';
+        const timer = State.variables.Timer || 0;
+        const timerClass = (timer <= 5 && timer > 0) ? 'timer-warning' : 'value-timer';
 
         hud.html(`
             <div id="statsBoxMobile">
-                🦷 <span class="value-score">${score}</span>
-                &nbsp;&nbsp;
-                🏃‍♂️ <span class="value-rapid">${rapidite}</span>
-                &nbsp;&nbsp;
+                🦷 <span class="value-score">${score}</span>&nbsp;&nbsp;
+                🏃‍♂️ <span class="value-rapid">${rapidite}</span>&nbsp;&nbsp;
                 ⏱ <span class="${timerClass}">${timer}s</span>
             </div>
         `);
     }
 
-    // ---- Fonction de positionnement dynamique ----
-    function updateHUDPosition() {
-        const storyRect = $('#story')[0].getBoundingClientRect();
-        hud.css({
-            position: 'absolute', // évite les problèmes avec scrollable #story
-            top: window.scrollY + window.innerHeight - hud.outerHeight() - storyRect.top + 'px',
-            left: 0,
-            width: '100%',
-            'z-index': 10000
-        });
-    }
+    updateHUD();
+    setInterval(updateHUD, 1000);
 
-    // ---- Gestion du clavier virtuel (input / textarea) ----
-    $('input, textarea').on('focus', function() {
-        hud.hide(); // cache le HUD pour ne pas être masqué par le clavier
-    }).on('blur', function() {
-        updateHUDPosition();
-        hud.show();
+    // Ajuste la position si clavier visible sur mobile
+    window.addEventListener('resize', () => {
+        if (window.innerHeight < 500) {  // heuristique clavier visible
+            hud.css('bottom', '10px'); // reste visible au-dessus clavier
+        } else {
+            hud.css('bottom', '10px');
+        }
     });
-
-    // ---- Initialisation ----
-    updateHUDContent();
-    updateHUDPosition();
-
-    // ---- Rafraîchissement automatique ----
-    setInterval(updateHUDContent, 1000);
-    $(window).on('scroll resize', updateHUDPosition);
 });
 </script><tw-tag name="Fonction-random" color="yellow"></tw-tag><tw-tag name="Chrono-simple" color="green"></tw-tag><tw-tag name="Media-image-son" color="blue"></tw-tag><tw-tag name="Choix-multiple-a-cocher" color="purple"></tw-tag><tw-tag name="Question-ouverte" color="orange"></tw-tag><tw-tag name="Question-ouverte-1variante" color="orange"></tw-tag><tw-tag name="Question-ouverte-2variantes" color="red"></tw-tag><tw-tag name="question-ouverte-ordre" color="red"></tw-tag><tw-passagedata pid="1" name="Accueil cas 4" tags="Media-image-son Question-ouverte-1variante" position="3125,325" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
@@ -5469,7 +5443,7 @@ Votre score clinique pour ce passage est &lt;span style=&quot;color:purple;&quot
         &lt;&lt;else&gt;&gt;&lt;&lt;stop&gt;&gt;
         &lt;&lt;/if&gt;&gt;
           &lt;&lt;/repeat&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Passage 0" tags="" position="900,25" size="100,100">Bienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="118" name="Passage 0" tags="" position="900,25" size="100,100">NouveauHUDBienvenue dans &#39;&#39;Dentrainement&#39;&#39;, un jeu sérieux pour travailler son sens clinique en odontologie pédiatrique.
 
 Dans cette simulation vous aurez à prendre des décisions parmi plusieurs choix possibles. 
 
