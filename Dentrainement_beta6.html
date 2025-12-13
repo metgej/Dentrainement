@@ -463,13 +463,16 @@ span.checkligne {
 }
 
 #mobileHUD {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    z-index: 9999;
-    pointer-events: none;
-    font-size: 0.85em;
-    font-family: Arial, sans-serif;
+    position: fixed;       /* reste collé à l'écran */
+    top: 10px;             /* légèrement en dessous du bord supérieur */
+    right: 10px;           /* aligné à droite */
+    width: auto;           /* seulement la largeur du contenu */
+    height: auto;          /* seulement la hauteur du contenu */
+    z-index: 10000;        /* toujours au-dessus du contenu */
+    background: none;      /* plus de rectangle blanc */
+    padding: 0;            /* pas de padding inutile */
+    font-size: 14px;
+    text-align: right;
 }
 
 /* Reprend le style de ta statbox desktop */
@@ -627,22 +630,6 @@ window.LastScore = null;
     transition: opacity 0.5s;
 }
 
-#mobileHUD {
-    position: fixed;       /* reste collé à l'écran */
-    bottom: 0;             /* en bas de l'écran */
-    right: 0;              /* à droite */
-    left: 0;               /* étire sur toute la largeur si besoin */
-    z-index: 10000;        /* toujours au-dessus du contenu */
-    background-color: rgba(255, 255, 255, 0.95); /* fond semi-transparent */
-    padding: 10px 15px;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
-    font-size: 14px;
-    text-align: right;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-.value-score { color: purple; font-weight: bold; }
-.timer-warning { color: red; font-weight: bold; }
 
 .passage {
     padding-bottom: 70px; /* correspond à la hauteur du HUD */
@@ -782,7 +769,7 @@ $(document).one(":storyready", function() {
 
         // Ajuste le positionnement si le clavier est ouvert (viewport réduit)
         const vh = window.innerHeight;
-        hud.css({ bottom: '10px', maxWidth: '95%' });
+        hud.css({ top: '10px', right: '10px' });
     }
 
     updateHUD();
@@ -2809,7 +2796,7 @@ Et ensuite (solution préférable) ?
 &lt;&lt;set $Timer to 80&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Illustration du traitement de 21 [1]
-&lt;img src=&quot;./Cas_clinique3/isabelle_gomes_pulpo21.jpg&quot; width=&quot;300vw&quot;&gt;
+&lt;img src=&quot;./Cas_clinique5/isabelle_gomes_pulpo21.jpg&quot; width=&quot;300vw&quot;&gt;
 &lt;p&gt;Remettez les étapes du traitement dans le bon ordre :&lt;/p&gt;
 \&lt;div id=&quot;dalle-wrapper&quot;&gt;
  \ &lt;div id=&quot;dalle-container&quot;&gt;
@@ -5453,7 +5440,7 @@ Il peut être utile de se munir d&#39;un stylo et d&#39;une feuille blanche au p
 Une bonne réponse rapporte des points, une mauvaise vous en fera perdre.
 Parfois, plusieurs réponses peuvent être valides.
 
-A la fin un Top10 des scores de votre cas pour le niveau choisi peut être affiché avec votre pseudo. Vous avez ainsi l&#39;occasion de marquer votre empreinte.
+A la fin un Top10 des scores de votre cas pour le niveau choisi peut être affiché avec votre pseudo. Montrez à vos collègues de quoi vous êtes capables 💪! 
 
 Si vous avez compris et que vous êtes motivé(e) pour devenir un expert en clinique :
 &lt;&lt;link &quot;Cliquez-ici pour commencer&quot;&gt;&gt;
@@ -7124,7 +7111,7 @@ Vous reprogrammez ensuite de voir l&#39;enfant pour le suivi et pour réaliser u
 &#39;&#39;[[Je vais consulter mon score final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="163" name="exam clinique cas 2" tags="Choix-multiple-a-cocher Media-image-son" position="1900,350" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;four&quot;,&quot;five&quot;,&quot;seven&quot;,&quot;eight&quot;]&gt;&gt;
+&lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;four&quot;,&quot;seven&quot;,&quot;eight&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous commencez à l&#39;examiner. La palpation ne révèle pas de problème particulier au niveau des articulations.
 Voici une vue exo buccale [2]
@@ -7150,7 +7137,7 @@ Cocher les affirmations justes :
         &lt;&lt;if $desc.two&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.three&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.four&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.five&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.five&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.six&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.seven&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.eight&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
@@ -7164,8 +7151,8 @@ Cocher les affirmations justes :
         })&gt;&gt;
 
         &lt;&lt;replace &quot;#checkbox-feedback&quot;&gt;&gt;
-Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 25.
-\&lt;&lt;if $tempScore is 25&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
+Votre score clinique pour ce passage est de &lt;span style=&quot;color:purple;&quot;&gt;&#39;&#39;$tempScore&#39;&#39;&lt;/span&gt; sur un maximum de 20.
+\&lt;&lt;if $tempScore is 20&gt;&gt;&lt;&lt;set $Rapidite to $Rapidite + $Timer&gt;&gt;&lt;&lt;/if&gt;&gt;
 //5 réponses sont correctes.
 La 11 est au moins fracturée au niveau de l&#39;émail et de la dentine.  On teste au moins la mobilité de 11,12,21. On fait un test de vitalité sur 11 et on s&#39;attend à avoir une réponse altérée. Avec le miroir on vérifie si les lésions intéressent la pulpe de 11 ou non et on s&#39;assure que les antagonistes ne sont pas également fracturées.
 Les résultats de vos tests sont les suivants : 12,11,21 ne sont pas particulièrement mobiles. Le test de vitalité est positif mais retardé sur 11. En occlusal de 11, la pulpe ne vous semble pas exposée en regardant au miroir.//
