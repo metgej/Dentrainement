@@ -2027,7 +2027,7 @@ Vous accueillez l&#39;enfant. La maman commence à vous expliquer comment l&#39;
 &lt;&lt;set $button to 0&gt;&gt;
 &lt;&lt;set $bonnesReponses to [&quot;zero&quot;,&quot;four&quot;,&quot;five&quot;,&quot;six&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
-Voici la rétro alvéolaire : &lt;img src=&quot;./Cas_clinique 4/Cas4_retro_init.jpg&quot; width=&quot;300vw&quot;&gt; Quelles sont vos conclusions en observant cette radio et en prenant en compte les données cliniques précédentes ?
+Voici la rétro alvéolaire : &lt;img src=&quot;./Cas_clinique4/Cas4_retro_init.jpg&quot; width=&quot;300vw&quot;&gt; Quelles sont vos conclusions en observant cette radio et en prenant en compte les données cliniques précédentes ?
 \&lt;&lt;set $desc = {}&gt;&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;zero&quot;&gt;&lt;&lt;checkbox &quot;$desc.zero&quot; false true&gt;&gt; La dent 11 est fracturée au niveau de l&#39;émail et de la dentine sans atteinte de la pulpe&lt;/span&gt;
 &lt;span class=&quot;checkligne&quot; data-id=&quot;one&quot;&gt;&lt;&lt;checkbox &quot;$desc.one&quot; false true&gt;&gt; Une fracture alvéolaire entre 11 et 21 due au trauma est mise en évidence&lt;/span&gt;
@@ -5460,7 +5460,7 @@ Il peut être utile de se munir d&#39;un stylo et d&#39;une feuille blanche au p
 Une bonne réponse rapporte des points, une mauvaise vous en fera perdre.
 Parfois, plusieurs réponses peuvent être valides.
 
-A la fin un Top10 des scores de votre cas pour le niveau choisi peut être affiché avec votre pseudo. Vous avez ainsi l&#39;occasion de marquer votre empreinte.
+A la fin un Top 10 des scores (même niveau et cas clinique) sera affiché avec votre pseudo. Montrez à vos confrères de quoi vous êtes capables !
 
 Si vous avez compris et que vous êtes motivé(e) pour devenir un expert en clinique :
 &lt;&lt;link &quot;Cliquez-ici pour commencer&quot;&gt;&gt;
@@ -5469,20 +5469,20 @@ Si vous avez compris et que vous êtes motivé(e) pour devenir un expert en clin
 &lt;&lt;set $Timer=0&gt;&gt;
 &lt;&lt;set $Rapidite=0&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
+
 &lt;img src=&quot;./Images/pixabay_shohmelian_cabinet.jpg&quot; width=&quot;300vw&quot;&gt;
+
 Vous venez de vous installer dans la commune de Rastignac-en-Jalles. C&#39;est une reprise de cabinet. Vous avez à coeur de bien vous occuper des anciens patients de votre confrère. Le bouche à oreille fonctionne fort dans le coin. Votre réputation va dépendre des retours des tous premiers patients. 
 
 Vous pouvez compter sur Martine, l&#39;assistante dentaire historique du cabinet.
 
 Avant de commencer dîtes nous en plus sur vous :
 Quel est votre pseudo (ou simplement votre prénom) ?
-&lt;&lt;textbox &quot;$Nom&quot; &quot;&quot;&gt;&gt;
+&lt;&lt;textbox &quot;$Nom&quot; &quot;&quot; id=&quot;textbox-nom&quot; autofocus&gt;&gt;
 &lt;&lt;silently&gt;&gt;
 &lt;&lt;set $niveau = {type:&quot;&quot;}&gt;&gt;
 &lt;&lt;set $promo = {type:&quot;&quot;}&gt;&gt;
-
 &lt;&lt;/silently&gt;&gt;
-
 Pour la partie qui va suivre, quel niveau de difficulté choisissez-vous ?
 &lt;&lt;radiobutton &quot;$niveau.type&quot; &quot;Débutant&quot;&gt;&gt; Débutant - Suggéré pour les 4A/5A
 &lt;&lt;radiobutton &quot;$niveau.type&quot; &quot;Avancé&quot;&gt;&gt; Avancé - Suggéré pour les 5A/6A
@@ -5493,34 +5493,35 @@ A des fins statistiques, dans quelle promotion êtes-vous ?
 &lt;&lt;radiobutton &quot;$promo.type&quot; &quot;5A&quot;&gt;&gt; 5A
 &lt;&lt;radiobutton &quot;$promo.type&quot; &quot;6A&quot;&gt;&gt; 6A
 &lt;&lt;radiobutton &quot;$promo.type&quot; &quot;Autre&quot;&gt;&gt; Autre
-
+&lt;!-- Wrapper local pour contenu dynamique --&gt;
+\&lt;div id=&quot;contenu-niveau&quot;&gt;
 &lt;span id=&quot;nom_niveau&quot;&gt;Indiquez votre nom, le niveau de difficulté souhaité et votre niveau de formation (promotion actuelle) pour continuer svp !&lt;/span&gt;
-    &lt;&lt;repeat 1s&gt;&gt;
-	&lt;&lt;if $niveau.type and $promo.type &gt;&gt;
-    &lt;&lt;silently&gt;&gt;
-    Niveau= $niveau.type
-    Promo= $promo.type
-    &lt;&lt;/silently&gt;&gt;
-     &lt;&lt;replace &quot;#nom_niveau&quot;&gt;&gt; 
+\&lt;/div&gt;
+&lt;!-- Vérification répétée, replace limité au span #nom_niveau --&gt;
+&lt;&lt;repeat 1s&gt;&gt;
+  &lt;&lt;if $niveau.type and $promo.type&gt;&gt;
+    \&lt;&lt;replace &quot;#nom_niveau&quot;&gt;&gt;
 \Pour les beta-testeurs (choix manuel du scénario, évite la distribution aléatoire)
-\&lt;&lt;if $niveau.type is &quot;Débutant&quot; &gt;&gt;
+\&lt;&lt;if $niveau.type is &quot;Débutant&quot;&gt;&gt;
 [[Scénario1_débutant]]
 [[Scénario4_débutant]]
 [[Scénario5_débutant]]
-[[Scénario6_débutant]]&lt;&lt;/if&gt;&gt;
-&lt;&lt;if $niveau.type is &quot;Avancé&quot; &gt;&gt;
+[[Scénario6_débutant]]
+&lt;&lt;/if&gt;&gt;
+&lt;&lt;if $niveau.type is &quot;Avancé&quot;&gt;&gt;
 [[Scénario1_avancé]]
 [[Scénario2_avancé]]
 [[Scénario3_avancé]]
 [[Scénario4_avancé]]
-[[Scénario5_avancé]] 
-[[Scénario6_avancé]]&lt;&lt;/if&gt;&gt;
-
-\Pour commencer un cas de façon aléatoire &#39;&#39;[[Cliquez ici!|Dispatch niveau]]&#39;&#39;
-&lt;&lt;/replace&gt;&gt;&lt;&lt;stop&gt;&gt;
-  &lt;&lt;else&gt;&gt;          
-	&lt;&lt;/if&gt;&gt;
-&lt;&lt;/repeat&gt;&gt;</tw-passagedata><tw-passagedata pid="120" name="Procedure dent levre1" tags="Media-image-son Chrono-simple" position="2575,875" size="100,100">&lt;&lt;silently&gt;&gt;
+[[Scénario5_avancé]]
+[[Scénario6_avancé]]
+&lt;&lt;/if&gt;&gt;
+Pour commencer un cas de façon aléatoire &#39;&#39;[[Cliquez ici!|Dispatch niveau]]&#39;&#39;
+    &lt;&lt;/replace&gt;&gt;
+    &lt;&lt;stop&gt;&gt;
+  &lt;&lt;/if&gt;&gt;
+&lt;&lt;/repeat&gt;&gt;
+</tw-passagedata><tw-passagedata pid="120" name="Procedure dent levre1" tags="Media-image-son Chrono-simple" position="2575,875" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 30&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Voici la radio de la lèvre :
@@ -7131,7 +7132,7 @@ Vous reprogrammez ensuite de voir l&#39;enfant pour le suivi et pour réaliser u
 &#39;&#39;[[Je vais consulter mon score final|Resultat]]&#39;&#39;</tw-passagedata><tw-passagedata pid="163" name="exam clinique cas 2" tags="Choix-multiple-a-cocher Media-image-son" position="1900,350" size="100,100">&lt;&lt;silently&gt;&gt;
 &lt;&lt;set $Timer to 40&gt;&gt;
 &lt;&lt;set $button to 0&gt;&gt;
-&lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;four&quot;,&quot;five&quot;,&quot;seven&quot;,&quot;eight&quot;]&gt;&gt;
+&lt;&lt;set $bonnesReponses to [&quot;one&quot;,&quot;four&quot;,&quot;seven&quot;,&quot;eight&quot;]&gt;&gt;
 &lt;&lt;/silently&gt;&gt;
 Vous commencez à l&#39;examiner. La palpation ne révèle pas de problème particulier au niveau des articulations.
 Voici une vue exo buccale [2]
@@ -7157,7 +7158,7 @@ Cocher les affirmations justes :
         &lt;&lt;if $desc.two&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.three&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.four&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
-        &lt;&lt;if $desc.five&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
+        &lt;&lt;if $desc.five&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.six&gt;&gt;&lt;&lt;set $tempScore -= 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.seven&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
         &lt;&lt;if $desc.eight&gt;&gt;&lt;&lt;set $tempScore += 5&gt;&gt;&lt;&lt;/if&gt;&gt;
